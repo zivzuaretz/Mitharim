@@ -1,8 +1,12 @@
 name: Manual Telegram Intake
 
-# Manual-only — we'll add a cron once the flow is validated end-to-end.
+# Runs every 5 minutes via cron, plus on-demand via workflow_dispatch.
+# Note: GitHub scheduled workflows are best-effort — cadence can drift by
+# 5–15 minutes during high platform load.
 on:
-  workflow_dispatch: {}
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
 
 # Prevent two manual-intake runs from racing on manual_updates/state.json.
 # Separate group from the monitor workflow so they don't block each other.
