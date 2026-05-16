@@ -1,0 +1,23 @@
+{
+  "update_id": 526373082,
+  "message": {
+    "message_id": 8,
+    "from": {
+      "id": 1343564439,
+      "is_bot": false,
+      "first_name": "Ziv",
+      "last_name": "Zuaretz",
+      "username": "zivzuaretz",
+      "language_code": "he"
+    },
+    "chat": {
+      "id": 1343564439,
+      "first_name": "Ziv",
+      "last_name": "Zuaretz",
+      "username": "zivzuaretz",
+      "type": "private"
+    },
+    "date": 1778967057,
+    "text": "ילין לפידות בחשיפה של 14% מט״ח"
+  }
+}
