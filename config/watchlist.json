@@ -1,0 +1,88 @@
+[
+  {
+    "id": "yl_investment_policy",
+    "pageName": "מדיניות השקעה צפויה",
+    "manufacturer": "ילין לפידות",
+    "category": "מדיניות השקעה",
+    "url": "https://www.yl-invest.co.il/מדיניות-השקעה-צפויה/?year=2025&quarterly=&range=טווח",
+    "importance": "גבוהה",
+    "renderer": "playwright"
+  },
+  {
+    "id": "yl_promotions",
+    "pageName": "תגמול עבור מבצעי קידום מכירות",
+    "manufacturer": "ילין לפידות",
+    "category": "מבצעים / תגמולים",
+    "url": "https://www.yl-invest.co.il/תגמול-עבור-מבצעי-קידום-מכירות/",
+    "importance": "בינונית",
+    "renderer": "playwright"
+  },
+  {
+    "id": "analyst_policy",
+    "pageName": "Investment Policy",
+    "manufacturer": "אנליסט",
+    "category": "מדיניות השקעה",
+    "url": "https://www.analyst.co.il/investment-policy/",
+    "importance": "גבוהה"
+  },
+  {
+    "id": "meitav_agents",
+    "pageName": "מידע ושירות לסוכנים",
+    "manufacturer": "מיטב",
+    "category": "פורטלי סוכנים",
+    "url": "https://www.meitav.co.il/agents_home_page/info_service_agents/",
+    "importance": "בינונית",
+    "renderer": "playwright"
+  },
+  {
+    "id": "meitav_policy",
+    "pageName": "מדיניות השקעה צפויה",
+    "manufacturer": "מיטב",
+    "category": "מדיניות השקעה",
+    "url": "https://www.meitav.co.il/provident_pension/statement_investment_policy/",
+    "importance": "גבוהה"
+  },
+  {
+    "id": "fnx_agents",
+    "pageName": "דף סוכנים",
+    "manufacturer": "הפניקס",
+    "category": "פורטלי סוכנים",
+    "url": "https://www.fnx.co.il/agent/",
+    "importance": "בינונית",
+    "renderer": "playwright"
+  },
+  {
+    "id": "fnx_promotions",
+    "pageName": "מבצעי סוכנים",
+    "manufacturer": "הפניקס",
+    "category": "מבצעים / תגמולים",
+    "url": "https://www.fnx.co.il/agents-promotions/",
+    "importance": "בינונית",
+    "renderer": "playwright"
+  },
+  {
+    "id": "fnx_policy",
+    "pageName": "מדיניות השקעה צפויה 2025",
+    "manufacturer": "הפניקס",
+    "category": "מדיניות השקעה",
+    "url": "https://www.fnx.co.il/fnx-insurance-ltd/investment-information-reports/the-expected-investment-policy/the-expected-investment-policy-2025/",
+    "importance": "גבוהה",
+    "renderer": "playwright"
+  },
+  {
+    "id": "menora_policy",
+    "pageName": "מדיניות השקעה",
+    "manufacturer": "מנורה מבטחים",
+    "category": "מדיניות השקעה",
+    "url": "https://www.menoramivt.co.il/rep-list/about-insurance/participating-portfolio-info/investment-policy",
+    "importance": "גבוהה"
+  },
+  {
+    "id": "fnx_finance_pdf",
+    "pageName": "finance.pdf",
+    "manufacturer": "הפניקס",
+    "category": "PDF",
+    "url": "https://www.fnx.co.il/Documents/finance.pdf",
+    "importance": "גבוהה"
+  }
+]

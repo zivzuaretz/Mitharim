@@ -1,0 +1,95 @@
+name: Mitharim Monitor
+
+on:
+  schedule:
+    # Every 10 minutes. GitHub may delay scheduled workflows during high
+    # platform load — actual cadence can drift to 15–20 min at peak times.
+    - cron: '*/10 * * * *'
+  workflow_dispatch: {}
+
+# Snapshots are committed back to the repo, so two runs editing data/ at the
+# same time would race. Queue runs instead of letting them overlap; the most
+# recently queued run wins if another is already waiting.
+concurrency:
+  group: mitharim-monitor
+  cancel-in-progress: false
+
+# Required so the workflow can push the snapshot commit back to the branch.
+permissions:
+  contents: write
+
+jobs:
+  monitor:
+    name: Run Mitharim
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      ANTHROPIC_API_KEY:   ${{ secrets.ANTHROPIC_API_KEY }}
+      TELEGRAM_BOT_TOKEN:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Default depth is 1; fetch enough history so a rebase before push
+          # works if another run committed in the meantime.
+          fetch-depth: 2
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright Chromium
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Mitharim monitor
+        run: npm start
+
+      - name: Commit updated snapshots
+        run: |
+          set -euo pipefail
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Only data/snapshots changes ship back to the repo. Anything else
+          # touched by the run (node_modules, caches, etc.) is ignored.
+          git add data/snapshots
+
+          if git diff --staged --quiet; then
+            echo "::notice::No snapshot changes — nothing to commit"
+            exit 0
+          fi
+
+          git commit -m "[Mitharim] Update snapshots"
+
+          # If another queued run pushed first, rebase on top before pushing.
+          # Try a few times before giving up.
+          for attempt in 1 2 3; do
+            echo "Push attempt $attempt..."
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
+              && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              echo "::notice::Snapshots pushed on attempt $attempt"
+              exit 0
+            fi
+            echo "::warning::Push attempt $attempt failed, retrying..."
+            sleep 5
+          done
+
+          echo "::error::Push failed after 3 attempts"
+          exit 1
