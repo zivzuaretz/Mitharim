@@ -7,7 +7,8 @@
   "type": "commonjs",
   "scripts": {
     "start": "node src/index.js",
-    "monitor": "node src/index.js"
+    "monitor": "node src/index.js",
+    "manual": "node src/manualTelegram.js"
   },
   "engines": {
     "node": ">=18"

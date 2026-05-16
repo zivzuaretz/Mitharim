@@ -147,6 +147,87 @@ The header icon reflects the item's importance:
 
 Up to 5 bullets per bucket are shown (added / updated / removed). Empty buckets render as `—`. The "updated" bucket pairs adjacent removed→added diff segments, so reworded sentences appear once rather than twice.
 
+## Manual Telegram intake
+
+Sometimes a real change reaches you before the watchlist catches it — a vendor email, an announcement from a sales rep, a forwarded PDF. The manual intake flow lets you push those into the same channel without bypassing the format/archive discipline of the rest of the system.
+
+### How it works
+
+1. **You DM the bot.** Send `@mitharim_updates_bot` a private message with text, an optional photo, and/or an optional document. (Captions on photos/documents count as the message text.)
+2. **You trigger the intake.** Run `npm run manual` locally, or fire the **Mitharim Manual Telegram Intake** workflow in GitHub Actions.
+3. **The intake script processes every new private message** (via Telegram `getUpdates`, scoped to your bot):
+   - Writes the raw update JSON to `manual_updates/archive/{update_id}/raw.json`.
+   - Downloads attached photo / document to the same folder.
+   - Detects `manufacturer` and `category` from the text using keyword rules.
+   - Formats a Hebrew channel post (template below) and sends it.
+   - Sends each attached file to the channel as a follow-up.
+   - Updates `manual_updates/state.json` so the same update never forwards twice.
+
+### Channel format
+
+```
+📌 עדכון ידני חדש
+
+🏢 יצרן: {detected, otherwise "לא צוין"}
+📂 קטגוריה: {detected, otherwise "לא צוין"}
+
+━━━━━━━━━━━━━━
+
+📝 תוכן העדכון:
+{your message text}
+
+📎 קבצים:
+• {file 1}
+• {file 2}
+
+━━━━━━━━━━━━━━
+
+#עדכון_ידני
+
+👤 מקור: הוזן ידנית על ידי זיו
+🕒 DD/MM/YYYY, HH:mm  (Asia/Jerusalem)
+```
+
+### Detection rules
+
+| Keyword in your message | Detected manufacturer |
+|---|---|
+| `אנליסט` | אנליסט |
+| `הפניקס` | הפניקס |
+| `מנורה` | מנורה מבטחים |
+| `מיטב` | מיטב |
+| `כלל` | כלל ביטוח |
+| `ילין` | ילין לפידות |
+
+| Keyword(s) in your message | Detected category |
+|---|---|
+| `מדיניות`, `חשיפה`, `מניות`, `אגח`, `מסלול` | מדיניות השקעה |
+| `מבצע`, `תגמול`, `עמלה`, `סוכן` | מבצעים / תגמולים |
+| `פורטל`, `טופס`, `שירות` | פורטלי סוכנים |
+| `הדרכה`, `וובינר`, `סרטון`, `מצגת` | דפי תוכן / הדרכה |
+
+Detection is plain substring match. First match wins in spec order, so a message that mentions both `סוכן` and `פורטל` gets categorized as **מבצעים / תגמולים** (the higher-priority rule). When nothing matches, both fields show `"לא צוין"`.
+
+### Running locally
+
+```
+npm run manual
+```
+
+Same env vars as the monitor (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHANNEL_ID`). New private messages get archived, formatted, and forwarded; the script exits when there's nothing left to process.
+
+### Running via GitHub Actions
+
+Repo → **Actions** → **Mitharim Manual Telegram Intake** → **Run workflow** → branch `main` → **Run workflow**. The workflow does the intake, commits `manual_updates/` (archive + state) back, and pushes.
+
+> The manual-intake workflow is **not on cron yet** — only `workflow_dispatch`. Once we've verified the flow end-to-end (one round-trip from DM → channel), we can enable a schedule.
+
+### What's archived
+
+`manual_updates/archive/{update_id}/` keeps the original Telegram update — text, sender metadata, file references — plus the actual downloaded media. That gives us evidence for what was sent and when, independent of whatever the channel ends up showing.
+
+`manual_updates/state.json` only stores `lastUpdateId` and a `processedAt` timestamp. Re-running the script after the state file is current is a no-op.
+
 ## Continuous monitoring with GitHub Actions
 
 Mitharim ships with a workflow at `.github/workflows/monitor.yml` that runs the engine on GitHub's infrastructure on a fixed schedule, commits new snapshots back to the repo, and posts Telegram alerts on meaningful changes — no machine of your own needs to stay online.

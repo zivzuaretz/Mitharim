@@ -1,0 +1,74 @@
+name: Manual Telegram Intake
+
+# Manual-only — we'll add a cron once the flow is validated end-to-end.
+on:
+  workflow_dispatch: {}
+
+# Prevent two manual-intake runs from racing on manual_updates/state.json.
+# Separate group from the monitor workflow so they don't block each other.
+concurrency:
+  group: mitharim-manual-telegram
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  intake:
+    name: Process manual messages
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      TELEGRAM_BOT_TOKEN:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Run manual Telegram intake
+        run: npm run manual
+
+      - name: Commit archive and state
+        run: |
+          set -euo pipefail
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Only manual_updates state + archive ships back. Snapshots are
+          # owned by the monitor workflow; nothing else should change here.
+          git add manual_updates
+
+          if git diff --staged --quiet; then
+            echo "::notice::No manual updates to commit"
+            exit 0
+          fi
+
+          git commit -m "[Mitharim] Update manual intake archive"
+
+          for attempt in 1 2 3; do
+            echo "Push attempt $attempt..."
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
+              && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              echo "::notice::Pushed on attempt $attempt"
+              exit 0
+            fi
+            echo "::warning::Push attempt $attempt failed, retrying..."
+            sleep 5
+          done
+
+          echo "::error::Push failed after 3 attempts"
+          exit 1
