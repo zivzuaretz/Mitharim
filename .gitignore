@@ -16,6 +16,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Reserved feature directories — engine writes here at runtime, not source.
+# Reserved for future feature (PDF page previews). Engine doesn't write here yet.
 data/screenshots/
-data/files/

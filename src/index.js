@@ -21,6 +21,22 @@ const WATCHLIST_PATH = path.join(ROOT, 'config', 'watchlist.json');
 const SNAPSHOTS_DIR = path.join(ROOT, 'data', 'snapshots');
 const LATEST_DIR = path.join(SNAPSHOTS_DIR, 'latest');
 const HISTORY_DIR = path.join(SNAPSHOTS_DIR, 'history');
+const FILES_DIR = path.join(ROOT, 'data', 'files');
+
+// File-type extensions we treat as monitorable documents when they appear as
+// links inside an HTML page. Match against URL path or final query token.
+const DOCUMENT_EXTENSIONS = ['pdf', 'xlsx', 'xls', 'docx', 'doc', 'pptx', 'csv'];
+const DOCUMENT_EXT_RE = new RegExp(
+  `\\.(${DOCUMENT_EXTENSIONS.join('|')})(?:[?#]|$)`,
+  'i',
+);
+
+// Safety bounds for the file fetcher. Vendor sites can serve very large
+// historical PDFs; we don't want a single bad link to OOM the runner.
+const MAX_FILES_PER_ITEM = 50;
+const MAX_FILE_BYTES = 30 * 1024 * 1024; // 30 MB
+const FILE_HEAD_TIMEOUT_MS = 15_000;
+const FILE_GET_TIMEOUT_MS = 60_000;
 
 const REQUEST_TIMEOUT_MS = 30_000;
 const MAX_REDIRECTS = 5;
@@ -351,6 +367,246 @@ function passesPhoenixGate(itemId, buckets) {
     ...(buckets.updated || []).flatMap((u) => [u.from, u.to]),
   ];
   return fragments.some((t) => hasPhoenixGateSignal(itemId, t));
+}
+
+// ---------------------------------------------------------------------------
+// Document monitoring — detects and tracks documents (PDF/XLSX/DOC/PPTX/CSV)
+// linked from each watched HTML page. Maintains a per-item manifest with
+// hash + ETag + Last-Modified so subsequent runs can skip unchanged files.
+// PDFs are text-diffed through the same filter pipeline as page snapshots.
+// Other formats are tracked by hash only for now.
+// ---------------------------------------------------------------------------
+
+function extractDocumentLinks(html, pageUrl) {
+  const $ = cheerio.load(html);
+  const found = new Map(); // canonical URL → filename
+
+  $('a[href]').each((_, el) => {
+    const href = $(el).attr('href');
+    if (!href) return;
+    try {
+      const u = new URL(href, pageUrl);
+      const path_ = u.pathname.toLowerCase();
+      if (!DOCUMENT_EXT_RE.test(path_) && !DOCUMENT_EXT_RE.test(u.href.toLowerCase())) return;
+      // Drop the fragment but keep the query — a query can identify a file.
+      u.hash = '';
+      const filename = path.basename(decodeURIComponent(u.pathname)) || 'document';
+      if (!found.has(u.href)) found.set(u.href, filename);
+    } catch {
+      // Skip malformed URLs silently.
+    }
+  });
+
+  return Array.from(found.entries())
+    .slice(0, MAX_FILES_PER_ITEM)
+    .map(([url, filename]) => ({ url, filename }));
+}
+
+function fileExtension(filename) {
+  const m = (filename || '').toLowerCase().match(/\.([a-z]+)(?:$|[?#])/);
+  return m ? m[1] : '';
+}
+
+async function loadFileManifest(itemId) {
+  const file = path.join(FILES_DIR, itemId, 'manifest.json');
+  if (!(await fse.pathExists(file))) return null; // null = first-run for files
+  try {
+    return await fse.readJson(file);
+  } catch (err) {
+    log.warn(`File manifest read failed for ${itemId}: ${err.message}`);
+    return null;
+  }
+}
+
+async function saveFileManifest(itemId, manifest) {
+  const file = path.join(FILES_DIR, itemId, 'manifest.json');
+  await fse.ensureDir(path.dirname(file));
+  await fse.writeJson(file, manifest, { spaces: 2 });
+}
+
+async function headCheckFile(url) {
+  try {
+    const r = await axios.head(url, {
+      timeout: FILE_HEAD_TIMEOUT_MS,
+      maxRedirects: 5,
+      headers: { 'User-Agent': USER_AGENT },
+      validateStatus: (s) => s >= 200 && s < 400,
+    });
+    return {
+      ok: true,
+      etag: r.headers.etag || null,
+      lastModified: r.headers['last-modified'] || null,
+      contentLength: r.headers['content-length']
+        ? Number(r.headers['content-length'])
+        : null,
+    };
+  } catch {
+    return { ok: false, etag: null, lastModified: null, contentLength: null };
+  }
+}
+
+async function downloadBinaryFile(url) {
+  const r = await axios.get(url, {
+    timeout: FILE_GET_TIMEOUT_MS,
+    responseType: 'arraybuffer',
+    maxRedirects: 5,
+    maxContentLength: MAX_FILE_BYTES,
+    headers: { 'User-Agent': USER_AGENT },
+    validateStatus: (s) => s >= 200 && s < 400,
+  });
+  return {
+    buffer: Buffer.from(r.data),
+    etag: r.headers.etag || null,
+    lastModified: r.headers['last-modified'] || null,
+  };
+}
+
+function safeArchiveStem(iso) {
+  return iso.replace(/[:.]/g, '-');
+}
+
+// processItemFiles — runs for every HTML item that has document links. Returns
+// { changes, isFirstRun }. On first-run-for-files (no prior manifest), the
+// manifest is initialized and changes is empty — same first-run discipline as
+// page snapshots.
+async function processItemFiles(item, links) {
+  const itemFilesDir = path.join(FILES_DIR, item.id);
+  const historyDir = path.join(itemFilesDir, 'history');
+
+  const previousManifest = await loadFileManifest(item.id);
+  const isFirstRun = !previousManifest;
+  const manifest = previousManifest || {};
+
+  const seenUrls = new Set();
+  const changes = [];
+
+  for (const { url, filename } of links) {
+    seenUrls.add(url);
+    const prev = manifest[url];
+
+    // 1. HEAD check — skip unchanged files with no download.
+    const head = await headCheckFile(url);
+    if (prev && head.ok) {
+      if (head.etag && prev.etag && head.etag === prev.etag) {
+        manifest[url] = { ...prev, lastSeenAt: new Date().toISOString() };
+        continue;
+      }
+      if (
+        head.lastModified &&
+        prev.lastModified &&
+        head.lastModified === prev.lastModified
+      ) {
+        manifest[url] = { ...prev, lastSeenAt: new Date().toISOString() };
+        continue;
+      }
+    }
+
+    // 2. Download
+    let downloaded;
+    try {
+      downloaded = await downloadBinaryFile(url);
+    } catch (err) {
+      log.warn(`File download failed for ${item.id}: ${url} — ${err.message}`);
+      continue;
+    }
+
+    const { buffer, etag, lastModified } = downloaded;
+    const hash = computeHash(buffer);
+
+    if (prev && prev.hash === hash) {
+      // Content unchanged even though HEAD didn't match — record fresh
+      // ETag/Last-Modified so future runs can skip on the cache check.
+      manifest[url] = {
+        ...prev,
+        etag,
+        lastModified,
+        lastSeenAt: new Date().toISOString(),
+      };
+      continue;
+    }
+
+    // 3. New file or hash changed → archive old, save new.
+    const targetPath = path.join(itemFilesDir, filename);
+    let oldText = null;
+
+    if (prev && (await fse.pathExists(targetPath))) {
+      await fse.ensureDir(historyDir);
+      const ts = safeArchiveStem(new Date().toISOString());
+      const archivePath = path.join(historyDir, `${ts}_${prev.filename || filename}`);
+
+      if (/\.pdf$/i.test(filename)) {
+        try {
+          const oldBuf = await fse.readFile(targetPath);
+          oldText = await extractPdfText(oldBuf);
+        } catch (err) {
+          log.warn(`Old PDF text extract failed for ${item.id}/${filename}: ${err.message}`);
+        }
+      }
+      await fse.move(targetPath, archivePath, { overwrite: true });
+    }
+
+    await fse.ensureDir(itemFilesDir);
+    await fse.writeFile(targetPath, buffer);
+
+    // 4. Extract new text (PDF only for now).
+    let newText = null;
+    if (/\.pdf$/i.test(filename)) {
+      try {
+        newText = await extractPdfText(buffer);
+      } catch (err) {
+        log.warn(`New PDF text extract failed for ${item.id}/${filename}: ${err.message}`);
+      }
+    }
+
+    // 5. Build change event (suppressed on first-run).
+    const isNew = !prev;
+    let comparison = null;
+    if (!isNew && oldText !== null && newText !== null) {
+      comparison = compareSnapshots(oldText, newText);
+    }
+
+    manifest[url] = {
+      filename,
+      hash,
+      etag,
+      lastModified,
+      firstSeenAt: prev?.firstSeenAt || new Date().toISOString(),
+      lastSeenAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      ext: fileExtension(filename),
+      size: buffer.length,
+    };
+
+    if (!isFirstRun) {
+      changes.push({
+        type: isNew ? 'added' : 'updated',
+        url,
+        filename,
+        comparison,
+        ext: fileExtension(filename),
+        size: buffer.length,
+      });
+    }
+  }
+
+  // 6. Detect removed files — anything in old manifest no longer linked.
+  for (const url of Object.keys(manifest)) {
+    if (!seenUrls.has(url)) {
+      const entry = manifest[url];
+      if (!isFirstRun) {
+        changes.push({
+          type: 'removed',
+          url,
+          filename: entry.filename,
+          ext: entry.ext || fileExtension(entry.filename),
+        });
+      }
+      delete manifest[url];
+    }
+  }
+
+  await saveFileManifest(item.id, manifest);
+  return { changes, isFirstRun, totalTracked: Object.keys(manifest).length };
 }
 
 // ---------------------------------------------------------------------------
@@ -770,6 +1026,104 @@ function formatHebrewAlert(item, comparison, capturedAtIso) {
   ].join('\n');
 }
 
+// formatFileChangeAlert — alert template for added/removed/updated linked
+// documents. Updated PDFs render their text diff as לפני שינוי / אחרי שינוי
+// blocks per the requested format.
+function formatFileChangeAlert(item, change, capturedAtIso) {
+  const icon = IMPORTANCE_ICONS[item.importance] || '⚪';
+
+  const sections = [];
+  if (change.type === 'added') {
+    sections.push('🆕 קובץ חדש:', `• ${change.filename}`, '');
+  } else if (change.type === 'removed') {
+    sections.push('🗑️ קובץ הוסר:', `• ${change.filename}`, '');
+  } else if (change.type === 'updated' && change.comparison) {
+    const { buckets } = change.comparison;
+    if (buckets.updated && buckets.updated.length) {
+      sections.push('✏️ עודכן:');
+      for (const { from, to } of buckets.updated.slice(0, 5)) {
+        const fromText = (from || '').trim().slice(0, 200);
+        const toText = (to || '').trim().slice(0, 200);
+        sections.push('');
+        sections.push(`לפני שינוי - ${fromText}`);
+        sections.push(`אחרי שינוי - ${toText}`);
+      }
+      sections.push('');
+    }
+    if (buckets.added && buckets.added.length) {
+      sections.push('➕ נוסף:', formatBullets(buckets.added), '');
+    }
+    if (buckets.removed && buckets.removed.length) {
+      sections.push('➖ הוסר:', formatBullets(buckets.removed), '');
+    }
+  } else {
+    // Updated file without a text comparison (non-PDF or extraction failed).
+    sections.push('✏️ קובץ עודכן (תוכן בינארי / פורמט לא מנותח):', `• ${change.filename}`, '');
+  }
+
+  return [
+    `${icon} Mitharim | שינוי חדש זוהה`,
+    '',
+    `🏢 יצרן: ${item.manufacturer}`,
+    `📄 עמוד / מסמך: ${item.pageName || item.id}`,
+    `📂 קטגוריה: ${item.category}`,
+    `⚠️ רמת חשיבות: ${item.importance}`,
+    '',
+    '━━━━━━━━━━━━━━',
+    '',
+    ...sections,
+    '━━━━━━━━━━━━━━',
+    '',
+    '📎 קובץ:',
+    change.filename,
+    '',
+    '🔗 מקור:',
+    item.url,
+    '',
+    '🤖 מקור: זוהה אוטומטית',
+    `🕒 ${formatJerusalemTime(capturedAtIso)}`,
+  ].join('\n');
+}
+
+// dispatchFileChangeAlerts — for each file change, route the PDF text diff
+// (if any) through the same noise/Phoenix/strict pipeline as page alerts
+// before sending. Non-PDF updates and added/removed files always alert.
+async function dispatchFileChangeAlerts(item, changes) {
+  const phx = PHOENIX_ITEM_IDS.has(item.id);
+  const strict = isStrictCategory(item.category);
+
+  for (const change of changes) {
+    // Filter PDF text diffs through the noise pipeline.
+    if (change.type === 'updated' && change.comparison) {
+      const filtered = filterBuckets(change.comparison.buckets, {
+        strict,
+        phoenix: phx,
+      });
+      const survivors =
+        filtered.added.length + filtered.updated.length + filtered.removed.length;
+      const gateOk = !phx || passesPhoenixGate(item.id, filtered);
+
+      if (!change.comparison.meaningful || survivors === 0 || !gateOk) {
+        log.noise(
+          `File change suppressed (filter): ${item.id} / ${change.filename}`,
+        );
+        continue;
+      }
+      change.comparison = { ...change.comparison, buckets: filtered };
+    }
+
+    const alertText = formatFileChangeAlert(item, change, new Date().toISOString());
+    const result = await sendTelegramMessage(alertText);
+    if (result.sent) {
+      log.ok(`File alert sent: ${item.id} / ${change.filename} (${change.type})`);
+    } else if (result.reason !== 'not_configured') {
+      log.warn(
+        `File alert not sent: ${item.id} / ${change.filename}: ${result.reason}`,
+      );
+    }
+  }
+}
+
 // ---------------------------------------------------------------------------
 // monitorItem — orchestration for a single watchlist entry.
 // ---------------------------------------------------------------------------
@@ -826,6 +1180,34 @@ async function monitorItem(item) {
     cleanedText = stripPhoenixPrivacyText(cleanedText);
     if (cleanedText.length !== beforeLen) {
       log.info(`  Phoenix privacy strip: ${beforeLen} → ${cleanedText.length} chars`);
+    }
+  }
+
+  // ── Document monitoring (HTML pages only) ──────────────────────────────
+  // Extract document links, sync them through the per-item file manifest,
+  // and dispatch file-change alerts. Runs independently of the page-text
+  // comparison below so that file changes still alert when page text is
+  // unchanged. On first run for a fresh manifest, no alerts fire — same
+  // first-run discipline as page snapshots.
+  if (kind === 'html') {
+    try {
+      const links = extractDocumentLinks(buffer.toString('utf8'), item.url);
+      if (links.length > 0) {
+        log.info(`  Document links found: ${links.length}`);
+        const fileResult = await processItemFiles(item, links);
+        if (fileResult.isFirstRun) {
+          log.ok(
+            `  File manifest initialized — ${fileResult.totalTracked} file(s) tracked, no alerts`,
+          );
+        } else if (fileResult.changes.length === 0) {
+          log.ok(`  No file changes`);
+        } else {
+          log.info(`  ${fileResult.changes.length} file change(s) detected`);
+          await dispatchFileChangeAlerts(item, fileResult.changes);
+        }
+      }
+    } catch (err) {
+      log.warn(`File processing failed for ${item.id}: ${err.message}`);
     }
   }
 
@@ -996,4 +1378,13 @@ module.exports = {
   passesPhoenixGate,
   hasPhoenixGateSignal,
   PHOENIX_ITEM_IDS,
+  // Document monitoring
+  extractDocumentLinks,
+  processItemFiles,
+  loadFileManifest,
+  saveFileManifest,
+  formatFileChangeAlert,
+  dispatchFileChangeAlerts,
+  DOCUMENT_EXTENSIONS,
+  DOCUMENT_EXT_RE,
 };

@@ -67,9 +67,10 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Only data/snapshots changes ship back to the repo. Anything else
-          # touched by the run (node_modules, caches, etc.) is ignored.
-          git add data/snapshots
+          # Snapshots + downloaded files (manifest + binaries) ship back to
+          # the repo. Anything else touched by the run (node_modules, caches,
+          # etc.) is ignored.
+          git add data/snapshots data/files
 
           if git diff --staged --quiet; then
             echo "::notice::No snapshot changes — nothing to commit"
