@@ -95,20 +95,24 @@ function truncate(text) {
 
 function formatManualUpdate({ manufacturer, category, text, fileNames }) {
   const body = truncate(text);
+  const sections = [];
+  if (body) {
+    sections.push('📝 תוכן העדכון:', body, '');
+  }
+  if (fileNames && fileNames.length) {
+    sections.push('📎 קבצים:', fileNames.map((f) => `• ${f}`).join('\n'), '');
+  }
+
   return [
     '📌 עדכון ידני חדש',
     '',
     `🏢 יצרן: ${manufacturer || 'לא צוין'}`,
     `📂 קטגוריה: ${category || 'לא צוין'}`,
+    `🏷️ סוג: עדכון ידני`,
     '',
     '━━━━━━━━━━━━━━',
     '',
-    '📝 תוכן העדכון:',
-    body || '—',
-    '',
-    '📎 קבצים:',
-    fileNames && fileNames.length ? fileNames.map((f) => `• ${f}`).join('\n') : '—',
-    '',
+    ...sections,
     '━━━━━━━━━━━━━━',
     '',
     '#עדכון_ידני',

@@ -776,6 +776,115 @@ async function recordArticle(itemId, topic, summary) {
   await saveDedupState(state);
 }
 
+// ---------------------------------------------------------------------------
+// Generic alert dedup — one file per item under data/alerts/{id}.json. Stores
+// the last 100 alert hashes regardless of alert type, so the same logical
+// alert never re-fires. Article alerts have their own digit-normalized dedup
+// upstream; this layer catches everything else (policy/promotion/file) plus
+// acts as the audit log for ALL sent alerts.
+// ---------------------------------------------------------------------------
+
+const ALERT_STATE_DIR = path.join(ROOT, 'data', 'alerts');
+const ALERT_STATE_LIMIT = 100;
+
+function alertStateFile(itemId) {
+  return path.join(ALERT_STATE_DIR, `${itemId}.json`);
+}
+
+async function loadAlertState(itemId) {
+  const file = alertStateFile(itemId);
+  if (!(await fse.pathExists(file))) return { recent: [] };
+  try {
+    return await fse.readJson(file);
+  } catch {
+    return { recent: [] };
+  }
+}
+
+async function saveAlertState(itemId, state) {
+  await fse.ensureDir(ALERT_STATE_DIR);
+  await fse.writeJson(alertStateFile(itemId), state, { spaces: 2 });
+}
+
+function normalizeFragment(s) {
+  return (s || '').replace(/\s+/g, ' ').trim().slice(0, 240);
+}
+
+function buildPageAlertKey(item, { numericChanges, buckets }) {
+  const numSig = (numericChanges || [])
+    .map((c) => [c.field || '', c.product || '', c.oldValue, c.newValue].join(':'))
+    .sort()
+    .join('|');
+  const addedSig = (buckets?.added || []).map(normalizeFragment).sort().join('|');
+  const removedSig = (buckets?.removed || []).map(normalizeFragment).sort().join('|');
+  const updatedSig = (buckets?.updated || [])
+    .map((u) => `${normalizeFragment(u.from)}→${normalizeFragment(u.to)}`)
+    .sort()
+    .join('|');
+  const key = [item.id, 'page', numSig, addedSig, removedSig, updatedSig].join('||');
+  return crypto.createHash('sha256').update(key).digest('hex');
+}
+
+function buildFileAlertKey(item, change) {
+  const parts = [item.id, 'file', change.type, change.filename || ''];
+  // Content hash uniquely identifies "updated to this version" and discriminates
+  // between successive updates of the same file.
+  if (change.hash) parts.push(change.hash);
+  if (change.type === 'updated' && change.prevHash) parts.push(change.prevHash);
+  const key = parts.join('||');
+  return crypto.createHash('sha256').update(key).digest('hex');
+}
+
+function buildArticleAlertKey(item, topic, summary) {
+  const norm = (s) =>
+    (s || '')
+      .normalize('NFC')
+      .replace(/\d+/g, '#')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase();
+  const key = [item.id, 'article', norm(topic), norm(summary)].join('||');
+  return crypto.createHash('sha256').update(key).digest('hex');
+}
+
+async function isDuplicateAlert(itemId, hash) {
+  const state = await loadAlertState(itemId);
+  return state.recent.some((r) => r.hash === hash);
+}
+
+async function recordAlert(itemId, hash, meta) {
+  const state = await loadAlertState(itemId);
+  state.recent.unshift({
+    hash,
+    type: meta.type,
+    label: meta.label,
+    summary: (meta.summary || '').slice(0, 200),
+    sentAt: new Date().toISOString(),
+  });
+  if (state.recent.length > ALERT_STATE_LIMIT) {
+    state.recent.length = ALERT_STATE_LIMIT;
+  }
+  await saveAlertState(itemId, state);
+}
+
+// Human-facing alert type label for the "🏷️ סוג" line.
+function classifyAlertLabel({ kind, item, fileChangeType }) {
+  if (kind === 'article') return 'כתבה / סקירה חדשה';
+  if (kind === 'file') {
+    if (fileChangeType === 'added') return 'קובץ חדש';
+    if (fileChangeType === 'updated') return 'קובץ שעודכן';
+    if (fileChangeType === 'removed') return 'קובץ הוסר';
+    return 'קובץ';
+  }
+  if (kind === 'manual') return 'עדכון ידני';
+  // kind === 'page'
+  if (item?.category === 'מדיניות השקעה') return 'מדיניות השקעה';
+  if (item?.category === 'מבצעים / תגמולים') return 'מבצע / תגמול';
+  if (item?.category === 'פורטלי סוכנים') return 'עדכון פורטל';
+  if (item?.category === 'דפי תוכן / הדרכה') return 'עדכון תוכן';
+  return 'עדכון';
+}
+
 function formatArticleAlert(item, { topic, summary, severity }, capturedAtIso) {
   const sevIcon = SEVERITY_ICONS[severity] || '⚪';
   return [
@@ -784,6 +893,7 @@ function formatArticleAlert(item, { topic, summary, severity }, capturedAtIso) {
     `🏢 יצרן: ${item.manufacturer}`,
     `📄 עמוד / מסמך: ${item.pageName || item.id}`,
     `📂 קטגוריה: ${item.category}`,
+    `🏷️ סוג: כתבה / סקירה חדשה`,
     `⚠️ רמת חשיבות: ${item.importance}`,
     `🎯 חומרת שינוי: ${sevIcon} ${severity}`,
     '',
@@ -1024,6 +1134,8 @@ async function processItemFiles(item, links) {
         comparison,
         oldText, // kept on the change record so the alert dispatcher can run
         newText, // numeric extraction against the full file text
+        hash,    // current file content hash — feeds the dedup key
+        prevHash: prev?.hash || null,
         ext: fileExtension(filename),
         size: buffer.length,
       });
@@ -1039,6 +1151,7 @@ async function processItemFiles(item, links) {
           type: 'removed',
           url,
           filename: entry.filename,
+          hash: entry.hash,
           ext: entry.ext || fileExtension(entry.filename),
         });
       }
@@ -1485,6 +1598,8 @@ function formatHebrewAlert(item, comparison, capturedAtIso, opts = {}) {
   const numericChanges = opts.numericChanges || [];
   const severity = opts.severity || 'LOW';
   const severityIcon = SEVERITY_ICONS[severity] || '⚪';
+  const alertLabel =
+    opts.alertLabel || classifyAlertLabel({ kind: 'page', item });
 
   const sections = buildAlertSections({ numericChanges, comparison });
 
@@ -1494,6 +1609,7 @@ function formatHebrewAlert(item, comparison, capturedAtIso, opts = {}) {
     `🏢 יצרן: ${item.manufacturer}`,
     `📄 עמוד / מסמך: ${item.pageName || item.id}`,
     `📂 קטגוריה: ${item.category}`,
+    `🏷️ סוג: ${alertLabel}`,
     `⚠️ רמת חשיבות: ${item.importance}`,
     `🎯 חומרת שינוי: ${severityIcon} ${severity}`,
     '',
@@ -1518,6 +1634,9 @@ function formatFileChangeAlert(item, change, capturedAtIso, opts = {}) {
   const numericChanges = opts.numericChanges || [];
   const severity = opts.severity || 'LOW';
   const severityIcon = SEVERITY_ICONS[severity] || '⚪';
+  const alertLabel =
+    opts.alertLabel ||
+    classifyAlertLabel({ kind: 'file', item, fileChangeType: change.type });
 
   const sections = [];
   if (change.type === 'added') {
@@ -1542,6 +1661,7 @@ function formatFileChangeAlert(item, change, capturedAtIso, opts = {}) {
     `🏢 יצרן: ${item.manufacturer}`,
     `📄 עמוד / מסמך: ${item.pageName || item.id}`,
     `📂 קטגוריה: ${item.category}`,
+    `🏷️ סוג: ${alertLabel}`,
     `⚠️ רמת חשיבות: ${item.importance}`,
     `🎯 חומרת שינוי: ${severityIcon} ${severity}`,
     '',
@@ -1603,13 +1723,34 @@ async function dispatchFileChangeAlerts(item, changes) {
       item,
     });
 
+    const alertLabel = classifyAlertLabel({
+      kind: 'file',
+      item,
+      fileChangeType: change.type,
+    });
+    const dedupHash = buildFileAlertKey(item, change);
+    if (await isDuplicateAlert(item.id, dedupHash)) {
+      log.noise(
+        `Duplicate alert suppressed: ${item.id} / ${change.filename} (${alertLabel})`,
+      );
+      continue;
+    }
+
     const alertText = formatFileChangeAlert(item, change, new Date().toISOString(), {
       numericChanges,
       severity,
+      alertLabel,
     });
     const result = await sendTelegramMessage(alertText);
     if (result.sent) {
-      log.ok(`File alert sent: ${item.id} / ${change.filename} (${change.type}, severity=${severity})`);
+      await recordAlert(item.id, dedupHash, {
+        type: `file_${change.type}`,
+        label: alertLabel,
+        summary: alertText,
+      });
+      log.ok(
+        `File alert sent: ${item.id} / ${change.filename} (${alertLabel}, severity=${severity})`,
+      );
     } else if (result.reason !== 'not_configured') {
       log.warn(
         `File alert not sent: ${item.id} / ${change.filename}: ${result.reason}`,
@@ -1799,6 +1940,14 @@ async function monitorItem(item) {
     const articleResult = await sendTelegramMessage(articleAlertText);
     if (articleResult.sent) {
       await recordArticle(item.id, topic, summary);
+      // Also record into the generic alert audit log so all sent alerts
+      // share a single source of truth.
+      const articleAlertHash = buildArticleAlertKey(item, topic, summary);
+      await recordAlert(item.id, articleAlertHash, {
+        type: 'article',
+        label: 'כתבה / סקירה חדשה',
+        summary: articleAlertText,
+      });
       log.ok(`Article alert sent for ${item.id}`);
     } else if (articleResult.reason !== 'not_configured') {
       log.warn(`Article alert not sent for ${item.id}: ${articleResult.reason}`);
@@ -1837,13 +1986,33 @@ async function monitorItem(item) {
     survivorsRemoved: filteredBuckets.removed,
   });
 
+  const alertLabel = classifyAlertLabel({ kind: 'page', item });
+  const dedupHash = buildPageAlertKey(item, {
+    numericChanges,
+    buckets: filteredBuckets,
+  });
+  if (await isDuplicateAlert(item.id, dedupHash)) {
+    log.noise(`Duplicate alert suppressed: ${item.id} (${alertLabel})`);
+    return {
+      id: item.id,
+      status: 'duplicate',
+      comparison: filteredComparison,
+    };
+  }
+
   const alertText = formatHebrewAlert(item, filteredComparison, snapshot.capturedAt, {
     numericChanges,
     severity,
+    alertLabel,
   });
   const telegramResult = await sendTelegramMessage(alertText);
   if (telegramResult.sent) {
-    log.ok(`Telegram alert sent for ${item.id}`);
+    await recordAlert(item.id, dedupHash, {
+      type: 'page',
+      label: alertLabel,
+      summary: alertText,
+    });
+    log.ok(`Telegram alert sent for ${item.id} (${alertLabel})`);
   } else if (telegramResult.reason !== 'not_configured') {
     log.warn(`Telegram alert not sent for ${item.id}: ${telegramResult.reason}`);
   }
@@ -1970,4 +2139,13 @@ module.exports = {
   isDuplicateArticle,
   recordArticle,
   ARTICLE_SIGNAL_KEYWORDS,
+  // Generic alert dedup + classification
+  loadAlertState,
+  saveAlertState,
+  isDuplicateAlert,
+  recordAlert,
+  buildPageAlertKey,
+  buildFileAlertKey,
+  buildArticleAlertKey,
+  classifyAlertLabel,
 };
