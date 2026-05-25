@@ -85,6 +85,275 @@ const STRUCTURAL_TAG_SET = new Set(['html', 'body', 'head', 'main', 'article']);
 const MAX_BANNER_TEXT_CHARS = 2500;
 
 // ---------------------------------------------------------------------------
+// Pre-alert noise filtering — applied to diff bucket fragments AFTER the
+// character-level "meaningful" threshold has fired. Stops noise alerts even
+// when the raw character delta is large (cookie banner re-renders, nav menus,
+// modal close buttons, year-list re-orderings).
+// ---------------------------------------------------------------------------
+
+// Phrases that disqualify a fragment outright — UI chrome that never carries
+// business signal. Compared against text.includes() so substrings count.
+const NOISE_PHRASES = [
+  'סגירת חלון', 'סגירה', 'סגור',
+  'מדיניות פרטיות', 'פרטיות',
+  'Cookies', 'cookies', 'עוגיות',
+  'אישור',
+  'המשך גלישה',
+  'ניתן לצפות',
+  'תפריט', 'ניווט', 'חיפוש', 'נגישות',
+  'דלג לתוכן',
+  'קרא עוד',
+  'כניסה לאזור האישי', 'הצטרפות', 'הפקדה דיגיטלית',
+  'צרו קשר', 'פעולות נפוצות',
+];
+
+// Markers that, taken together with year-lists or short-token clusters,
+// indicate the fragment is a header/footer/menu snippet.
+const NAV_MARKERS = [
+  'דלג לתוכן',
+  'כניסה לאזור האישי',
+  'פעולות נפוצות',
+  'צרו קשר',
+  'הפקדה דיגיטלית',
+  'הצטרפות',
+];
+
+// 4+ consecutive year tokens (e.g. "2026 2025 2024 2023 …") — tell-tale for
+// the year-selector dropdown re-rendering.
+const CONSECUTIVE_YEARS_RE = /(?:\b(?:19|20)\d{2}\b\s+){3,}\b(?:19|20)\d{2}\b/;
+
+// Business keywords — short fragments containing any of these escape the
+// "<8 Hebrew chars" cut. Worth alerting on even in 5 chars.
+const BUSINESS_KEYWORDS = [
+  'מבצע', 'תגמול', 'עמלה',
+  'מסלול', 'מדיניות', 'חשיפה',
+  'פנסיה', 'גמל', 'השתלמות', 'קצבה',
+  'מניות', 'אג"ח', 'אגח',
+  'ניוד', 'סוכן',
+  'מסמך', 'טופס', 'מצגת',
+  'עדכון',
+];
+
+// Stronger signal set required by hasBusinessMeaning() — used by strict
+// mode for policy pages. Superset of BUSINESS_KEYWORDS plus a few investment
+// phrases that mark the fragment as real investment-policy content.
+const BUSINESS_MEANING_KEYWORDS = [
+  ...BUSINESS_KEYWORDS,
+  'מספר מסלול', 'קוד מסלול',
+  'מדיניות השקעה',
+  'תאריך תחילה', 'החל מ',
+];
+
+const HEBREW_CHAR_RE = /[֐-׿]/g;
+const PERCENT_OR_SHEKEL_RE = /[%₪]/;
+const ANY_DIGIT_RE = /\d/;
+const URL_RE = /\bhttps?:\/\/\S+/i;
+const PDF_RE = /\bPDF\b|\.pdf\b/i;
+
+function countHebrewChars(text) {
+  if (!text) return 0;
+  const m = text.match(HEBREW_CHAR_RE);
+  return m ? m.length : 0;
+}
+
+function containsAny(text, list) {
+  for (const phrase of list) {
+    if (text.includes(phrase)) return true;
+  }
+  return false;
+}
+
+function containsNoisePhrase(text) {
+  if (!text) return false;
+  return containsAny(text, NOISE_PHRASES);
+}
+
+function isNavigationNoise(text) {
+  if (!text) return false;
+
+  // 1. Two or more explicit nav markers in one fragment.
+  let navHits = 0;
+  for (const marker of NAV_MARKERS) {
+    if (text.includes(marker)) {
+      navHits++;
+      if (navHits >= 2) return true;
+    }
+  }
+
+  // 2. 4+ consecutive years (year-selector dropdown).
+  if (CONSECUTIVE_YEARS_RE.test(text)) return true;
+
+  // 3. Menu cluster — many short tokens, low average word length.
+  if (text.length < 4000) {
+    const tokens = text.split(/\s+/).filter((t) => /[֐-׿A-Za-z]/.test(t));
+    if (tokens.length >= 8) {
+      const avg = tokens.reduce((s, t) => s + t.length, 0) / tokens.length;
+      if (avg <= 4) return true;
+    }
+  }
+
+  return false;
+}
+
+function hasBusinessMeaning(text) {
+  if (!text) return false;
+  if (PERCENT_OR_SHEKEL_RE.test(text)) return true;
+  if (PDF_RE.test(text)) return true;
+  if (URL_RE.test(text)) return true;
+  if (ANY_DIGIT_RE.test(text)) return true;
+  return containsAny(text, BUSINESS_MEANING_KEYWORDS);
+}
+
+// "Low quality" = too short to convey meaning unless it carries a business
+// signal (%, ₪, digits, PDF/URL, or a business keyword).
+function isLowQualityFragment(text) {
+  if (!text) return true;
+  if (countHebrewChars(text) >= 8) return false;
+  if (PERCENT_OR_SHEKEL_RE.test(text)) return false;
+  if (ANY_DIGIT_RE.test(text)) return false;
+  if (PDF_RE.test(text)) return false;
+  if (URL_RE.test(text)) return false;
+  if (containsAny(text, BUSINESS_KEYWORDS)) return false;
+  return true;
+}
+
+function shouldDropFragment(text, opts = {}) {
+  if (!text || !text.trim()) return true;
+  if (containsNoisePhrase(text)) return true;
+  if (isNavigationNoise(text)) return true;
+  if (isLowQualityFragment(text)) return true;
+  // Strict mode = policy pages: every fragment must carry business signal.
+  if (opts.strict && !hasBusinessMeaning(text)) return true;
+  return false;
+}
+
+function filterBuckets(buckets, opts = {}) {
+  const drop = (text) => {
+    if (shouldDropFragment(text, opts)) return true;
+    if (opts.phoenix && isPhoenixPrivacyNoise(text)) return true;
+    return false;
+  };
+  const added = (buckets.added || []).filter((t) => !drop(t));
+  const removed = (buckets.removed || []).filter((t) => !drop(t));
+  const updated = (buckets.updated || []).filter(({ from, to }) => {
+    // Keep the pair unless BOTH sides are noise — a rewording with one
+    // meaningful side still tells us something useful.
+    return !(drop(from) && drop(to));
+  });
+  return { added, updated, removed };
+}
+
+function isStrictCategory(category) {
+  return category === 'מדיניות השקעה';
+}
+
+// ---------------------------------------------------------------------------
+// Phoenix-specific filter — the fnx_promotions and fnx_policy pages render a
+// privacy-modal banner ("סגירה למידע נוסף, ניתן לצפות במדיניות הפרטיות …")
+// that the word-diff library shears into broken sub-strings ("תן לצפות במדי",
+// "ע נוסף, נ", "סגירה ל" …). Those bypass the generic noise list because
+// they don't contain the canonical phrases verbatim. Defense in depth:
+//   1. Strip the whole banner sentence from cleaned text BEFORE hashing.
+//   2. Drop any surviving fragment that matches Phoenix privacy noise.
+//   3. Require an item-specific business signal to gate the alert.
+// ---------------------------------------------------------------------------
+
+const PHOENIX_ITEM_IDS = new Set(['fnx_promotions', 'fnx_policy']);
+
+// Substrings that mark a fragment as Phoenix privacy noise. Includes the
+// shear sub-strings — order is irrelevant since we use includes().
+const PHOENIX_PRIVACY_PHRASES = [
+  'סגירה למידע נוסף',
+  'סגירה ל',
+  'מידע נוסף, ניתן לצפות',
+  'ידע נוסף, ניתן לצפות',
+  'ניתן לצפות',
+  'תן לצפות',
+  'מדיניות הפרטיות המעודכנת',
+  'מדיניות הפרטיות',
+  'פרטיות',
+];
+
+// Pre-diff strip — kills the banner sentence in the cleaned text so the
+// diff never sees it. Patterns are intentionally generous on whitespace so
+// minor reflows still match.
+const PHOENIX_PREDIFF_PATTERNS = [
+  /סגירה\s*למידע\s*נוסף,?\s*ניתן\s*לצפות\s*במדיניות\s*הפרטיות\s*המעודכנת\s*של\s*החברה\.?\s*סגירה?/g,
+  /למידע\s*נוסף,?\s*ניתן\s*לצפות\s*במדיניות\s*הפרטיות\s*המעודכנת\s*של\s*החברה/g,
+  /מדיניות\s*הפרטיות\s*המעודכנת\s*של\s*החברה/g,
+  /סגירה\s*למידע\s*נוסף/g,
+];
+
+// Item-scoped alert gate — survivors must contain at least one of these
+// signals before an alert can fire. Tuned per Phoenix item.
+const PHOENIX_GATES = {
+  fnx_policy: [
+    '%', 'מספר', 'קוד מסלול', 'מסלול',
+    'מדיניות השקעה', 'חשיפה',
+    'מניות', 'אג"ח',
+    'פנסיה', 'גמל', 'השתלמות', 'קצבה',
+    'PDF', 'pdf', 'מסמך', 'קובץ',
+  ],
+  fnx_promotions: [
+    'מבצע', 'תגמול', 'עמלה', 'סוכן', 'סוכנים',
+    'פנסיה', 'גמל', 'השתלמות',
+    'ניוד', 'מיליון',
+    '₪', '%',
+    'PDF', 'pdf',
+    'מצגת', 'טופס', 'קובץ',
+    'תאריך', 'עד', 'החל',
+  ],
+};
+
+function stripPhoenixPrivacyText(text) {
+  if (!text) return text;
+  let t = text;
+  for (const re of PHOENIX_PREDIFF_PATTERNS) {
+    t = t.replace(re, ' ');
+  }
+  return t.replace(/\s+/g, ' ').trim();
+}
+
+function isPhoenixPrivacyNoise(text) {
+  if (!text) return false;
+  for (const phrase of PHOENIX_PRIVACY_PHRASES) {
+    if (text.includes(phrase)) return true;
+  }
+  // "סגירה" alone is too generic to ban globally, but combined with any
+  // privacy/modal token it's unambiguously the close button of the banner.
+  if (text.includes('סגירה')) {
+    if (
+      text.includes('פרטיות') ||
+      text.includes('מידע נוסף') ||
+      text.includes('ניתן לצפות')
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function hasPhoenixGateSignal(itemId, text) {
+  const signals = PHOENIX_GATES[itemId];
+  if (!signals) return true; // item isn't gated
+  if (!text) return false;
+  for (const sig of signals) {
+    if (text.includes(sig)) return true;
+  }
+  return false;
+}
+
+function passesPhoenixGate(itemId, buckets) {
+  if (!PHOENIX_GATES[itemId]) return true;
+  const fragments = [
+    ...(buckets.added || []),
+    ...(buckets.removed || []),
+    ...(buckets.updated || []).flatMap((u) => [u.from, u.to]),
+  ];
+  return fragments.some((t) => hasPhoenixGateSignal(itemId, t));
+}
+
+// ---------------------------------------------------------------------------
 // Logger — small structured wrapper so output is easy to grep / pipe to JSON.
 // ---------------------------------------------------------------------------
 
@@ -92,6 +361,7 @@ const log = {
   info:       (msg, meta) => console.log(`[INFO]       ${msg}`, meta !== undefined ? meta : ''),
   ok:         (msg, meta) => console.log(`[OK]         ${msg}`, meta !== undefined ? meta : ''),
   change:     (msg, meta) => console.log(`[CHANGE]     ${msg}`, meta !== undefined ? meta : ''),
+  noise:      (msg, meta) => console.log(`[NOISE]      ${msg}`, meta !== undefined ? meta : ''),
   warn:       (msg, meta) => console.warn(`[WARN]       ${msg}`, meta !== undefined ? meta : ''),
   error:      (msg, meta) => console.error(`[ERROR]     ${msg}`, meta !== undefined ? meta : ''),
   axios:      (msg, meta) => console.log(`[AXIOS]      ${msg}`, meta !== undefined ? meta : ''),
@@ -467,6 +737,18 @@ function formatUpdatedBullets(items) {
 
 function formatHebrewAlert(item, comparison, capturedAtIso) {
   const icon = IMPORTANCE_ICONS[item.importance] || '⚪';
+
+  const sections = [];
+  if (comparison.buckets.added && comparison.buckets.added.length) {
+    sections.push('➕ נוסף:', formatBullets(comparison.buckets.added), '');
+  }
+  if (comparison.buckets.updated && comparison.buckets.updated.length) {
+    sections.push('✏️ עודכן:', formatUpdatedBullets(comparison.buckets.updated), '');
+  }
+  if (comparison.buckets.removed && comparison.buckets.removed.length) {
+    sections.push('➖ הוסר:', formatBullets(comparison.buckets.removed), '');
+  }
+
   return [
     `${icon} Mitharim | שינוי חדש זוהה`,
     '',
@@ -477,15 +759,7 @@ function formatHebrewAlert(item, comparison, capturedAtIso) {
     '',
     '━━━━━━━━━━━━━━',
     '',
-    '➕ נוסף:',
-    formatBullets(comparison.buckets.added),
-    '',
-    '✏️ עודכן:',
-    formatUpdatedBullets(comparison.buckets.updated),
-    '',
-    '➖ הוסר:',
-    formatBullets(comparison.buckets.removed),
-    '',
+    ...sections,
     '━━━━━━━━━━━━━━',
     '',
     '🔗 מקור:',
@@ -545,6 +819,16 @@ async function monitorItem(item) {
     return { id: item.id, status: 'error', error: err.message };
   }
 
+  // Phoenix items: strip the privacy-modal banner sentence from cleaned text
+  // before hashing so its reflows can never reach the diff stage.
+  if (PHOENIX_ITEM_IDS.has(item.id)) {
+    const beforeLen = cleanedText.length;
+    cleanedText = stripPhoenixPrivacyText(cleanedText);
+    if (cleanedText.length !== beforeLen) {
+      log.info(`  Phoenix privacy strip: ${beforeLen} → ${cleanedText.length} chars`);
+    }
+  }
+
   const hash = computeHash(cleanedText);
   const snapshot = {
     id: item.id,
@@ -582,6 +866,34 @@ async function monitorItem(item) {
     return { id: item.id, status: 'minor', comparison };
   }
 
+  // Final pre-alert filter: drop fragments that are pure UI/cookie/nav noise,
+  // broken Hebrew, low-quality bits, or — on policy pages — anything without
+  // business meaning. Phoenix items also drop privacy-modal noise and must
+  // pass an item-specific business-signal gate. If nothing survives, suppress
+  // the Telegram alert.
+  const strict = isStrictCategory(item.category);
+  const phoenix = PHOENIX_ITEM_IDS.has(item.id);
+  const filteredBuckets = filterBuckets(comparison.buckets, { strict, phoenix });
+  const survivors =
+    filteredBuckets.added.length +
+    filteredBuckets.updated.length +
+    filteredBuckets.removed.length;
+
+  const gateOk = !phoenix || passesPhoenixGate(item.id, filteredBuckets);
+
+  if (survivors === 0 || !gateOk) {
+    if (phoenix) {
+      log.noise(`Phoenix privacy/modal noise ignored for ${item.id}`);
+    } else {
+      log.noise(
+        `Change ignored after final alert filter: ${item.id} (raw Δ ${comparison.addedChars + comparison.removedChars} chars${strict ? ', strict mode' : ''})`,
+      );
+    }
+    return { id: item.id, status: 'noise', comparison };
+  }
+
+  const filteredComparison = { ...comparison, buckets: filteredBuckets };
+
   log.change(`Meaningful change detected: ${item.id}`, {
     manufacturer: item.manufacturer,
     category: item.category,
@@ -589,12 +901,13 @@ async function monitorItem(item) {
     added: comparison.addedChars,
     removed: comparison.removedChars,
     ratio: Number(comparison.ratio.toFixed(4)),
-    sampleAdded: comparison.buckets.added,
-    sampleUpdated: comparison.buckets.updated,
-    sampleRemoved: comparison.buckets.removed,
+    strict,
+    survivorsAdded: filteredBuckets.added,
+    survivorsUpdated: filteredBuckets.updated,
+    survivorsRemoved: filteredBuckets.removed,
   });
 
-  const alertText = formatHebrewAlert(item, comparison, snapshot.capturedAt);
+  const alertText = formatHebrewAlert(item, filteredComparison, snapshot.capturedAt);
   const telegramResult = await sendTelegramMessage(alertText);
   if (telegramResult.sent) {
     log.ok(`Telegram alert sent for ${item.id}`);
@@ -602,7 +915,12 @@ async function monitorItem(item) {
     log.warn(`Telegram alert not sent for ${item.id}: ${telegramResult.reason}`);
   }
 
-  return { id: item.id, status: 'changed', comparison, telegram: telegramResult };
+  return {
+    id: item.id,
+    status: 'changed',
+    comparison: filteredComparison,
+    telegram: telegramResult,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -664,4 +982,18 @@ module.exports = {
   sendTelegramDocument,
   sendTelegramPhoto,
   formatHebrewAlert,
+  // noise filter — exposed so tests / external scripts can reuse them
+  containsNoisePhrase,
+  isNavigationNoise,
+  hasBusinessMeaning,
+  isLowQualityFragment,
+  shouldDropFragment,
+  filterBuckets,
+  countHebrewChars,
+  // Phoenix filter
+  stripPhoenixPrivacyText,
+  isPhoenixPrivacyNoise,
+  passesPhoenixGate,
+  hasPhoenixGateSignal,
+  PHOENIX_ITEM_IDS,
 };
