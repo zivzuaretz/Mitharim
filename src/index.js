@@ -370,6 +370,212 @@ function passesPhoenixGate(itemId, buckets) {
 }
 
 // ---------------------------------------------------------------------------
+// Business intelligence layer — extracts numeric changes from a word-diff,
+// labels them with field (חשיפה למט"ח, תגמול …) and product/track context,
+// and assigns a per-change severity. Used by both page alerts and PDF file
+// alerts to prepend a business-grade "before / after" summary in front of
+// the raw bucket bullets.
+// ---------------------------------------------------------------------------
+
+// Detection patterns for the numeric token kinds we care about. Note: we do
+// NOT use the /g flag — `.test()` and `.match()` with non-/g regex are
+// stateless and safe to call repeatedly.
+const NUMERIC_TOKEN_RE =
+  /\d+(?:[.,]\d+)?\s*%|[\d,]+\s*₪|\d+(?:[.,]\d+)?\s*מיליון|\d+:\d+(?:[.,]\d+)?|\d{1,2}[\/.\-]\d{1,2}[\/.\-]\d{2,4}/;
+
+const BUSINESS_FIELD_RULES = [
+  { keywords: ['חשיפה למניות'],                                    label: 'חשיפה למניות' },
+  { keywords: ['חשיפה למט"ח', 'חשיפה למט״ח', 'מט"ח', 'מט״ח'],     label: 'חשיפה למט"ח' },
+  { keywords: ['חשיפה לאג"ח', 'חשיפה לאג״ח', 'אג"ח', 'אג״ח', 'אגח'], label: 'חשיפה לאג"ח' },
+  { keywords: ['חשיפה'],                                            label: 'חשיפה' },
+  { keywords: ['תגמול'],                                            label: 'תגמול' },
+  { keywords: ['עמלה'],                                             label: 'עמלה' },
+  { keywords: ['ניוד'],                                             label: 'ניוד' },
+  { keywords: ['החל מ', 'תאריך תחילה', 'תאריך'],                    label: 'תאריך' },
+  { keywords: ['מדיניות השקעה'],                                    label: 'מדיניות השקעה' },
+];
+
+const PRODUCT_TRACK_PATTERNS = [
+  /(פנסיה\s*מקיפה[^,.\n]{0,40})/,
+  /(פנסיה\s*כללית[^,.\n]{0,40})/,
+  /(קרן\s*השתלמות[^,.\n]{0,40})/,
+  /(קופת\s*גמל[^,.\n]{0,40})/,
+  /(קצבה[^,.\n]{0,40})/,
+  /(מסלול\s*\d+\s*ומטה)/,
+  /(מסלול\s*\d+\s*ומעלה)/,
+  /(מסלול\s*\d+\s*עד\s*\d+)/,
+  /(מסלול\s*\d+)/,
+  /(מסלול\s*[֐-׿][^,.\n]{0,40})/,
+  /(פנסיה)/,
+  /(גמל)/,
+  /(השתלמות)/,
+];
+
+function hasNumericToken(text) {
+  if (!text) return false;
+  return NUMERIC_TOKEN_RE.test(text);
+}
+
+function detectBusinessField(text) {
+  if (!text) return null;
+  for (const rule of BUSINESS_FIELD_RULES) {
+    for (const kw of rule.keywords) {
+      if (text.includes(kw)) return rule.label;
+    }
+  }
+  return null;
+}
+
+// Trim a captured product/track label so it doesn't bleed into adjacent
+// business terms (numbers/units/other field keywords from the next sentence).
+function cleanProductTrack(value) {
+  if (!value) return null;
+  let v = value.replace(/\s+/g, ' ').trim();
+  v = v.replace(/\s*(?:%|₪|מיליון|חשיפה|תגמול|עמלה|מבצע|ניוד|לפי|החל).*$/, '');
+  v = v.trim();
+  return v || null;
+}
+
+function detectProductTrack(text) {
+  if (!text) return null;
+  for (const re of PRODUCT_TRACK_PATTERNS) {
+    const m = text.match(re);
+    if (m) {
+      const cleaned = cleanProductTrack(m[1]);
+      if (cleaned) return cleaned;
+    }
+  }
+  return null;
+}
+
+// Priority for numeric changes — drives sort order in alerts. Higher = more
+// important. Matches the spec's priority order: % > ₪/million > ratios >
+// dates > other numerics.
+function numericChangePriority(oldValue, newValue, field) {
+  const hay = `${oldValue} ${newValue}`;
+  if (/%/.test(hay)) return 100;
+  if (/₪/.test(hay)) return 80;
+  if (/מיליון/.test(hay)) return 80;
+  if (/^\d+:\d/.test(oldValue) || /^\d+:\d/.test(newValue)) return 70;
+  if (/\d{1,2}[\/.\-]\d{1,2}[\/.\-]\d{2,4}/.test(hay)) return 60;
+  if (field) return 30;
+  return 10;
+}
+
+// diffWords splits at non-word boundaries (e.g. "%", "₪", "/"), so the
+// changed token is often just the bare digits ("24.1", "20") while the unit
+// sits in the adjacent unchanged part. Reconstruct the full numeric value by
+// matching a numeric regex against a window straddling the change site.
+const NUMERIC_VALUE_RE_G =
+  /\d+(?:[.,]\d+)?\s*[%₪]|\d+(?:[.,]\d+)?\s*מיליון|\d+:\d+(?:[.,]\d+)?|\d{1,2}[\/.\-]\d{1,2}[\/.\-]\d{2,4}/g;
+
+function findChangedNumericValue(removed, added, beforeContext, afterContext) {
+  const lead = (beforeContext || '').slice(-50);
+  const trail = (afterContext || '').slice(0, 50);
+  const changeStart = lead.length;
+  const changeOldEnd = changeStart + removed.length;
+  const changeNewEnd = changeStart + added.length;
+
+  const oldWindow = lead + removed + trail;
+  const newWindow = lead + added + trail;
+
+  const oldMatches = Array.from(oldWindow.matchAll(NUMERIC_VALUE_RE_G));
+  const newMatches = Array.from(newWindow.matchAll(NUMERIC_VALUE_RE_G));
+
+  // Find a numeric match that overlaps the change site in each window.
+  const overlaps = (m, start, end) => m.index < end && m.index + m[0].length > start;
+  const oldHit = oldMatches.find((m) => overlaps(m, changeStart, changeOldEnd));
+  const newHit = newMatches.find((m) => overlaps(m, changeStart, changeNewEnd));
+
+  if (!oldHit || !newHit) return null;
+  const oldValue = oldHit[0].trim();
+  const newValue = newHit[0].trim();
+  if (oldValue === newValue) return null;
+  return { oldValue, newValue };
+}
+
+// extractNumericChanges — runs after compareSnapshots(). Walks the word-diff
+// again, finds removed→added pairs whose reconstructed numeric value
+// changed, builds a "before/after" record with field + product context.
+function extractNumericChanges(oldText, newText) {
+  if (!oldText || !newText) return [];
+  const parts = diff.diffWords(oldText, newText);
+  const changes = [];
+
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
+    const next = parts[i + 1];
+
+    if (!part.removed || !next?.added) continue;
+
+    const beforeContext = parts[i - 1]?.value || '';
+    const afterContext = parts[i + 2]?.value || '';
+    const pair = findChangedNumericValue(
+      part.value,
+      next.value,
+      beforeContext,
+      afterContext,
+    );
+
+    if (pair) {
+      const combined =
+        `${beforeContext.slice(-200)} ${afterContext.slice(0, 100)}`
+          .replace(/\s+/g, ' ')
+          .trim();
+
+      // Field detection from surrounding context, but value-kind overrides
+      // context when the value itself is a date — otherwise a date right
+      // before/after a חשיפה sentence gets mis-labelled.
+      const isDate = /\d{1,2}[\/.\-]\d{1,2}[\/.\-]\d{2,4}/.test(pair.oldValue + pair.newValue);
+      const field = isDate
+        ? 'תאריך'
+        : detectBusinessField(combined) ||
+          detectBusinessField(`${pair.oldValue} ${pair.newValue}`);
+      const product = detectProductTrack(combined);
+
+      changes.push({
+        oldValue: pair.oldValue,
+        newValue: pair.newValue,
+        context: combined.slice(-160),
+        field,
+        product,
+        priority: numericChangePriority(pair.oldValue, pair.newValue, field),
+      });
+    }
+    i++; // consume paired
+  }
+
+  return changes.sort((a, b) => b.priority - a.priority).slice(0, 5);
+}
+
+// ---------------------------------------------------------------------------
+// Severity scoring — computed per-change from the contents of the change
+// itself, not the watchlist's static `importance`. HIGH for exposure/policy
+// %, ₪, or new PDFs on policy pages; MEDIUM for non-numeric updates or other
+// file changes; LOW otherwise.
+// ---------------------------------------------------------------------------
+
+const SEVERITY_ICONS = { HIGH: '🔴', MEDIUM: '🟡', LOW: '⚪' };
+
+function computeSeverity({ numericChanges = [], fileChanges = [], comparison, item }) {
+  if (numericChanges.some((c) => /%/.test(c.oldValue) || /%/.test(c.newValue))) return 'HIGH';
+  if (numericChanges.some((c) => /₪/.test(c.oldValue) || /₪/.test(c.newValue))) return 'HIGH';
+  if (numericChanges.some((c) => /מיליון/.test(c.oldValue) || /מיליון/.test(c.newValue))) return 'HIGH';
+  if (fileChanges.some((c) => c.type === 'added' && /\.pdf$/i.test(c.filename))) return 'HIGH';
+  if (
+    item &&
+    item.category === 'מדיניות השקעה' &&
+    comparison?.buckets &&
+    (comparison.buckets.updated.length > 0 || comparison.buckets.added.length > 0)
+  ) return 'HIGH';
+
+  if (fileChanges.length > 0) return 'MEDIUM';
+  if (comparison?.buckets?.updated?.length) return 'MEDIUM';
+
+  return 'LOW';
+}
+
+// ---------------------------------------------------------------------------
 // Document monitoring — detects and tracks documents (PDF/XLSX/DOC/PPTX/CSV)
 // linked from each watched HTML page. Maintains a per-item manifest with
 // hash + ETag + Last-Modified so subsequent runs can skip unchanged files.
@@ -583,6 +789,8 @@ async function processItemFiles(item, links) {
         url,
         filename,
         comparison,
+        oldText, // kept on the change record so the alert dispatcher can run
+        newText, // numeric extraction against the full file text
         ext: fileExtension(filename),
         size: buffer.length,
       });
@@ -991,19 +1199,61 @@ function formatUpdatedBullets(items) {
   return items.map(({ from, to }) => `• "${from}" → "${to}"`).join('\n');
 }
 
-function formatHebrewAlert(item, comparison, capturedAtIso) {
-  const icon = IMPORTANCE_ICONS[item.importance] || '⚪';
+// Render one numeric change as a 4-line block:
+//   {product/field header}
+//   (blank)
+//   לפני שינוי - {value} {field}
+//   אחרי שינוי - {value} {field}
+function renderNumericChangeBlock(change) {
+  const lines = [];
+  const headerParts = [];
+  if (change.product) headerParts.push(change.product);
+  if (change.field && !change.product?.includes(change.field)) headerParts.push(change.field);
+  const header = headerParts.join(' ').trim();
+  if (header) lines.push(header);
+  lines.push('');
+  const suffix = change.field ? ` ${change.field}` : '';
+  lines.push(`לפני שינוי - ${change.oldValue}${suffix}`);
+  lines.push(`אחרי שינוי - ${change.newValue}${suffix}`);
+  return lines.join('\n');
+}
 
+function buildAlertSections({ numericChanges, comparison }) {
   const sections = [];
-  if (comparison.buckets.added && comparison.buckets.added.length) {
+
+  // Numeric/business changes lead the section.
+  if (numericChanges && numericChanges.length) {
+    sections.push('✏️ עודכן:');
+    for (const c of numericChanges) {
+      sections.push('');
+      sections.push(renderNumericChangeBlock(c));
+    }
+    sections.push('');
+  }
+
+  // Generic text changes after the numeric block. Skip the "updated" bucket
+  // entirely when numeric changes were extracted — they're the same data,
+  // shown more clearly above.
+  if (comparison?.buckets?.added?.length) {
     sections.push('➕ נוסף:', formatBullets(comparison.buckets.added), '');
   }
-  if (comparison.buckets.updated && comparison.buckets.updated.length) {
+  if (!numericChanges?.length && comparison?.buckets?.updated?.length) {
     sections.push('✏️ עודכן:', formatUpdatedBullets(comparison.buckets.updated), '');
   }
-  if (comparison.buckets.removed && comparison.buckets.removed.length) {
+  if (comparison?.buckets?.removed?.length) {
     sections.push('➖ הוסר:', formatBullets(comparison.buckets.removed), '');
   }
+
+  return sections;
+}
+
+function formatHebrewAlert(item, comparison, capturedAtIso, opts = {}) {
+  const icon = IMPORTANCE_ICONS[item.importance] || '⚪';
+  const numericChanges = opts.numericChanges || [];
+  const severity = opts.severity || 'LOW';
+  const severityIcon = SEVERITY_ICONS[severity] || '⚪';
+
+  const sections = buildAlertSections({ numericChanges, comparison });
 
   return [
     `${icon} Mitharim | שינוי חדש זוהה`,
@@ -1012,6 +1262,7 @@ function formatHebrewAlert(item, comparison, capturedAtIso) {
     `📄 עמוד / מסמך: ${item.pageName || item.id}`,
     `📂 קטגוריה: ${item.category}`,
     `⚠️ רמת חשיבות: ${item.importance}`,
+    `🎯 חומרת שינוי: ${severityIcon} ${severity}`,
     '',
     '━━━━━━━━━━━━━━',
     '',
@@ -1029,8 +1280,11 @@ function formatHebrewAlert(item, comparison, capturedAtIso) {
 // formatFileChangeAlert — alert template for added/removed/updated linked
 // documents. Updated PDFs render their text diff as לפני שינוי / אחרי שינוי
 // blocks per the requested format.
-function formatFileChangeAlert(item, change, capturedAtIso) {
+function formatFileChangeAlert(item, change, capturedAtIso, opts = {}) {
   const icon = IMPORTANCE_ICONS[item.importance] || '⚪';
+  const numericChanges = opts.numericChanges || [];
+  const severity = opts.severity || 'LOW';
+  const severityIcon = SEVERITY_ICONS[severity] || '⚪';
 
   const sections = [];
   if (change.type === 'added') {
@@ -1038,26 +1292,14 @@ function formatFileChangeAlert(item, change, capturedAtIso) {
   } else if (change.type === 'removed') {
     sections.push('🗑️ קובץ הוסר:', `• ${change.filename}`, '');
   } else if (change.type === 'updated' && change.comparison) {
-    const { buckets } = change.comparison;
-    if (buckets.updated && buckets.updated.length) {
-      sections.push('✏️ עודכן:');
-      for (const { from, to } of buckets.updated.slice(0, 5)) {
-        const fromText = (from || '').trim().slice(0, 200);
-        const toText = (to || '').trim().slice(0, 200);
-        sections.push('');
-        sections.push(`לפני שינוי - ${fromText}`);
-        sections.push(`אחרי שינוי - ${toText}`);
-      }
-      sections.push('');
-    }
-    if (buckets.added && buckets.added.length) {
-      sections.push('➕ נוסף:', formatBullets(buckets.added), '');
-    }
-    if (buckets.removed && buckets.removed.length) {
-      sections.push('➖ הוסר:', formatBullets(buckets.removed), '');
+    // Use the same business-aware section builder as page alerts.
+    const built = buildAlertSections({ numericChanges, comparison: change.comparison });
+    if (built.length === 0) {
+      sections.push('✏️ קובץ עודכן:', `• ${change.filename}`, '');
+    } else {
+      sections.push(...built);
     }
   } else {
-    // Updated file without a text comparison (non-PDF or extraction failed).
     sections.push('✏️ קובץ עודכן (תוכן בינארי / פורמט לא מנותח):', `• ${change.filename}`, '');
   }
 
@@ -1068,6 +1310,7 @@ function formatFileChangeAlert(item, change, capturedAtIso) {
     `📄 עמוד / מסמך: ${item.pageName || item.id}`,
     `📂 קטגוריה: ${item.category}`,
     `⚠️ רמת חשיבות: ${item.importance}`,
+    `🎯 חומרת שינוי: ${severityIcon} ${severity}`,
     '',
     '━━━━━━━━━━━━━━',
     '',
@@ -1087,12 +1330,15 @@ function formatFileChangeAlert(item, change, capturedAtIso) {
 
 // dispatchFileChangeAlerts — for each file change, route the PDF text diff
 // (if any) through the same noise/Phoenix/strict pipeline as page alerts
-// before sending. Non-PDF updates and added/removed files always alert.
+// before sending. Extracts numeric pairs + severity per change for the
+// business-grade alert body. Non-PDF updates and added/removed files always
+// alert.
 async function dispatchFileChangeAlerts(item, changes) {
   const phx = PHOENIX_ITEM_IDS.has(item.id);
   const strict = isStrictCategory(item.category);
 
   for (const change of changes) {
+    let numericChanges = [];
     // Filter PDF text diffs through the noise pipeline.
     if (change.type === 'updated' && change.comparison) {
       const filtered = filterBuckets(change.comparison.buckets, {
@@ -1110,12 +1356,27 @@ async function dispatchFileChangeAlerts(item, changes) {
         continue;
       }
       change.comparison = { ...change.comparison, buckets: filtered };
+      // Re-run numeric extraction against the original old/new text — the
+      // filtered buckets lost the surrounding context needed for it.
+      if (change.oldText && change.newText) {
+        numericChanges = extractNumericChanges(change.oldText, change.newText);
+      }
     }
 
-    const alertText = formatFileChangeAlert(item, change, new Date().toISOString());
+    const severity = computeSeverity({
+      numericChanges,
+      fileChanges: [change],
+      comparison: change.comparison,
+      item,
+    });
+
+    const alertText = formatFileChangeAlert(item, change, new Date().toISOString(), {
+      numericChanges,
+      severity,
+    });
     const result = await sendTelegramMessage(alertText);
     if (result.sent) {
-      log.ok(`File alert sent: ${item.id} / ${change.filename} (${change.type})`);
+      log.ok(`File alert sent: ${item.id} / ${change.filename} (${change.type}, severity=${severity})`);
     } else if (result.reason !== 'not_configured') {
       log.warn(
         `File alert not sent: ${item.id} / ${change.filename}: ${result.reason}`,
@@ -1276,20 +1537,34 @@ async function monitorItem(item) {
 
   const filteredComparison = { ...comparison, buckets: filteredBuckets };
 
+  // Business-intelligence extraction — numeric pairs and severity.
+  const numericChanges = extractNumericChanges(previous.text || '', cleanedText);
+  const severity = computeSeverity({
+    numericChanges,
+    fileChanges: [],
+    comparison: filteredComparison,
+    item,
+  });
+
   log.change(`Meaningful change detected: ${item.id}`, {
     manufacturer: item.manufacturer,
     category: item.category,
     importance: item.importance,
+    severity,
     added: comparison.addedChars,
     removed: comparison.removedChars,
     ratio: Number(comparison.ratio.toFixed(4)),
     strict,
+    numericChanges: numericChanges.length,
     survivorsAdded: filteredBuckets.added,
     survivorsUpdated: filteredBuckets.updated,
     survivorsRemoved: filteredBuckets.removed,
   });
 
-  const alertText = formatHebrewAlert(item, filteredComparison, snapshot.capturedAt);
+  const alertText = formatHebrewAlert(item, filteredComparison, snapshot.capturedAt, {
+    numericChanges,
+    severity,
+  });
   const telegramResult = await sendTelegramMessage(alertText);
   if (telegramResult.sent) {
     log.ok(`Telegram alert sent for ${item.id}`);
@@ -1387,4 +1662,13 @@ module.exports = {
   dispatchFileChangeAlerts,
   DOCUMENT_EXTENSIONS,
   DOCUMENT_EXT_RE,
+  // Business intelligence
+  extractNumericChanges,
+  detectBusinessField,
+  detectProductTrack,
+  computeSeverity,
+  hasNumericToken,
+  renderNumericChangeBlock,
+  buildAlertSections,
+  SEVERITY_ICONS,
 };

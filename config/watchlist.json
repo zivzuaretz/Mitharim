@@ -1,10 +1,10 @@
 [
   {
     "id": "yl_investment_policy",
-    "pageName": "מדיניות השקעה צפויה",
+    "pageName": "מדיניות השקעה צפויה 2026",
     "manufacturer": "ילין לפידות",
     "category": "מדיניות השקעה",
-    "url": "https://www.yl-invest.co.il/מדיניות-השקעה-צפויה/?year=2025&quarterly=&range=טווח",
+    "url": "https://www.yl-invest.co.il/%D7%9E%D7%93%D7%99%D7%A0%D7%99%D7%95%D7%AA-%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%A6%D7%A4%D7%95%D7%99%D7%94/?year=2026&quarterly=&range=%D7%98%D7%95%D7%95%D7%97",
     "importance": "גבוהה",
     "renderer": "playwright"
   },
@@ -62,10 +62,10 @@
   },
   {
     "id": "fnx_policy",
-    "pageName": "מדיניות השקעה צפויה 2025",
+    "pageName": "מדיניות השקעה צפויה 2026",
     "manufacturer": "הפניקס",
     "category": "מדיניות השקעה",
-    "url": "https://www.fnx.co.il/fnx-insurance-ltd/investment-information-reports/the-expected-investment-policy/the-expected-investment-policy-2025/",
+    "url": "https://www.fnx.co.il/fnx-insurance-ltd/investment-information-reports/the-expected-investment-policy/the-expected-investment-policy-2026/",
     "importance": "גבוהה",
     "renderer": "playwright"
   },
