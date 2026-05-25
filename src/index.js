@@ -576,6 +576,239 @@ function computeSeverity({ numericChanges = [], fileChanges = [], comparison, it
 }
 
 // ---------------------------------------------------------------------------
+// Article / news classification — when the change is a market commentary,
+// AI/tech article, or sector update (typical Yelin Lapidot home-page surface),
+// switch to a short classified alert instead of dumping the raw diff fragments.
+// Includes a per-item dedup ring buffer so the same article doesn't re-alert.
+// ---------------------------------------------------------------------------
+
+const ARTICLE_SIGNAL_KEYWORDS = [
+  'כתבה', 'מאמר', 'סקירה', 'עדכון שוק', 'סקירת שוק',
+  'שווקים', 'AI', 'דוחות', 'חברות הטכנולוגיה',
+  'מחירי האנרגיה', 'ריבית', 'אינפלציה', 'מדדים', 'שוק ההון',
+];
+
+// Page-chrome fragments that survive the generic noise filter on YL-style
+// pages — year/quarter selectors, "טווח / איפוס / סינון" controls, report
+// table headers. Stripped right before article classification.
+const NAV_STRIP_PATTERNS = [
+  /דלג\s*לתוכן\s*העמוד/g,
+  /כניסה\s*לאזור\s*האישי/g,
+  /הצטרפות\s*הפקדה\s*דיגיטלית/g,
+  /הפקדה\s*דיגיטלית/g,
+  /צרו\s*קשר/g,
+  /פעולות\s*נפוצות/g,
+  /(?:שנה\s+)+(?:\b(?:19|20)\d{2}\b\s*){4,}/g,
+  /(?:\b(?:19|20)\d{2}\b\s*){4,}/g,
+  /\bשנה\s+שנה\b/g,
+  /רבעון(?:\s+[1-4]){2,}/g,
+  /טווח\s+איפוס\s+סינון/g,
+  /איפוס\s+סינון/g,
+  /שם\s+הדוח/g,
+  /דוח\s+להורדה/g,
+];
+
+// Business terms that, combined with high importance, escalate an article
+// alert from MEDIUM to HIGH.
+const ARTICLE_BUSINESS_KEYWORDS = [
+  'חשיפה', 'מדיניות השקעה', 'מבצע', 'תגמול', 'עמלה',
+  'ניוד', 'פנסיה', 'גמל', 'השתלמות',
+];
+
+const ARTICLE_DEDUP_DIR = path.join(ROOT, 'data', 'articles');
+const ARTICLE_DEDUP_FILE = path.join(ARTICLE_DEDUP_DIR, 'dedup.json');
+const ARTICLE_DEDUP_LIMIT = 50;
+
+function stripNavigationNoise(text) {
+  if (!text) return text;
+  let t = text;
+  for (const re of NAV_STRIP_PATTERNS) {
+    t = t.replace(re, ' ');
+  }
+  return t.replace(/\s+/g, ' ').trim();
+}
+
+function countArticleSignals(text) {
+  if (!text) return 0;
+  let n = 0;
+  for (const kw of ARTICLE_SIGNAL_KEYWORDS) {
+    if (text.includes(kw)) n++;
+  }
+  return n;
+}
+
+// Apply stripNavigationNoise to every fragment and drop any that go empty
+// afterward. Returns a new buckets object.
+function stripBucketsNavigation(buckets) {
+  const cleanString = (s) => {
+    const out = stripNavigationNoise(s);
+    return out && out.trim() ? out : '';
+  };
+  return {
+    added: (buckets.added || []).map(cleanString).filter(Boolean),
+    removed: (buckets.removed || []).map(cleanString).filter(Boolean),
+    updated: (buckets.updated || [])
+      .map(({ from, to }) => ({ from: cleanString(from), to: cleanString(to) }))
+      .filter(({ from, to }) => from || to),
+  };
+}
+
+function isArticleChange(buckets) {
+  const fragments = [
+    ...(buckets.added || []),
+    ...(buckets.removed || []),
+    ...(buckets.updated || []).flatMap((u) => [u.from, u.to]),
+  ];
+  const combined = fragments.join(' ');
+  if (combined.length < 60) return false; // too short to be an article
+  return countArticleSignals(combined) >= 2;
+}
+
+// Pick the strongest sentence as topic; fall back to synthesized phrase from
+// detected article keywords.
+function extractArticleTopic(buckets) {
+  const fragments = [
+    ...(buckets.added || []),
+    ...(buckets.removed || []),
+    ...(buckets.updated || []).flatMap((u) => [u.from, u.to]),
+  ];
+
+  let best = null;
+  let bestScore = 0;
+  for (const f of fragments) {
+    const sentences = f
+      .split(/[.!?]+/)
+      .map((s) => s.trim())
+      .filter((s) => s.length >= 20 && s.length <= 200);
+    for (const s of sentences) {
+      const score = countArticleSignals(s);
+      if (score > bestScore) {
+        bestScore = score;
+        best = s;
+      }
+    }
+  }
+  if (best) return best.slice(0, 140);
+
+  // Fallback: synthesize from detected signals.
+  const combined = fragments.join(' ');
+  const present = ARTICLE_SIGNAL_KEYWORDS.filter((kw) => combined.includes(kw));
+  if (present.length) {
+    return 'עדכון שוק בנושא ' + present.slice(0, 3).join(', ');
+  }
+  return 'עדכון תוכן באתר';
+}
+
+// Compose a 1–2 sentence summary, ≤240 chars, ending on a sentence
+// boundary when possible.
+function extractArticleSummary(buckets, maxChars = 240) {
+  const fragments = [
+    ...(buckets.added || []),
+    ...(buckets.updated || []).flatMap((u) => [u.to]),
+    ...(buckets.removed || []),
+  ];
+  const combined = fragments.join(' ').replace(/\s+/g, ' ').trim();
+  if (!combined) return '';
+  if (combined.length <= maxChars) return combined;
+  let cut = combined.slice(0, maxChars);
+  const lastSentenceEnd = Math.max(cut.lastIndexOf('.'), cut.lastIndexOf('!'), cut.lastIndexOf('?'));
+  if (lastSentenceEnd > maxChars * 0.5) {
+    cut = cut.slice(0, lastSentenceEnd + 1);
+  }
+  return cut.trim() + (cut.length < combined.length ? '…' : '');
+}
+
+function computeArticleSeverity(item, topic, summary) {
+  const text = `${topic} ${summary}`;
+  const hasBusiness = ARTICLE_BUSINESS_KEYWORDS.some((kw) => text.includes(kw));
+  if (item.importance === 'גבוהה' && hasBusiness) return 'HIGH';
+  return 'MEDIUM';
+}
+
+function normalizeForDedup(text) {
+  return (text || '')
+    .normalize('NFC')
+    .replace(/\d+/g, '#')               // collapse digits — same article with a different year
+    .replace(/\s+/g, ' ')
+    .replace(/[.,!?;:"'״׳\-—]/g, '')
+    .trim()
+    .toLowerCase();
+}
+
+function articleHash(topic, summary) {
+  const key = normalizeForDedup(topic) + '|' + normalizeForDedup(summary);
+  return crypto.createHash('sha256').update(key).digest('hex');
+}
+
+async function loadDedupState() {
+  if (!(await fse.pathExists(ARTICLE_DEDUP_FILE))) return {};
+  try {
+    return await fse.readJson(ARTICLE_DEDUP_FILE);
+  } catch {
+    return {};
+  }
+}
+
+async function saveDedupState(state) {
+  await fse.ensureDir(ARTICLE_DEDUP_DIR);
+  await fse.writeJson(ARTICLE_DEDUP_FILE, state, { spaces: 2 });
+}
+
+async function isDuplicateArticle(itemId, topic, summary) {
+  const state = await loadDedupState();
+  const hash = articleHash(topic, summary);
+  const recent = state[itemId]?.recent || [];
+  return recent.some((r) => r.hash === hash);
+}
+
+async function recordArticle(itemId, topic, summary) {
+  const state = await loadDedupState();
+  state[itemId] = state[itemId] || { recent: [] };
+  state[itemId].recent.unshift({
+    hash: articleHash(topic, summary),
+    topic: topic.slice(0, 200),
+    summary: summary.slice(0, 500),
+    sentAt: new Date().toISOString(),
+  });
+  if (state[itemId].recent.length > ARTICLE_DEDUP_LIMIT) {
+    state[itemId].recent.length = ARTICLE_DEDUP_LIMIT;
+  }
+  await saveDedupState(state);
+}
+
+function formatArticleAlert(item, { topic, summary, severity }, capturedAtIso) {
+  const sevIcon = SEVERITY_ICONS[severity] || '⚪';
+  return [
+    '🟡 Mitharim | כתבה / עדכון תוכן חדש',
+    '',
+    `🏢 יצרן: ${item.manufacturer}`,
+    `📄 עמוד / מסמך: ${item.pageName || item.id}`,
+    `📂 קטגוריה: ${item.category}`,
+    `⚠️ רמת חשיבות: ${item.importance}`,
+    `🎯 חומרת שינוי: ${sevIcon} ${severity}`,
+    '',
+    '━━━━━━━━━━━━━━',
+    '',
+    '📰 מה זוהה:',
+    'זוהתה כתבה / סקירה חדשה באתר.',
+    '',
+    'כותרת / נושא:',
+    topic,
+    '',
+    'תקציר קצר:',
+    summary,
+    '',
+    '━━━━━━━━━━━━━━',
+    '',
+    '🔗 מקור:',
+    item.url,
+    '',
+    '🤖 מקור: זוהה אוטומטית',
+    `🕒 ${formatJerusalemTime(capturedAtIso)}`,
+  ].join('\n');
+}
+
+// ---------------------------------------------------------------------------
 // Document monitoring — detects and tracks documents (PDF/XLSX/DOC/PPTX/CSV)
 // linked from each watched HTML page. Maintains a per-item manifest with
 // hash + ETag + Last-Modified so subsequent runs can skip unchanged files.
@@ -1537,6 +1770,49 @@ async function monitorItem(item) {
 
   const filteredComparison = { ...comparison, buckets: filteredBuckets };
 
+  // Strip site-chrome that survived the generic noise filter (year/quarter
+  // selectors, "טווח / איפוס / סינון", report-table headers). Used to decide
+  // article-vs-business routing and as the input for article extraction.
+  const navStrippedBuckets = stripBucketsNavigation(filteredBuckets);
+
+  // Article / news routing: if the surviving change looks like a market
+  // commentary or sector update, send the short classified alert instead of
+  // the detailed business diff.
+  if (isArticleChange(navStrippedBuckets)) {
+    const topic = extractArticleTopic(navStrippedBuckets);
+    const summary = extractArticleSummary(navStrippedBuckets);
+    if (await isDuplicateArticle(item.id, topic, summary)) {
+      log.noise(`Article duplicate ignored: ${item.id} — "${topic.slice(0, 60)}"`);
+      return { id: item.id, status: 'article-duplicate', topic };
+    }
+    const articleSeverity = computeArticleSeverity(item, topic, summary);
+    log.change(`Article/news detected: ${item.id}`, {
+      manufacturer: item.manufacturer,
+      severity: articleSeverity,
+      topic,
+    });
+    const articleAlertText = formatArticleAlert(
+      item,
+      { topic, summary, severity: articleSeverity },
+      snapshot.capturedAt,
+    );
+    const articleResult = await sendTelegramMessage(articleAlertText);
+    if (articleResult.sent) {
+      await recordArticle(item.id, topic, summary);
+      log.ok(`Article alert sent for ${item.id}`);
+    } else if (articleResult.reason !== 'not_configured') {
+      log.warn(`Article alert not sent for ${item.id}: ${articleResult.reason}`);
+    }
+    return {
+      id: item.id,
+      status: 'article',
+      topic,
+      summary,
+      severity: articleSeverity,
+      telegram: articleResult,
+    };
+  }
+
   // Business-intelligence extraction — numeric pairs and severity.
   const numericChanges = extractNumericChanges(previous.text || '', cleanedText);
   const severity = computeSeverity({
@@ -1671,4 +1947,15 @@ module.exports = {
   renderNumericChangeBlock,
   buildAlertSections,
   SEVERITY_ICONS,
+  // Article / news classification
+  stripNavigationNoise,
+  stripBucketsNavigation,
+  isArticleChange,
+  extractArticleTopic,
+  extractArticleSummary,
+  computeArticleSeverity,
+  formatArticleAlert,
+  isDuplicateArticle,
+  recordArticle,
+  ARTICLE_SIGNAL_KEYWORDS,
 };
