@@ -1,0 +1,43 @@
+{
+  "update_id": 526373086,
+  "message": {
+    "message_id": 12,
+    "from": {
+      "id": 1343564439,
+      "is_bot": false,
+      "first_name": "Ziv",
+      "last_name": "Zuaretz",
+      "username": "zivzuaretz",
+      "language_code": "he"
+    },
+    "chat": {
+      "id": 1343564439,
+      "first_name": "Ziv",
+      "last_name": "Zuaretz",
+      "username": "zivzuaretz",
+      "type": "private"
+    },
+    "date": 1779733599,
+    "document": {
+      "file_name": "13-2714_pensia_0426.pdf",
+      "mime_type": "application/pdf",
+      "thumbnail": {
+        "file_id": "AAMCBAADGQEAAwxqFJRfNeW0LcHXn2hHuYU7T2K3tAAC6iIAAlBmqVAs5PcnIVMLlAEAB20AAzsE",
+        "file_unique_id": "AQAD6iIAAlBmqVBy",
+        "file_size": 25084,
+        "width": 320,
+        "height": 320
+      },
+      "thumb": {
+        "file_id": "AAMCBAADGQEAAwxqFJRfNeW0LcHXn2hHuYU7T2K3tAAC6iIAAlBmqVAs5PcnIVMLlAEAB20AAzsE",
+        "file_unique_id": "AQAD6iIAAlBmqVBy",
+        "file_size": 25084,
+        "width": 320,
+        "height": 320
+      },
+      "file_id": "BQACAgQAAxkBAAMMahSUXzXltC3B159oR7mFO09it7QAAuoiAAJQZqlQLOT3JyFTC5Q7BA",
+      "file_unique_id": "AgAD6iIAAlBmqVA",
+      "file_size": 1126712
+    }
+  }
+}
