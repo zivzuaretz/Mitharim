@@ -1,0 +1,46 @@
+{
+  "https://digital-content.fnx.co.il/Documents/fnx-equal-pay-law-public2024.pdf": {
+    "filename": "fnx-equal-pay-law-public2024.pdf",
+    "hash": "696762b81b0641d87e70049ba9eb710c6ab0204a244d91563110db96372d75f5",
+    "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
+    "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
+    "firstSeenAt": "2026-05-25T19:12:01.418Z",
+    "lastSeenAt": "2026-05-25T19:12:01.418Z",
+    "updatedAt": "2026-05-25T19:12:01.418Z",
+    "ext": "pdf",
+    "size": 3767
+  },
+  "https://digital-content.fnx.co.il/sites/docs/genery/for_new_site/esg/%D7%94%D7%A4%D7%A0%D7%99%D7%A7%D7%A1-%D7%93%D7%95%D7%97-%D7%9E%D7%9E%D7%95%D7%A0%D7%94-%D7%90%D7%96%D7%A8%D7%97%D7%99%D7%9D-%D7%95%D7%AA%D7%99%D7%A7%D7%99%D7%9D25.pdf": {
+    "filename": "הפניקס-דוח-ממונה-אזרחים-ותיקים25.pdf",
+    "hash": "696762b81b0641d87e70049ba9eb710c6ab0204a244d91563110db96372d75f5",
+    "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
+    "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
+    "firstSeenAt": "2026-05-25T19:12:02.332Z",
+    "lastSeenAt": "2026-05-25T19:12:02.332Z",
+    "updatedAt": "2026-05-25T19:12:02.332Z",
+    "ext": "pdf",
+    "size": 3767
+  },
+  "https://www.fnx.co.il/sites/docs/genery/DocLib9/annuity-factor.xls": {
+    "filename": "annuity-factor.xls",
+    "hash": "696762b81b0641d87e70049ba9eb710c6ab0204a244d91563110db96372d75f5",
+    "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
+    "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
+    "firstSeenAt": "2026-05-25T19:12:04.336Z",
+    "lastSeenAt": "2026-05-25T19:12:04.336Z",
+    "updatedAt": "2026-05-25T19:12:04.336Z",
+    "ext": "xls",
+    "size": 3767
+  },
+  "https://www.fnx.co.il/Documents/premiot_nesiot_yomiot.xls": {
+    "filename": "premiot_nesiot_yomiot.xls",
+    "hash": "696762b81b0641d87e70049ba9eb710c6ab0204a244d91563110db96372d75f5",
+    "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
+    "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
+    "firstSeenAt": "2026-05-25T19:12:07.830Z",
+    "lastSeenAt": "2026-05-25T19:12:07.830Z",
+    "updatedAt": "2026-05-25T19:12:07.830Z",
+    "ext": "xls",
+    "size": 3767
+  }
+}
