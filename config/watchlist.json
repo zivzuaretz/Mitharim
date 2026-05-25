@@ -1,17 +1,17 @@
 [
   {
     "id": "yl_investment_policy",
-    "pageName": "מדיניות השקעה צפויה 2026",
     "manufacturer": "ילין לפידות",
+    "pageName": "מדיניות השקעה צפויה 2026",
     "category": "מדיניות השקעה",
-    "url": "https://www.yl-invest.co.il/%D7%9E%D7%93%D7%99%D7%A0%D7%99%D7%95%D7%AA-%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%A6%D7%A4%D7%95%D7%99%D7%94/?year=2026&quarterly=&range=%D7%98%D7%95%D7%95%D7%97",
+    "url": "https://www.yl-invest.co.il/מדיניות-השקעה-צפויה/?year=2026&quarterly=&range=טווח",
     "importance": "גבוהה",
     "renderer": "playwright"
   },
   {
     "id": "yl_promotions",
-    "pageName": "תגמול עבור מבצעי קידום מכירות",
     "manufacturer": "ילין לפידות",
+    "pageName": "תגמול עבור מבצעי קידום מכירות",
     "category": "מבצעים / תגמולים",
     "url": "https://www.yl-invest.co.il/תגמול-עבור-מבצעי-קידום-מכירות/",
     "importance": "בינונית",
@@ -19,16 +19,16 @@
   },
   {
     "id": "analyst_policy",
-    "pageName": "Investment Policy",
     "manufacturer": "אנליסט",
+    "pageName": "Investment Policy",
     "category": "מדיניות השקעה",
     "url": "https://www.analyst.co.il/investment-policy/",
     "importance": "גבוהה"
   },
   {
     "id": "meitav_agents",
-    "pageName": "מידע ושירות לסוכנים",
     "manufacturer": "מיטב",
+    "pageName": "מידע ושירות לסוכנים",
     "category": "פורטלי סוכנים",
     "url": "https://www.meitav.co.il/agents_home_page/info_service_agents/",
     "importance": "בינונית",
@@ -36,16 +36,16 @@
   },
   {
     "id": "meitav_policy",
-    "pageName": "מדיניות השקעה צפויה",
     "manufacturer": "מיטב",
+    "pageName": "מדיניות השקעה צפויה",
     "category": "מדיניות השקעה",
     "url": "https://www.meitav.co.il/provident_pension/statement_investment_policy/",
     "importance": "גבוהה"
   },
   {
     "id": "fnx_agents",
-    "pageName": "דף סוכנים",
     "manufacturer": "הפניקס",
+    "pageName": "דף סוכנים",
     "category": "פורטלי סוכנים",
     "url": "https://www.fnx.co.il/agent/",
     "importance": "בינונית",
@@ -53,8 +53,8 @@
   },
   {
     "id": "fnx_promotions",
-    "pageName": "מבצעי סוכנים",
     "manufacturer": "הפניקס",
+    "pageName": "מבצעי סוכנים",
     "category": "מבצעים / תגמולים",
     "url": "https://www.fnx.co.il/agents-promotions/",
     "importance": "בינונית",
@@ -62,8 +62,8 @@
   },
   {
     "id": "fnx_policy",
-    "pageName": "מדיניות השקעה צפויה 2026",
     "manufacturer": "הפניקס",
+    "pageName": "מדיניות השקעה צפויה 2026",
     "category": "מדיניות השקעה",
     "url": "https://www.fnx.co.il/fnx-insurance-ltd/investment-information-reports/the-expected-investment-policy/the-expected-investment-policy-2026/",
     "importance": "גבוהה",
@@ -71,18 +71,98 @@
   },
   {
     "id": "menora_policy",
-    "pageName": "מדיניות השקעה",
     "manufacturer": "מנורה מבטחים",
+    "pageName": "מדיניות השקעה",
     "category": "מדיניות השקעה",
     "url": "https://www.menoramivt.co.il/rep-list/about-insurance/participating-portfolio-info/investment-policy",
     "importance": "גבוהה"
   },
   {
+    "id": "menora_pension_capsule",
+    "manufacturer": "מנורה מבטחים",
+    "pageName": "קפסולת פנסיה",
+    "category": "דפי תוכן / הדרכה",
+    "url": "https://marketing.menoramivt.co.il/pension_capsule/",
+    "importance": "נמוכה"
+  },
+  {
+    "id": "menora_prishe",
+    "manufacturer": "מנורה מבטחים",
+    "pageName": "פרישה",
+    "category": "דפי תוכן / הדרכה",
+    "url": "https://marketing.menoramivt.co.il/pension_prishe/",
+    "importance": "נמוכה"
+  },
+  {
+    "id": "menora_investments_capsule",
+    "manufacturer": "מנורה מבטחים",
+    "pageName": "קפסולת השקעות לסוכנים",
+    "category": "דפי תוכן / הדרכה",
+    "url": "https://marketing.menoramivt.co.il/investments_capsule_agent/",
+    "importance": "נמוכה"
+  },
+  {
     "id": "fnx_finance_pdf",
-    "pageName": "finance.pdf",
     "manufacturer": "הפניקס",
+    "pageName": "finance.pdf",
     "category": "PDF",
     "url": "https://www.fnx.co.il/Documents/finance.pdf",
     "importance": "גבוהה"
+  },
+  {
+    "id": "clal_promotions",
+    "manufacturer": "כלל ביטוח",
+    "pageName": "מבצעי סוכנים",
+    "category": "מבצעים / תגמולים",
+    "url": "https://www.clalbit.co.il/agentspromo/",
+    "importance": "בינונית"
+  },
+  {
+    "id": "clal_miri",
+    "manufacturer": "כלל ביטוח",
+    "pageName": "דף נחיתה מירי פחימה",
+    "category": "דפי תוכן / הדרכה",
+    "url": "https://www.bestcard.me/כלל-ביטוח/מירי-פחימה/",
+    "importance": "נמוכה"
+  },
+  {
+    "id": "menora_top_school_info",
+    "manufacturer": "מנורה מבטחים",
+    "pageName": "Top School Agents Info",
+    "category": "דפי תוכן / הדרכה",
+    "url": "https://www.menoramivt.co.il/links/top-school-agents-info",
+    "importance": "נמוכה"
+  },
+  {
+    "id": "menora_top_school_video",
+    "manufacturer": "מנורה מבטחים",
+    "pageName": "Top School Pension Video",
+    "category": "דפי תוכן / הדרכה",
+    "url": "https://www.menoramivt.co.il/links/top-school-pensionvideo",
+    "importance": "נמוכה"
+  },
+  {
+    "id": "menora_top_school_shipur",
+    "manufacturer": "מנורה מבטחים",
+    "pageName": "Top School Shipur",
+    "category": "דפי תוכן / הדרכה",
+    "url": "https://www.menoramivt.co.il/links/top-school-shipur",
+    "importance": "נמוכה"
+  },
+  {
+    "id": "menora_tutorials",
+    "manufacturer": "מנורה מבטחים",
+    "pageName": "מדריכי התחברות / תמיכה טכנית",
+    "category": "דפי תוכן / הדרכה",
+    "url": "https://www.menoramivt.co.il/links/tutorials-sign-in",
+    "importance": "נמוכה"
+  },
+  {
+    "id": "menora_rewards",
+    "manufacturer": "מנורה מבטחים",
+    "pageName": "תגמול סוכנים",
+    "category": "מבצעים / תגמולים",
+    "url": "https://www.menoramivt.co.il/rep-list/reward-for-agent",
+    "importance": "בינונית"
   }
 ]
