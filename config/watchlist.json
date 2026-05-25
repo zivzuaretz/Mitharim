@@ -107,7 +107,9 @@
     "pageName": "finance.pdf",
     "category": "PDF",
     "url": "https://www.fnx.co.il/Documents/finance.pdf",
-    "importance": "גבוהה"
+    "importance": "גבוהה",
+    "enabled": false,
+    "note": "Temporarily disabled because Phoenix currently serves a 3.7KB stub instead of the expected PDF."
   },
   {
     "id": "clal_promotions",

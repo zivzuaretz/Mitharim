@@ -1872,11 +1872,23 @@ async function main() {
     log.warn('Watchlist is empty — nothing to do');
     return;
   }
-  log.info(`Loaded ${watchlist.length} watchlist items`);
+  const enabledCount = watchlist.filter((it) => it.enabled !== false).length;
+  const disabledCount = watchlist.length - enabledCount;
+  log.info(
+    `Loaded ${watchlist.length} watchlist items` +
+      (disabledCount > 0 ? ` (${enabledCount} enabled, ${disabledCount} disabled)` : ''),
+  );
 
   const results = [];
   try {
     for (const item of watchlist) {
+      // Items explicitly marked enabled:false are skipped entirely — no fetch,
+      // no snapshot, no alert. Items without the field default to enabled.
+      if (item.enabled === false) {
+        log.info(`Skipping ${item.id} — disabled${item.note ? `: ${item.note}` : ''}`);
+        results.push({ id: item.id, status: 'disabled' });
+        continue;
+      }
       try {
         results.push(await monitorItem(item));
       } catch (err) {
