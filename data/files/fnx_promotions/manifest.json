@@ -5,7 +5,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:11:45.751Z",
-    "lastSeenAt": "2026-05-26T04:44:25.053Z",
+    "lastSeenAt": "2026-05-26T08:28:49.360Z",
     "updatedAt": "2026-05-25T19:11:45.751Z",
     "ext": "pdf",
     "size": 3767
@@ -16,21 +16,21 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:11:46.865Z",
-    "lastSeenAt": "2026-05-26T04:44:25.461Z",
+    "lastSeenAt": "2026-05-26T08:28:49.789Z",
     "updatedAt": "2026-05-25T19:11:46.865Z",
     "ext": "pdf",
     "size": 3767
   },
   "https://www.fnx.co.il/sites/docs/genery/DocLib9/annuity-factor.xls": {
     "filename": "annuity-factor.xls",
-    "hash": "aa623fad501d4f2c6b27e20b46e8a9c5875b9571f42b898fd20ecab7d1fed85a",
-    "etag": "\"{D8618A07-F440-4A27-A823-A9E6BD525626},5\"",
-    "lastModified": "Mon, 16 Oct 2023 10:27:01 GMT",
+    "hash": "696762b81b0641d87e70049ba9eb710c6ab0204a244d91563110db96372d75f5",
+    "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
+    "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:11:48.966Z",
-    "lastSeenAt": "2026-05-26T04:44:27.783Z",
-    "updatedAt": "2026-05-26T04:44:27.783Z",
+    "lastSeenAt": "2026-05-26T08:28:51.949Z",
+    "updatedAt": "2026-05-26T08:28:51.949Z",
     "ext": "xls",
-    "size": 410112
+    "size": 3767
   },
   "https://www.fnx.co.il/Documents/premiot_nesiot_yomiot.xls": {
     "filename": "premiot_nesiot_yomiot.xls",
@@ -38,7 +38,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:11:50.883Z",
-    "lastSeenAt": "2026-05-26T04:44:29.697Z",
+    "lastSeenAt": "2026-05-26T08:28:53.001Z",
     "updatedAt": "2026-05-25T19:11:50.883Z",
     "ext": "xls",
     "size": 3767
