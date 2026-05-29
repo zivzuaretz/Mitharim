@@ -5,7 +5,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:11:45.751Z",
-    "lastSeenAt": "2026-05-29T04:31:49.584Z",
+    "lastSeenAt": "2026-05-29T08:31:41.033Z",
     "updatedAt": "2026-05-25T19:11:45.751Z",
     "ext": "pdf",
     "size": 3767
@@ -16,31 +16,31 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:11:46.865Z",
-    "lastSeenAt": "2026-05-29T04:31:50.379Z",
+    "lastSeenAt": "2026-05-29T08:31:41.420Z",
     "updatedAt": "2026-05-25T19:11:46.865Z",
     "ext": "pdf",
     "size": 3767
   },
   "https://www.fnx.co.il/sites/docs/genery/DocLib9/annuity-factor.xls": {
     "filename": "annuity-factor.xls",
-    "hash": "696762b81b0641d87e70049ba9eb710c6ab0204a244d91563110db96372d75f5",
-    "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
-    "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
+    "hash": "aa623fad501d4f2c6b27e20b46e8a9c5875b9571f42b898fd20ecab7d1fed85a",
+    "etag": "\"{D8618A07-F440-4A27-A823-A9E6BD525626},5\"",
+    "lastModified": "Mon, 16 Oct 2023 10:27:01 GMT",
     "firstSeenAt": "2026-05-25T19:11:48.966Z",
-    "lastSeenAt": "2026-05-29T04:31:52.462Z",
-    "updatedAt": "2026-05-28T12:00:24.609Z",
+    "lastSeenAt": "2026-05-29T08:31:43.693Z",
+    "updatedAt": "2026-05-29T08:31:43.693Z",
     "ext": "xls",
-    "size": 3767
+    "size": 410112
   },
   "https://www.fnx.co.il/Documents/premiot_nesiot_yomiot.xls": {
     "filename": "premiot_nesiot_yomiot.xls",
-    "hash": "696762b81b0641d87e70049ba9eb710c6ab0204a244d91563110db96372d75f5",
-    "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
-    "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
+    "hash": "f7a64a7f5f56119ba1fc7874120a2abb9e93efc774f22677e3d0fa801840d52a",
+    "etag": "\"{6C2EC6C3-C324-40C1-8E8D-3F28BE1C127C},9\"",
+    "lastModified": "Wed, 28 Aug 2024 10:21:36 GMT",
     "firstSeenAt": "2026-05-25T19:11:50.883Z",
-    "lastSeenAt": "2026-05-29T04:31:53.715Z",
-    "updatedAt": "2026-05-28T16:16:38.666Z",
+    "lastSeenAt": "2026-05-29T08:31:44.876Z",
+    "updatedAt": "2026-05-29T08:31:44.876Z",
     "ext": "xls",
-    "size": 3767
+    "size": 41472
   }
 }
