@@ -5,7 +5,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:11:46.865Z",
-    "lastSeenAt": "2026-05-31T21:10:07.175Z",
+    "lastSeenAt": "2026-05-31T22:17:00.417Z",
     "updatedAt": "2026-05-25T19:11:46.865Z",
     "ext": "pdf",
     "size": 3767
@@ -16,21 +16,21 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:11:48.966Z",
-    "lastSeenAt": "2026-05-31T21:10:08.345Z",
+    "lastSeenAt": "2026-05-31T22:17:01.531Z",
     "updatedAt": "2026-05-31T09:39:59.775Z",
     "ext": "xls",
     "size": 3767
   },
   "https://www.fnx.co.il/Documents/premiot_nesiot_yomiot.xls": {
     "filename": "premiot_nesiot_yomiot.xls",
-    "hash": "696762b81b0641d87e70049ba9eb710c6ab0204a244d91563110db96372d75f5",
-    "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
-    "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
+    "hash": "f7a64a7f5f56119ba1fc7874120a2abb9e93efc774f22677e3d0fa801840d52a",
+    "etag": "\"{6C2EC6C3-C324-40C1-8E8D-3F28BE1C127C},9\"",
+    "lastModified": "Wed, 28 Aug 2024 10:21:36 GMT",
     "firstSeenAt": "2026-05-25T19:11:50.883Z",
-    "lastSeenAt": "2026-05-31T21:10:10.513Z",
-    "updatedAt": "2026-05-31T17:24:59.310Z",
+    "lastSeenAt": "2026-05-31T22:17:03.270Z",
+    "updatedAt": "2026-05-31T22:17:03.270Z",
     "ext": "xls",
-    "size": 3767
+    "size": 41472
   },
   "https://digital-content.fnx.co.il/Documents/fnx-equal-pay-law-public2025.pdf": {
     "filename": "fnx-equal-pay-law-public2025.pdf",
@@ -38,7 +38,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-31T17:24:51.790Z",
-    "lastSeenAt": "2026-05-31T21:10:06.660Z",
+    "lastSeenAt": "2026-05-31T22:17:00.027Z",
     "updatedAt": "2026-05-31T20:00:49.922Z",
     "ext": "pdf",
     "size": 3767
