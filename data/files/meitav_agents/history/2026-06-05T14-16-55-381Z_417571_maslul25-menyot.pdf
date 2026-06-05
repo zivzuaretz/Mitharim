@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="theme-color" content="#000000" />
+    <title>מיטב בית השקעות - 500</title>
+
+    <link rel="shortcut icon" href="favicon.ico" />
+
+    <style>
+        #root {
+            display: flex;
+        }
+
+        img {
+            content: url(./500.png);
+            max-width: 100%;
+            margin: auto;
+        }
+
+        @media screen and (max-width: 768px) {
+            img {
+            content: url(./500-mob.png);
+            }
+        }
+    </style>
+    <script>
+        window.history.pushState(window.location.pathname, "Server Error", "/500");
+    </script>
+</head>
+
+<body>
+    <div id="root">
+        <img />
+    </div>
+</body>
+
+</html>
