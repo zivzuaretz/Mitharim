@@ -5,7 +5,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:35.830Z",
-    "lastSeenAt": "2026-07-27T11:58:31.345Z",
+    "lastSeenAt": "2026-07-27T12:16:49.574Z",
     "updatedAt": "2026-05-25T19:15:35.830Z",
     "ext": "pdf",
     "size": 305960
@@ -16,7 +16,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:36.303Z",
-    "lastSeenAt": "2026-07-27T11:58:31.362Z",
+    "lastSeenAt": "2026-07-27T12:16:49.682Z",
     "updatedAt": "2026-05-25T19:15:36.303Z",
     "ext": "pdf",
     "size": 35181
@@ -27,7 +27,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:37.332Z",
-    "lastSeenAt": "2026-07-27T11:58:31.380Z",
+    "lastSeenAt": "2026-07-27T12:16:49.772Z",
     "updatedAt": "2026-05-25T19:15:37.332Z",
     "ext": "pdf",
     "size": 45443
@@ -38,7 +38,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:38.354Z",
-    "lastSeenAt": "2026-07-27T11:58:31.402Z",
+    "lastSeenAt": "2026-07-27T12:16:49.857Z",
     "updatedAt": "2026-05-25T19:15:38.354Z",
     "ext": "pdf",
     "size": 27818
@@ -49,7 +49,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:39.269Z",
-    "lastSeenAt": "2026-07-27T11:58:31.425Z",
+    "lastSeenAt": "2026-07-27T12:16:49.967Z",
     "updatedAt": "2026-05-25T19:15:39.269Z",
     "ext": "pdf",
     "size": 139094
@@ -60,32 +60,10 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:40.481Z",
-    "lastSeenAt": "2026-07-27T11:58:31.478Z",
+    "lastSeenAt": "2026-07-27T12:16:50.105Z",
     "updatedAt": "2026-05-25T19:15:40.481Z",
     "ext": "pdf",
     "size": 170541
-  },
-  "https://cdn.menoramivt.co.il/public/docs/20250522/%D7%93%D7%A3-%D7%9E%D7%99%D7%93%D7%A2---%D7%94%D7%95%D7%93%D7%A2%D7%95%D7%AA-%D7%9C%D7%9E%D7%91%D7%95%D7%98%D7%97%D7%99%D7%9D-%D7%91%D7%9B%D7%99%D7%A1%D7%95%D7%99-%D7%A0%D7%99%D7%AA%D7%95%D7%97%D7%99%D7%9D-%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C-042024.pdf": {
-    "filename": "דף-מידע---הודעות-למבוטחים-בכיסוי-ניתוחים-בישראל-042024.pdf",
-    "hash": "ab28cd47583b135ca20d57c87dacf7427d811354c57b4f56c5459ac4327d7540",
-    "etag": null,
-    "lastModified": null,
-    "firstSeenAt": "2026-05-25T19:15:42.461Z",
-    "lastSeenAt": "2026-07-27T11:58:31.510Z",
-    "updatedAt": "2026-05-25T19:15:42.461Z",
-    "ext": "pdf",
-    "size": 515339
-  },
-  "https://cdn.menoramivt.co.il/public/docs/20250522/%D7%93%D7%A3-%D7%9E%D7%99%D7%93%D7%A2-%D7%9C%D7%A1%D7%95%D7%9B%D7%9F--%D7%94%D7%95%D7%93%D7%A2%D7%AA-%D7%97%D7%99%D7%93%D7%95%D7%A9-%D7%A4%D7%95%D7%9C%D7%99%D7%A1%D7%AA-%D7%91%D7%A8%D7%99%D7%90%D7%95%D7%AA-%D7%9C%D7%9E%D7%91%D7%95%D7%98%D7%97%D7%99%D7%9D.pdf": {
-    "filename": "דף-מידע-לסוכן--הודעת-חידוש-פוליסת-בריאות-למבוטחים.pdf",
-    "hash": "1484c07f8a49294f63f8d4c5f7b06a0179520f77bc1663fbb0f0857785041081",
-    "etag": null,
-    "lastModified": null,
-    "firstSeenAt": "2026-05-25T19:15:43.725Z",
-    "lastSeenAt": "2026-07-27T11:58:31.536Z",
-    "updatedAt": "2026-05-25T19:15:43.725Z",
-    "ext": "pdf",
-    "size": 228735
   },
   "https://cdn.menoramivt.co.il/public/docs/20250522/%D7%94%D7%A0%D7%97%D7%99%D7%95%D7%AA-%D7%94%D7%92%D7%A0%D7%AA-%D7%94%D7%A1%D7%99%D7%99%D7%91%D7%A8---%D7%9E%D7%A0%D7%95%D7%A8%D7%94-%D7%9E%D7%91%D7%98%D7%97%D7%99%D7%9D.pdf": {
     "filename": "הנחיות-הגנת-הסייבר---מנורה-מבטחים.pdf",
@@ -93,21 +71,10 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:45.341Z",
-    "lastSeenAt": "2026-07-27T11:58:31.564Z",
+    "lastSeenAt": "2026-07-27T12:16:50.248Z",
     "updatedAt": "2026-05-25T19:15:45.341Z",
     "ext": "pdf",
     "size": 256565
-  },
-  "https://cdn.menoramivt.co.il/public/docs/20250522/%D7%93%D7%A3-%D7%9E%D7%99%D7%93%D7%A2-%D7%9C%D7%A1%D7%95%D7%9B%D7%A0%D7%99%D7%9D---%D7%90%D7%95%D7%A4%D7%9F-%D7%A6%D7%99%D7%A8%D7%95%D7%A3-%D7%9E%D7%91%D7%95%D7%98%D7%97%D7%99%D7%9D-%D7%9C%D7%A4%D7%95%D7%9C%D7%99%D7%A1%D7%95%D7%AA-%D7%94%D7%91%D7%A8%D7%99%D7%90%D7%95%D7%AA.pdf": {
-    "filename": "דף-מידע-לסוכנים---אופן-צירוף-מבוטחים-לפוליסות-הבריאות.pdf",
-    "hash": "d1fc082a0fa4e752bc97c3c14c30a8edcba6cdc14b02e53495e32aa0045c98f2",
-    "etag": null,
-    "lastModified": null,
-    "firstSeenAt": "2026-05-25T19:15:47.148Z",
-    "lastSeenAt": "2026-07-27T11:58:31.595Z",
-    "updatedAt": "2026-05-25T19:15:47.148Z",
-    "ext": "pdf",
-    "size": 286083
   },
   "https://cdn.menoramivt.co.il/public/docs/20250522/%D7%93%D7%A3-%D7%9E%D7%99%D7%93%D7%A2-%D7%A2%D7%93%D7%9B%D7%95%D7%9F-%D7%94%D7%A1%D7%9B%D7%9D-%D7%A4%D7%A0%D7%A1%D7%99%D7%94-2024.pdf": {
     "filename": "דף-מידע-עדכון-הסכם-פנסיה-2024.pdf",
@@ -115,21 +82,10 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:48.082Z",
-    "lastSeenAt": "2026-07-27T11:58:31.617Z",
+    "lastSeenAt": "2026-07-27T12:16:50.362Z",
     "updatedAt": "2026-05-25T19:15:48.082Z",
     "ext": "pdf",
     "size": 118534
-  },
-  "https://cdn.menoramivt.co.il/public/docs/20250115/%D7%A2%D7%9C%D7%95%D7%9F-%D7%93%D7%92%D7%A9%D7%99%D7%9D-%D7%9C%D7%97%D7%95%D7%96%D7%A8-%D7%94%D7%A6%D7%99%D7%A8%D7%95%D7%A3-062023.pdf": {
-    "filename": "עלון-דגשים-לחוזר-הצירוף-062023.pdf",
-    "hash": "08cc82709dc45667fc1ca5112fbc6c83edefd71675b5021ea278a402d312ea1b",
-    "etag": null,
-    "lastModified": null,
-    "firstSeenAt": "2026-05-25T19:15:49.447Z",
-    "lastSeenAt": "2026-07-27T11:58:31.639Z",
-    "updatedAt": "2026-05-25T19:15:49.447Z",
-    "ext": "pdf",
-    "size": 150356
   },
   "https://cdn.menoramivt.co.il/public/docs/20230329/%D7%93%D7%A3-%D7%9E%D7%99%D7%93%D7%A2-%D7%94%D7%97%D7%9C%D7%AA-%D7%97%D7%95%D7%91%D7%AA-%D7%94%D7%93%D7%99%D7%95%D7%95%D7%97-%D7%91%D7%9E%D7%9E%D7%A9%D7%A7-%D7%9E%D7%A2%D7%A1%D7%99%D7%A7%D7%99%D7%9D-022023.pdf": {
     "filename": "דף-מידע-החלת-חובת-הדיווח-בממשק-מעסיקים-022023.pdf",
@@ -137,7 +93,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:50.279Z",
-    "lastSeenAt": "2026-07-27T11:58:31.661Z",
+    "lastSeenAt": "2026-07-27T12:16:50.455Z",
     "updatedAt": "2026-05-25T19:15:50.279Z",
     "ext": "pdf",
     "size": 62531
@@ -148,7 +104,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:51.958Z",
-    "lastSeenAt": "2026-07-27T11:58:31.687Z",
+    "lastSeenAt": "2026-07-27T12:16:50.604Z",
     "updatedAt": "2026-05-25T19:15:51.958Z",
     "ext": "pdf",
     "size": 261464
@@ -159,7 +115,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:53.099Z",
-    "lastSeenAt": "2026-07-27T11:58:31.709Z",
+    "lastSeenAt": "2026-07-27T12:16:50.722Z",
     "updatedAt": "2026-05-25T19:15:53.099Z",
     "ext": "pdf",
     "size": 189925
@@ -170,7 +126,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:54.504Z",
-    "lastSeenAt": "2026-07-27T11:58:31.733Z",
+    "lastSeenAt": "2026-07-27T12:16:50.835Z",
     "updatedAt": "2026-05-25T19:15:54.504Z",
     "ext": "pdf",
     "size": 156724
@@ -181,7 +137,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:55.631Z",
-    "lastSeenAt": "2026-07-27T11:58:31.754Z",
+    "lastSeenAt": "2026-07-27T12:16:50.964Z",
     "updatedAt": "2026-05-25T19:15:55.631Z",
     "ext": "pdf",
     "size": 163768
@@ -192,7 +148,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:57.711Z",
-    "lastSeenAt": "2026-07-27T11:58:31.780Z",
+    "lastSeenAt": "2026-07-27T12:16:51.111Z",
     "updatedAt": "2026-05-25T19:15:57.711Z",
     "ext": "pdf",
     "size": 428343
@@ -203,54 +159,10 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:15:59.561Z",
-    "lastSeenAt": "2026-07-27T11:58:31.810Z",
+    "lastSeenAt": "2026-07-27T12:16:51.258Z",
     "updatedAt": "2026-05-25T19:15:59.561Z",
     "ext": "pdf",
     "size": 491743
-  },
-  "https://cdn.menoramivt.co.il/public/docs/20221212/%D7%97%D7%95%D7%96%D7%A8-%D7%A6%D7%99%D7%A8%D7%95%D7%A3-%D7%9C%D7%91%D7%99%D7%98%D7%95%D7%97--%D7%AA%D7%99%D7%A7%D7%95%D7%9F-28.9.22-%D7%A9%D7%99%D7%A0%D7%95%D7%99%D7%99%D7%9D-%D7%9E%D7%A1%D7%95%D7%9E%D7%A0%D7%99%D7%9D.pdf": {
-    "filename": "חוזר-צירוף-לביטוח--תיקון-28.9.22-שינויים-מסומנים.pdf",
-    "hash": "c88b15a4ac4ff5c1dc793b39922fee7a9781d6239d3c000641e4e464951c683c",
-    "etag": null,
-    "lastModified": null,
-    "firstSeenAt": "2026-05-25T19:16:02.032Z",
-    "lastSeenAt": "2026-07-27T11:58:31.839Z",
-    "updatedAt": "2026-05-25T19:16:02.032Z",
-    "ext": "pdf",
-    "size": 427385
-  },
-  "https://cdn.menoramivt.co.il/public/docs/20221212/%D7%97%D7%95%D7%96%D7%A8-%D7%A6%D7%99%D7%A8%D7%95%D7%A3-%D7%9C%D7%91%D7%99%D7%98%D7%95%D7%97--%D7%AA%D7%99%D7%A7%D7%95%D7%9F-30.6.2022.pdf": {
-    "filename": "חוזר-צירוף-לביטוח--תיקון-30.6.2022.pdf",
-    "hash": "c1068b6b7a67c7d15016914c240aed137f438d0e753b7e3c39e8e1e9ad053710",
-    "etag": null,
-    "lastModified": null,
-    "firstSeenAt": "2026-05-25T19:16:04.364Z",
-    "lastSeenAt": "2026-07-27T11:58:31.867Z",
-    "updatedAt": "2026-05-25T19:16:04.364Z",
-    "ext": "pdf",
-    "size": 412071
-  },
-  "https://cdn.menoramivt.co.il/public/docs/20221212/%D7%93%D7%A3-%D7%9E%D7%99%D7%93%D7%A2-%D7%9C%D7%A1%D7%95%D7%9B%D7%A0%D7%99%D7%9D-%D7%97%D7%95%D7%96%D7%A8-%D7%A6%D7%99%D7%A8%D7%95%D7%A3-%D7%9C%D7%91%D7%99%D7%98%D7%95%D7%97---%D7%AA%D7%99%D7%A7%D7%95%D7%9F-7.22.pdf": {
-    "filename": "דף-מידע-לסוכנים-חוזר-צירוף-לביטוח---תיקון-7.22.pdf",
-    "hash": "9409566480b2e5bd63b858998ed1aa77b65888e64fcf228c9f6e4b077dad91e5",
-    "etag": null,
-    "lastModified": null,
-    "firstSeenAt": "2026-05-25T19:16:05.686Z",
-    "lastSeenAt": "2026-07-27T11:58:31.887Z",
-    "updatedAt": "2026-05-25T19:16:05.686Z",
-    "ext": "pdf",
-    "size": 160690
-  },
-  "https://cdn.menoramivt.co.il/public/docs/20221212/%D7%93%D7%A3-%D7%9E%D7%99%D7%93%D7%A2-%D7%97%D7%95%D7%96%D7%A8-%D7%A6%D7%99%D7%A8%D7%95%D7%A3-%D7%9C%D7%91%D7%99%D7%98%D7%95%D7%97---%D7%AA%D7%99%D7%A7%D7%95%D7%9F-9.22.pdf": {
-    "filename": "דף-מידע-חוזר-צירוף-לביטוח---תיקון-9.22.pdf",
-    "hash": "780e6b1af583eac18b77bc5427c5e041b3ac542447cba8d7edb2e1885335c9ad",
-    "etag": null,
-    "lastModified": null,
-    "firstSeenAt": "2026-05-25T19:16:06.880Z",
-    "lastSeenAt": "2026-07-27T11:58:31.908Z",
-    "updatedAt": "2026-05-25T19:16:06.880Z",
-    "ext": "pdf",
-    "size": 137652
   },
   "https://cdn.menoramivt.co.il/public/docs/20221212/%D7%98%D7%95%D7%A4%D7%A1-%D7%94%D7%AA%D7%90%D7%9E%D7%AA-%D7%A6%D7%A8%D7%9B%D7%99%D7%9D-%D7%A1%D7%95%D7%9B%D7%A0%D7%99%D7%9D-%D7%99%D7%95%D7%9C%D7%99-2022.pdf": {
     "filename": "טופס-התאמת-צרכים-סוכנים-יולי-2022.pdf",
@@ -258,7 +170,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:08.211Z",
-    "lastSeenAt": "2026-07-27T11:58:31.936Z",
+    "lastSeenAt": "2026-07-27T12:16:51.405Z",
     "updatedAt": "2026-05-25T19:16:08.211Z",
     "ext": "pdf",
     "size": 289775
@@ -269,7 +181,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:09.461Z",
-    "lastSeenAt": "2026-07-27T11:58:31.959Z",
+    "lastSeenAt": "2026-07-27T12:16:51.548Z",
     "updatedAt": "2026-05-25T19:16:09.461Z",
     "ext": "pdf",
     "size": 226369
@@ -280,7 +192,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:10.377Z",
-    "lastSeenAt": "2026-07-27T11:58:31.979Z",
+    "lastSeenAt": "2026-07-27T12:16:51.678Z",
     "updatedAt": "2026-05-25T19:16:10.377Z",
     "ext": "pdf",
     "size": 152635
@@ -291,7 +203,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:10.422Z",
-    "lastSeenAt": "2026-07-27T11:58:32.002Z",
+    "lastSeenAt": "2026-07-27T12:16:51.789Z",
     "updatedAt": "2026-05-25T19:16:10.422Z",
     "ext": "pdf",
     "size": 116236
@@ -302,7 +214,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:11.802Z",
-    "lastSeenAt": "2026-07-27T11:58:32.027Z",
+    "lastSeenAt": "2026-07-27T12:16:51.930Z",
     "updatedAt": "2026-05-25T19:16:11.802Z",
     "ext": "pdf",
     "size": 253988
@@ -313,7 +225,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:12.672Z",
-    "lastSeenAt": "2026-07-27T11:58:32.051Z",
+    "lastSeenAt": "2026-07-27T12:16:52.056Z",
     "updatedAt": "2026-05-25T19:16:12.672Z",
     "ext": "pdf",
     "size": 186934
@@ -324,7 +236,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:14.469Z",
-    "lastSeenAt": "2026-07-27T11:58:32.077Z",
+    "lastSeenAt": "2026-07-27T12:16:52.208Z",
     "updatedAt": "2026-05-25T19:16:14.469Z",
     "ext": "pdf",
     "size": 495824
@@ -335,7 +247,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:17.650Z",
-    "lastSeenAt": "2026-07-27T11:58:32.108Z",
+    "lastSeenAt": "2026-07-27T12:16:52.367Z",
     "updatedAt": "2026-05-25T19:16:17.650Z",
     "ext": "pdf",
     "size": 641521
@@ -346,7 +258,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:18.363Z",
-    "lastSeenAt": "2026-07-27T11:58:32.127Z",
+    "lastSeenAt": "2026-07-27T12:16:52.458Z",
     "updatedAt": "2026-05-25T19:16:18.363Z",
     "ext": "pdf",
     "size": 57703
@@ -357,7 +269,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:19.293Z",
-    "lastSeenAt": "2026-07-27T11:58:32.149Z",
+    "lastSeenAt": "2026-07-27T12:16:52.585Z",
     "updatedAt": "2026-05-25T19:16:19.293Z",
     "ext": "pdf",
     "size": 158404
@@ -368,7 +280,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:20.306Z",
-    "lastSeenAt": "2026-07-27T11:58:32.173Z",
+    "lastSeenAt": "2026-07-27T12:16:52.724Z",
     "updatedAt": "2026-05-25T19:16:20.306Z",
     "ext": "pdf",
     "size": 184695
@@ -379,21 +291,10 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:20.965Z",
-    "lastSeenAt": "2026-07-27T11:58:32.193Z",
+    "lastSeenAt": "2026-07-27T12:16:52.819Z",
     "updatedAt": "2026-05-25T19:16:20.965Z",
     "ext": "pdf",
     "size": 76498
-  },
-  "https://cdn.menoramivt.co.il/public/docs/20250522/%D7%99%D7%93%D7%99%D7%A2%D7%95%D7%9F-%D7%9E%D7%95%D7%A6%D7%A8%D7%99-%D7%A0%D7%99%D7%AA%D7%95%D7%97%D7%99%D7%9D-%D7%9B%D7%95%D7%9C%D7%9C-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%A1%D7%95%D7%9B%D7%A0%D7%99%D7%9D-012024.pdf": {
-    "filename": "ידיעון-מוצרי-ניתוחים-כולל-עמלות-סוכנים-012024.pdf",
-    "hash": "432ff61fd7aba0f9fa012c733d988ad5df1180ada8e470ed7d8f7b17dd3a5882",
-    "etag": null,
-    "lastModified": null,
-    "firstSeenAt": "2026-05-25T19:16:21.935Z",
-    "lastSeenAt": "2026-07-27T11:58:32.214Z",
-    "updatedAt": "2026-05-25T19:16:21.935Z",
-    "ext": "pdf",
-    "size": 35472
   },
   "https://cdn.menoramivt.co.il/public/docs/20211011/%D7%94%D7%A0%D7%9E%D7%A7%D7%941-12-2019.pdf": {
     "filename": "הנמקה1-12-2019.pdf",
@@ -401,7 +302,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:23.615Z",
-    "lastSeenAt": "2026-07-27T11:58:32.244Z",
+    "lastSeenAt": "2026-07-27T12:16:52.974Z",
     "updatedAt": "2026-05-25T19:16:23.615Z",
     "ext": "pdf",
     "size": 349276
@@ -412,21 +313,10 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:24.901Z",
-    "lastSeenAt": "2026-07-27T11:58:32.268Z",
+    "lastSeenAt": "2026-07-27T12:16:53.136Z",
     "updatedAt": "2026-05-25T19:16:24.901Z",
     "ext": "pdf",
     "size": 414726
-  },
-  "https://cdn.menoramivt.co.il/public/docs/20211011/%D7%93%D7%A3-%D7%9E%D7%99%D7%93%D7%A2-14-2020-%D7%97%D7%95%D7%96%D7%A8-%D7%A6%D7%99%D7%A8%D7%95%D7%A3-%D7%9C%D7%91%D7%99%D7%98%D7%95%D7%97---%D7%AA%D7%99%D7%A7%D7%95%D7%9F.pdf": {
-    "filename": "דף-מידע-14-2020-חוזר-צירוף-לביטוח---תיקון.pdf",
-    "hash": "a3b8dcd9f2ae2816a2482c97eb903f01cf8b417de8b6447d27cf458cc517b1bb",
-    "etag": null,
-    "lastModified": null,
-    "firstSeenAt": "2026-05-25T19:16:25.704Z",
-    "lastSeenAt": "2026-07-27T11:58:32.288Z",
-    "updatedAt": "2026-05-25T19:16:25.704Z",
-    "ext": "pdf",
-    "size": 113084
   },
   "https://cdn.menoramivt.co.il/public/docs/20211011/%D7%93%D7%A3-%D7%9E%D7%99%D7%93%D7%A2-7-2019-%D7%94%D7%9C%D7%91%D7%A0%D7%AA-%D7%94%D7%95%D7%9F.pdf": {
     "filename": "דף-מידע-7-2019-הלבנת-הון.pdf",
@@ -434,7 +324,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:27.615Z",
-    "lastSeenAt": "2026-07-27T11:58:32.321Z",
+    "lastSeenAt": "2026-07-27T12:16:53.276Z",
     "updatedAt": "2026-05-25T19:16:27.615Z",
     "ext": "pdf",
     "size": 333394
@@ -445,7 +335,7 @@
     "etag": null,
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:16:28.575Z",
-    "lastSeenAt": "2026-07-27T11:58:32.347Z",
+    "lastSeenAt": "2026-07-27T12:16:53.410Z",
     "updatedAt": "2026-05-25T19:16:28.575Z",
     "ext": "pdf",
     "size": 334025

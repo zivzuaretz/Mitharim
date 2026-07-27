@@ -5,7 +5,7 @@
     "etag": "\"6a0bfeb7-13a00\"",
     "lastModified": "Tue, 19 May 2026 06:09:59 GMT",
     "firstSeenAt": "2026-05-25T19:15:07.016Z",
-    "lastSeenAt": "2026-07-27T11:58:20.234Z",
+    "lastSeenAt": "2026-07-27T12:16:33.150Z",
     "updatedAt": "2026-05-25T19:15:07.016Z",
     "ext": "pdf",
     "size": 80384
@@ -16,7 +16,7 @@
     "etag": "\"6a0bfeb6-4599d\"",
     "lastModified": "Tue, 19 May 2026 06:09:58 GMT",
     "firstSeenAt": "2026-05-25T19:15:07.591Z",
-    "lastSeenAt": "2026-07-27T11:58:20.362Z",
+    "lastSeenAt": "2026-07-27T12:16:33.296Z",
     "updatedAt": "2026-05-25T19:15:07.591Z",
     "ext": "pdf",
     "size": 285085
@@ -27,21 +27,10 @@
     "etag": "\"6a0bfeb5-3fb55\"",
     "lastModified": "Tue, 19 May 2026 06:09:57 GMT",
     "firstSeenAt": "2026-05-25T19:15:08.022Z",
-    "lastSeenAt": "2026-07-27T11:58:20.491Z",
+    "lastSeenAt": "2026-07-27T12:16:33.441Z",
     "updatedAt": "2026-05-25T19:15:08.022Z",
     "ext": "pdf",
     "size": 260949
-  },
-  "https://clal.bestcard.me/wp-content/uploads/2025/07/13-3049-argaz-briut_4.pdf": {
-    "filename": "13-3049-argaz-briut_4.pdf",
-    "hash": "e3ce01ac6332def14a6c39a9bce7d574f67041ad0b45e2f05306b49c7ab3478d",
-    "etag": "\"686cfa11-18b5a\"",
-    "lastModified": "Tue, 08 Jul 2025 10:59:29 GMT",
-    "firstSeenAt": "2026-05-25T19:15:08.325Z",
-    "lastSeenAt": "2026-07-27T11:58:20.619Z",
-    "updatedAt": "2026-05-25T19:15:08.325Z",
-    "ext": "pdf",
-    "size": 101210
   },
   "https://clal.bestcard.me/wp-content/uploads/2025/02/13-2880-clal-pay_alon-A5_2.pdf": {
     "filename": "13-2880-clal-pay_alon-A5_2.pdf",
@@ -49,7 +38,7 @@
     "etag": "\"67a99daf-1a678e\"",
     "lastModified": "Mon, 10 Feb 2025 06:33:19 GMT",
     "firstSeenAt": "2026-05-25T19:15:09.036Z",
-    "lastSeenAt": "2026-07-27T11:58:20.750Z",
+    "lastSeenAt": "2026-07-27T12:16:33.585Z",
     "updatedAt": "2026-05-25T19:15:09.036Z",
     "ext": "pdf",
     "size": 1730446
@@ -60,7 +49,7 @@
     "etag": "\"67aaef88-db8b\"",
     "lastModified": "Tue, 11 Feb 2025 06:34:48 GMT",
     "firstSeenAt": "2026-05-25T19:15:09.339Z",
-    "lastSeenAt": "2026-07-27T11:58:20.880Z",
+    "lastSeenAt": "2026-07-27T12:16:33.731Z",
     "updatedAt": "2026-05-25T19:15:09.339Z",
     "ext": "pdf",
     "size": 56203
@@ -71,7 +60,7 @@
     "etag": "\"67aaef88-dbe4\"",
     "lastModified": "Tue, 11 Feb 2025 06:34:48 GMT",
     "firstSeenAt": "2026-05-25T19:15:09.634Z",
-    "lastSeenAt": "2026-07-27T11:58:21.008Z",
+    "lastSeenAt": "2026-07-27T12:16:33.876Z",
     "updatedAt": "2026-05-25T19:15:09.634Z",
     "ext": "pdf",
     "size": 56292
@@ -82,7 +71,7 @@
     "etag": "\"69804546-191d14\"",
     "lastModified": "Mon, 02 Feb 2026 06:33:42 GMT",
     "firstSeenAt": "2026-05-25T19:15:10.090Z",
-    "lastSeenAt": "2026-07-27T11:58:21.135Z",
+    "lastSeenAt": "2026-07-27T12:16:34.020Z",
     "updatedAt": "2026-05-25T19:15:10.090Z",
     "ext": "pdf",
     "size": 1645844
@@ -93,7 +82,7 @@
     "etag": "\"69804764-56148\"",
     "lastModified": "Mon, 02 Feb 2026 06:42:44 GMT",
     "firstSeenAt": "2026-05-25T19:15:10.385Z",
-    "lastSeenAt": "2026-07-27T11:58:21.263Z",
+    "lastSeenAt": "2026-07-27T12:16:34.165Z",
     "updatedAt": "2026-05-25T19:15:10.385Z",
     "ext": "pdf",
     "size": 352584
@@ -104,7 +93,7 @@
     "etag": "\"697ef2f8-a886\"",
     "lastModified": "Sun, 01 Feb 2026 06:30:16 GMT",
     "firstSeenAt": "2026-05-25T19:15:10.686Z",
-    "lastSeenAt": "2026-07-27T11:58:21.391Z",
+    "lastSeenAt": "2026-07-27T12:16:34.311Z",
     "updatedAt": "2026-05-25T19:15:10.686Z",
     "ext": "pdf",
     "size": 43142
@@ -115,7 +104,7 @@
     "etag": "\"697ef2fd-24fb9\"",
     "lastModified": "Sun, 01 Feb 2026 06:30:21 GMT",
     "firstSeenAt": "2026-05-25T19:15:10.992Z",
-    "lastSeenAt": "2026-07-27T11:58:21.518Z",
+    "lastSeenAt": "2026-07-27T12:16:34.455Z",
     "updatedAt": "2026-05-25T19:15:10.992Z",
     "ext": "pdf",
     "size": 151481
@@ -126,7 +115,7 @@
     "etag": "\"697ef305-8b35\"",
     "lastModified": "Sun, 01 Feb 2026 06:30:29 GMT",
     "firstSeenAt": "2026-05-25T19:15:11.287Z",
-    "lastSeenAt": "2026-07-27T11:58:21.646Z",
+    "lastSeenAt": "2026-07-27T12:16:34.600Z",
     "updatedAt": "2026-05-25T19:15:11.287Z",
     "ext": "pdf",
     "size": 35637
@@ -137,7 +126,7 @@
     "etag": "\"697ef598-aa32\"",
     "lastModified": "Sun, 01 Feb 2026 06:41:28 GMT",
     "firstSeenAt": "2026-05-25T19:15:11.579Z",
-    "lastSeenAt": "2026-07-27T11:58:21.774Z",
+    "lastSeenAt": "2026-07-27T12:16:34.745Z",
     "updatedAt": "2026-05-25T19:15:11.579Z",
     "ext": "pdf",
     "size": 43570
@@ -148,7 +137,7 @@
     "etag": "\"697ef2f4-7a945\"",
     "lastModified": "Sun, 01 Feb 2026 06:30:12 GMT",
     "firstSeenAt": "2026-05-25T19:15:11.890Z",
-    "lastSeenAt": "2026-07-27T11:58:21.901Z",
+    "lastSeenAt": "2026-07-27T12:16:34.890Z",
     "updatedAt": "2026-05-25T19:15:11.890Z",
     "ext": "pdf",
     "size": 502085
@@ -159,21 +148,10 @@
     "etag": "\"69cbc940-374e9\"",
     "lastModified": "Tue, 31 Mar 2026 13:16:48 GMT",
     "firstSeenAt": "2026-05-25T19:15:12.234Z",
-    "lastSeenAt": "2026-07-27T11:58:22.029Z",
+    "lastSeenAt": "2026-07-27T12:16:35.035Z",
     "updatedAt": "2026-05-25T19:15:12.234Z",
     "ext": "pdf",
     "size": 226537
-  },
-  "https://clal.bestcard.me/wp-content/uploads/2020/05/13-2242-clal-sale_0426.pdf": {
-    "filename": "13-2242-clal-sale_0426.pdf",
-    "hash": "cda07b89dc2b353e7eb28780316ec48b9b5725edec4f125b4aab972fce2839d0",
-    "etag": "\"69cbc962-a6de\"",
-    "lastModified": "Tue, 31 Mar 2026 13:17:22 GMT",
-    "firstSeenAt": "2026-05-25T19:15:12.534Z",
-    "lastSeenAt": "2026-07-27T11:58:22.156Z",
-    "updatedAt": "2026-05-25T19:15:12.534Z",
-    "ext": "pdf",
-    "size": 42718
   },
   "https://clal.bestcard.me/wp-content/uploads/2020/05/%D7%94%D7%A4%D7%A6%D7%94-%D7%9C%D7%A1%D7%95%D7%9B%D7%A0%D7%99%D7%9D-%D7%9B%D7%9C%D7%9C-%D7%A1%D7%99%D7%99%D7%9C-%D7%A1%D7%A4%D7%99%D7%A8-30.06.26-%D7%A2%D7%93-31.03.26.pdf": {
     "filename": "הפצה-לסוכנים-כלל-סייל-ספיר-30.06.26-עד-31.03.26.pdf",
@@ -181,7 +159,7 @@
     "etag": "\"69cbc993-440c2\"",
     "lastModified": "Tue, 31 Mar 2026 13:18:11 GMT",
     "firstSeenAt": "2026-05-25T19:15:12.902Z",
-    "lastSeenAt": "2026-07-27T11:58:22.284Z",
+    "lastSeenAt": "2026-07-27T12:16:35.180Z",
     "updatedAt": "2026-05-25T19:15:12.902Z",
     "ext": "pdf",
     "size": 278722
@@ -192,7 +170,7 @@
     "etag": "\"69cbc956-151f5\"",
     "lastModified": "Tue, 31 Mar 2026 13:17:10 GMT",
     "firstSeenAt": "2026-05-25T19:15:13.215Z",
-    "lastSeenAt": "2026-07-27T11:58:22.412Z",
+    "lastSeenAt": "2026-07-27T12:16:35.326Z",
     "updatedAt": "2026-05-25T19:15:13.215Z",
     "ext": "pdf",
     "size": 86517
@@ -203,7 +181,7 @@
     "etag": "\"69cbc986-40bda\"",
     "lastModified": "Tue, 31 Mar 2026 13:17:58 GMT",
     "firstSeenAt": "2026-05-25T19:15:13.597Z",
-    "lastSeenAt": "2026-07-27T11:58:22.540Z",
+    "lastSeenAt": "2026-07-27T12:16:35.471Z",
     "updatedAt": "2026-05-25T19:15:13.597Z",
     "ext": "pdf",
     "size": 265178
@@ -214,7 +192,7 @@
     "etag": "\"6996be37-1debc\"",
     "lastModified": "Thu, 19 Feb 2026 07:39:35 GMT",
     "firstSeenAt": "2026-05-25T19:15:13.901Z",
-    "lastSeenAt": "2026-07-27T11:58:22.668Z",
+    "lastSeenAt": "2026-07-27T12:16:35.615Z",
     "updatedAt": "2026-05-25T19:15:13.901Z",
     "ext": "pdf",
     "size": 122556
@@ -225,21 +203,10 @@
     "etag": "\"6996be32-14526\"",
     "lastModified": "Thu, 19 Feb 2026 07:39:30 GMT",
     "firstSeenAt": "2026-05-25T19:15:14.200Z",
-    "lastSeenAt": "2026-07-27T11:58:22.796Z",
+    "lastSeenAt": "2026-07-27T12:16:35.759Z",
     "updatedAt": "2026-05-25T19:15:14.200Z",
     "ext": "pdf",
     "size": 83238
-  },
-  "https://clal.bestcard.me/wp-content/uploads/2026/02/13-3154-shana-2026_3.pdf": {
-    "filename": "13-3154-shana-2026_3.pdf",
-    "hash": "25d971430c4ec83d26592425af0da953b200ad35fb40760bb3fb44746a5c8707",
-    "etag": "\"697eeed2-2cc8d\"",
-    "lastModified": "Sun, 01 Feb 2026 06:12:34 GMT",
-    "firstSeenAt": "2026-05-25T19:15:14.508Z",
-    "lastSeenAt": "2026-07-27T11:58:22.924Z",
-    "updatedAt": "2026-05-25T19:15:14.508Z",
-    "ext": "pdf",
-    "size": 183437
   },
   "https://clal.bestcard.me/wp-content/uploads/2026/02/13-3173-behave_mivtza.pdf": {
     "filename": "13-3173-behave_mivtza.pdf",
@@ -247,7 +214,7 @@
     "etag": "\"697f5266-3b9c5\"",
     "lastModified": "Sun, 01 Feb 2026 13:17:26 GMT",
     "firstSeenAt": "2026-05-25T19:15:14.816Z",
-    "lastSeenAt": "2026-07-27T11:58:23.052Z",
+    "lastSeenAt": "2026-07-27T12:16:35.908Z",
     "updatedAt": "2026-05-25T19:15:14.817Z",
     "ext": "pdf",
     "size": 244165
@@ -258,21 +225,10 @@
     "etag": "\"697f525b-dad7\"",
     "lastModified": "Sun, 01 Feb 2026 13:17:15 GMT",
     "firstSeenAt": "2026-05-25T19:15:15.114Z",
-    "lastSeenAt": "2026-07-27T11:58:23.180Z",
+    "lastSeenAt": "2026-07-27T12:16:36.053Z",
     "updatedAt": "2026-05-25T19:15:15.114Z",
     "ext": "pdf",
     "size": 56023
-  },
-  "https://clal.bestcard.me/wp-content/uploads/2026/01/%D7%A2%D7%9C%D7%95%D7%9F-%D7%97%D7%99%D7%AA%D7%95%D7%9D-%D7%9C%D7%A1%D7%95%D7%9B%D7%9F-2026.pdf": {
-    "filename": "עלון-חיתום-לסוכן-2026.pdf",
-    "hash": "41d11dfecd8660d201e9601c7e6580f114e756736cde4a3d2df528d1ec915458",
-    "etag": "\"696786c0-193406\"",
-    "lastModified": "Wed, 14 Jan 2026 12:06:24 GMT",
-    "firstSeenAt": "2026-05-25T19:15:15.885Z",
-    "lastSeenAt": "2026-07-27T11:58:23.435Z",
-    "updatedAt": "2026-05-25T19:15:15.886Z",
-    "ext": "pdf",
-    "size": 1651718
   },
   "https://clal.bestcard.me/wp-content/uploads/2024/11/%D7%99%D7%93%D7%99%D7%A2%D7%95%D7%9F-%D7%9C%D7%A1%D7%95%D7%9B%D7%A0%D7%99%D7%9D-State-Street-%D7%9E%D7%A1%D7%9C%D7%95%D7%9C-%D7%9E%D7%90%D7%A8%D7%97.pdf": {
     "filename": "ידיעון-לסוכנים-State-Street-מסלול-מארח.pdf",
@@ -280,7 +236,7 @@
     "etag": "\"673d950c-aeb86\"",
     "lastModified": "Wed, 20 Nov 2024 07:51:40 GMT",
     "firstSeenAt": "2026-05-25T19:15:16.223Z",
-    "lastSeenAt": "2026-07-27T11:58:23.563Z",
+    "lastSeenAt": "2026-07-27T12:16:36.342Z",
     "updatedAt": "2026-05-25T19:15:16.224Z",
     "ext": "pdf",
     "size": 715654
@@ -291,7 +247,7 @@
     "etag": "\"67dfcaa5-13533\"",
     "lastModified": "Sun, 23 Mar 2025 08:47:33 GMT",
     "firstSeenAt": "2026-05-25T19:15:16.521Z",
-    "lastSeenAt": "2026-07-27T11:58:23.693Z",
+    "lastSeenAt": "2026-07-27T12:16:36.486Z",
     "updatedAt": "2026-05-25T19:15:16.521Z",
     "ext": "pdf",
     "size": 79155
@@ -302,7 +258,7 @@
     "etag": "\"686cd655-12ecd\"",
     "lastModified": "Tue, 08 Jul 2025 08:27:01 GMT",
     "firstSeenAt": "2026-05-25T19:15:16.821Z",
-    "lastSeenAt": "2026-07-27T11:58:23.821Z",
+    "lastSeenAt": "2026-07-27T12:16:36.631Z",
     "updatedAt": "2026-05-25T19:15:16.821Z",
     "ext": "pdf",
     "size": 77517
@@ -313,7 +269,7 @@
     "etag": "\"5f58cc82-117e5\"",
     "lastModified": "Wed, 09 Sep 2020 12:37:22 GMT",
     "firstSeenAt": "2026-05-25T19:15:19.483Z",
-    "lastSeenAt": "2026-07-27T11:58:25.069Z",
+    "lastSeenAt": "2026-07-27T12:16:37.985Z",
     "updatedAt": "2026-05-25T19:15:19.483Z",
     "ext": "pdf",
     "size": 71653
@@ -324,7 +280,7 @@
     "etag": "\"6230529e-c0815\"",
     "lastModified": "Tue, 15 Mar 2022 08:47:26 GMT",
     "firstSeenAt": "2026-05-25T19:15:19.835Z",
-    "lastSeenAt": "2026-07-27T11:58:25.198Z",
+    "lastSeenAt": "2026-07-27T12:16:38.130Z",
     "updatedAt": "2026-05-25T19:15:19.835Z",
     "ext": "pdf",
     "size": 788501
@@ -335,7 +291,7 @@
     "etag": "\"5e3fe3ee-387e3\"",
     "lastModified": "Sun, 09 Feb 2020 10:50:22 GMT",
     "firstSeenAt": "2026-05-25T19:15:20.931Z",
-    "lastSeenAt": "2026-07-27T11:58:25.694Z",
+    "lastSeenAt": "2026-07-27T12:16:38.709Z",
     "updatedAt": "2026-05-25T19:15:20.931Z",
     "ext": "pdf",
     "size": 231395
@@ -346,7 +302,7 @@
     "etag": "\"624ad9b6-2c6d0\"",
     "lastModified": "Mon, 04 Apr 2022 11:42:46 GMT",
     "firstSeenAt": "2026-05-25T19:15:21.250Z",
-    "lastSeenAt": "2026-07-27T11:58:25.823Z",
+    "lastSeenAt": "2026-07-27T12:16:38.854Z",
     "updatedAt": "2026-05-25T19:15:21.250Z",
     "ext": "pdf",
     "size": 181968
@@ -357,7 +313,7 @@
     "etag": "\"5c8e2497-1daf1a\"",
     "lastModified": "Sun, 17 Mar 2019 10:42:31 GMT",
     "firstSeenAt": "2026-05-25T19:15:22.791Z",
-    "lastSeenAt": "2026-07-27T11:58:26.419Z",
+    "lastSeenAt": "2026-07-27T12:16:39.278Z",
     "updatedAt": "2026-05-25T19:15:22.791Z",
     "ext": "pdf",
     "size": 1945370
@@ -368,7 +324,7 @@
     "etag": "\"686cd64c-54860\"",
     "lastModified": "Tue, 08 Jul 2025 08:26:52 GMT",
     "firstSeenAt": "2026-05-25T19:15:23.099Z",
-    "lastSeenAt": "2026-07-27T11:58:26.548Z",
+    "lastSeenAt": "2026-07-27T12:16:39.423Z",
     "updatedAt": "2026-05-25T19:15:23.099Z",
     "ext": "pdf",
     "size": 346208
@@ -379,7 +335,7 @@
     "etag": "\"6a6735a3-25c71\"",
     "lastModified": "Mon, 27 Jul 2026 10:40:35 GMT",
     "firstSeenAt": "2026-07-27T11:47:47.218Z",
-    "lastSeenAt": "2026-07-27T11:58:23.307Z",
+    "lastSeenAt": "2026-07-27T12:16:36.197Z",
     "updatedAt": "2026-07-27T11:47:47.218Z",
     "ext": "pdf",
     "size": 154737
@@ -390,7 +346,7 @@
     "etag": "\"6a5e0037-3a2b8\"",
     "lastModified": "Mon, 20 Jul 2026 11:02:15 GMT",
     "firstSeenAt": "2026-07-27T11:47:48.317Z",
-    "lastSeenAt": "2026-07-27T11:58:23.949Z",
+    "lastSeenAt": "2026-07-27T12:16:36.775Z",
     "updatedAt": "2026-07-27T11:47:48.317Z",
     "ext": "pdf",
     "size": 238264
@@ -401,7 +357,7 @@
     "etag": "\"6a5e0036-4460c\"",
     "lastModified": "Mon, 20 Jul 2026 11:02:14 GMT",
     "firstSeenAt": "2026-07-27T11:47:48.838Z",
-    "lastSeenAt": "2026-07-27T11:58:24.077Z",
+    "lastSeenAt": "2026-07-27T12:16:36.920Z",
     "updatedAt": "2026-07-27T11:47:48.838Z",
     "ext": "pdf",
     "size": 280076
@@ -412,7 +368,7 @@
     "etag": "\"6a5e0037-27ca6\"",
     "lastModified": "Mon, 20 Jul 2026 11:02:15 GMT",
     "firstSeenAt": "2026-07-27T11:47:49.148Z",
-    "lastSeenAt": "2026-07-27T11:58:24.206Z",
+    "lastSeenAt": "2026-07-27T12:16:37.065Z",
     "updatedAt": "2026-07-27T11:47:49.148Z",
     "ext": "pdf",
     "size": 162982
@@ -423,7 +379,7 @@
     "etag": "\"6a5e0035-31b0d\"",
     "lastModified": "Mon, 20 Jul 2026 11:02:13 GMT",
     "firstSeenAt": "2026-07-27T11:47:49.465Z",
-    "lastSeenAt": "2026-07-27T11:58:24.335Z",
+    "lastSeenAt": "2026-07-27T12:16:37.211Z",
     "updatedAt": "2026-07-27T11:47:49.465Z",
     "ext": "pdf",
     "size": 203533
@@ -434,7 +390,7 @@
     "etag": "\"6a5e0034-2b8c2\"",
     "lastModified": "Mon, 20 Jul 2026 11:02:12 GMT",
     "firstSeenAt": "2026-07-27T11:47:49.776Z",
-    "lastSeenAt": "2026-07-27T11:58:24.463Z",
+    "lastSeenAt": "2026-07-27T12:16:37.355Z",
     "updatedAt": "2026-07-27T11:47:49.776Z",
     "ext": "pdf",
     "size": 178370
@@ -445,7 +401,7 @@
     "etag": "\"5cf40a6a-3a5a37\"",
     "lastModified": "Sun, 02 Jun 2019 17:42:02 GMT",
     "firstSeenAt": "2026-07-27T11:47:54.025Z",
-    "lastSeenAt": "2026-07-27T11:58:26.988Z",
+    "lastSeenAt": "2026-07-27T12:16:39.897Z",
     "updatedAt": "2026-07-27T11:47:54.025Z",
     "ext": "pdf",
     "size": 3824183
@@ -456,7 +412,7 @@
     "etag": "\"5cf40a82-34290d\"",
     "lastModified": "Sun, 02 Jun 2019 17:42:26 GMT",
     "firstSeenAt": "2026-07-27T11:47:55.497Z",
-    "lastSeenAt": "2026-07-27T11:58:27.361Z",
+    "lastSeenAt": "2026-07-27T12:16:40.383Z",
     "updatedAt": "2026-07-27T11:47:55.497Z",
     "ext": "pdf",
     "size": 3418381
@@ -467,7 +423,7 @@
     "etag": "\"5cf40a9c-3b765e\"",
     "lastModified": "Sun, 02 Jun 2019 17:42:52 GMT",
     "firstSeenAt": "2026-07-27T11:47:56.857Z",
-    "lastSeenAt": "2026-07-27T11:58:27.732Z",
+    "lastSeenAt": "2026-07-27T12:16:40.886Z",
     "updatedAt": "2026-07-27T11:47:56.857Z",
     "ext": "pdf",
     "size": 3896926
@@ -478,7 +434,7 @@
     "etag": "\"5cf425c7-2f2f6c\"",
     "lastModified": "Sun, 02 Jun 2019 19:38:47 GMT",
     "firstSeenAt": "2026-07-27T11:47:57.840Z",
-    "lastSeenAt": "2026-07-27T11:58:28.293Z",
+    "lastSeenAt": "2026-07-27T12:16:41.309Z",
     "updatedAt": "2026-07-27T11:47:57.840Z",
     "ext": "pdf",
     "size": 3092332
@@ -489,7 +445,7 @@
     "etag": "\"5cf425ec-1b4e9c\"",
     "lastModified": "Sun, 02 Jun 2019 19:39:24 GMT",
     "firstSeenAt": "2026-07-27T11:47:59.190Z",
-    "lastSeenAt": "2026-07-27T11:58:28.789Z",
+    "lastSeenAt": "2026-07-27T12:16:42.036Z",
     "updatedAt": "2026-07-27T11:47:59.190Z",
     "ext": "pdf",
     "size": 1789596
@@ -500,7 +456,7 @@
     "etag": "\"5c9231ad-8aa60\"",
     "lastModified": "Wed, 20 Mar 2019 12:27:25 GMT",
     "firstSeenAt": "2026-07-27T11:48:00.210Z",
-    "lastSeenAt": "2026-07-27T11:58:29.232Z",
+    "lastSeenAt": "2026-07-27T12:16:42.522Z",
     "updatedAt": "2026-07-27T11:48:00.210Z",
     "ext": "pdf",
     "size": 567904
@@ -511,21 +467,10 @@
     "etag": "\"62a5eba4-657d5\"",
     "lastModified": "Sun, 12 Jun 2022 13:35:32 GMT",
     "firstSeenAt": "2026-07-27T11:48:00.493Z",
-    "lastSeenAt": "2026-07-27T11:58:29.360Z",
+    "lastSeenAt": "2026-07-27T12:16:42.666Z",
     "updatedAt": "2026-07-27T11:48:00.493Z",
     "ext": "pdf",
     "size": 415701
-  },
-  "https://clal.bestcard.me/wp-content/uploads/2022/06/%D7%A2%D7%9C%D7%95%D7%9F-%D7%A0%D7%99%D7%95%D7%93%D7%99%D7%9D-%D7%91%D7%99%D7%98%D7%95%D7%97-%D7%97%D7%99%D7%99%D7%9D.pdf": {
-    "filename": "עלון-ניודים-ביטוח-חיים.pdf",
-    "hash": "06f80df4e7a685f4545020ed1fc21db0005571d4bbeb12e32d8177ce891508a5",
-    "etag": "\"62a5eba5-5f23a\"",
-    "lastModified": "Sun, 12 Jun 2022 13:35:33 GMT",
-    "firstSeenAt": "2026-07-27T11:48:00.781Z",
-    "lastSeenAt": "2026-07-27T11:58:29.489Z",
-    "updatedAt": "2026-07-27T11:48:00.782Z",
-    "ext": "pdf",
-    "size": 389690
   },
   "https://clal.bestcard.me/wp-content/uploads/2022/06/%D7%A2%D7%9C%D7%95%D7%9F-%D7%A0%D7%99%D7%95%D7%93%D7%99%D7%9D-%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C.pdf": {
     "filename": "עלון-ניודים-קופת-גמל.pdf",
@@ -533,7 +478,7 @@
     "etag": "\"62a5eba6-14c486\"",
     "lastModified": "Sun, 12 Jun 2022 13:35:34 GMT",
     "firstSeenAt": "2026-07-27T11:48:01.185Z",
-    "lastSeenAt": "2026-07-27T11:58:29.617Z",
+    "lastSeenAt": "2026-07-27T12:16:42.812Z",
     "updatedAt": "2026-07-27T11:48:01.185Z",
     "ext": "pdf",
     "size": 1361030
@@ -544,9 +489,64 @@
     "etag": "\"62a5eba4-4977b\"",
     "lastModified": "Sun, 12 Jun 2022 13:35:32 GMT",
     "firstSeenAt": "2026-07-27T11:48:01.479Z",
-    "lastSeenAt": "2026-07-27T11:58:29.749Z",
+    "lastSeenAt": "2026-07-27T12:16:42.956Z",
     "updatedAt": "2026-07-27T11:48:01.479Z",
     "ext": "pdf",
     "size": 300923
+  },
+  "https://clal.bestcard.me/wp-content/uploads/2020/05/13-2737-skira-calcalit_june_26-%D7%A1%D7%A7%D7%99%D7%A8%D7%94-%D7%9B%D7%9C%D7%9B%D7%9C%D7%99%D7%AA-%D7%90%D7%9E%D7%99%D7%A8-%D7%90%D7%A8%D7%92%D7%9E%D7%9F-06.26.pdf": {
+    "filename": "13-2737-skira-calcalit_june_26-סקירה-כלכלית-אמיר-ארגמן-06.26.pdf",
+    "hash": "03ff67dc3b560e3a0456031bb57fa9cd150e8ba3c30ce216b8730c33b2449c2e",
+    "etag": "\"6a4f28bc-36571\"",
+    "lastModified": "Thu, 09 Jul 2026 04:51:08 GMT",
+    "firstSeenAt": "2026-07-27T12:16:43.827Z",
+    "lastSeenAt": "2026-07-27T12:16:43.827Z",
+    "updatedAt": "2026-07-27T12:16:43.827Z",
+    "ext": "pdf",
+    "size": 222577
+  },
+  "https://clal.bestcard.me/wp-content/uploads/2020/05/13-2737-Macro_june_26-%D7%A0%D7%AA%D7%95%D7%A0%D7%99-%D7%A9%D7%95%D7%95%D7%A7%D7%99%D7%9D-%D7%A2%D7%99%D7%93%D7%95-%D7%91%D7%A8%D7%9E%D7%9F-06.26.pdf": {
+    "filename": "13-2737-Macro_june_26-נתוני-שווקים-עידו-ברמן-06.26.pdf",
+    "hash": "960729675a8ed6e151dd76d27608597476465f688744f00ae240f5acf0656536",
+    "etag": "\"6a4f28bc-2c237\"",
+    "lastModified": "Thu, 09 Jul 2026 04:51:08 GMT",
+    "firstSeenAt": "2026-07-27T12:16:44.320Z",
+    "lastSeenAt": "2026-07-27T12:16:44.320Z",
+    "updatedAt": "2026-07-27T12:16:44.320Z",
+    "ext": "pdf",
+    "size": 180791
+  },
+  "http://clal.bestcard.me/wp-content/uploads/2021/04/iban-swift-.pdf": {
+    "filename": "iban-swift-.pdf",
+    "hash": "e0c5b1ceb3199026fa8c636116466e1eaf292c470ed55472bdf439241efbd6ba",
+    "etag": "\"606af851-93d75\"",
+    "lastModified": "Mon, 05 Apr 2021 11:45:21 GMT",
+    "firstSeenAt": "2026-07-27T12:16:45.654Z",
+    "lastSeenAt": "2026-07-27T12:16:45.654Z",
+    "updatedAt": "2026-07-27T12:16:45.654Z",
+    "ext": "pdf",
+    "size": 605557
+  },
+  "http://clal.bestcard.me/wp-content/uploads/2020/03/%D7%90%D7%99%D7%A9%D7%95%D7%A8-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%AA%D7%9E%D7%A8-%D7%9B%D7%9C%D7%9C%D7%99-%D7%9C%D7%90%D7%95%D7%9E%D7%99.pdf": {
+    "filename": "אישור-חשבון-תמר-כללי-לאומי.pdf",
+    "hash": "0a65f3a33b0a2b378ecca7b6968222964435bf28113ac5dcb782f184ac7391b9",
+    "etag": "\"5e60faa4-1979b\"",
+    "lastModified": "Thu, 05 Mar 2020 13:12:04 GMT",
+    "firstSeenAt": "2026-07-27T12:16:46.656Z",
+    "lastSeenAt": "2026-07-27T12:16:46.656Z",
+    "updatedAt": "2026-07-27T12:16:46.656Z",
+    "ext": "pdf",
+    "size": 104347
+  },
+  "http://clal.bestcard.me/wp-content/uploads/2019/08/%D7%90%D7%99%D7%A9%D7%95%D7%A8-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%AA%D7%9E%D7%A8-%D7%9B%D7%9C%D7%9C%D7%99-%D7%90%D7%A0%D7%92%D7%9C%D7%99%D7%AA-%D7%9C%D7%90%D7%95%D7%9E%D7%99.pdf": {
+    "filename": "אישור-חשבון-תמר-כללי-אנגלית-לאומי.pdf",
+    "hash": "f6e32eaaa9a7b97a38677ebd338e65f64c90039a1074ca7d8798a02ee3b657fe",
+    "etag": "\"5d49564e-11d5f\"",
+    "lastModified": "Tue, 06 Aug 2019 10:28:30 GMT",
+    "firstSeenAt": "2026-07-27T12:16:47.736Z",
+    "lastSeenAt": "2026-07-27T12:16:47.736Z",
+    "updatedAt": "2026-07-27T12:16:47.736Z",
+    "ext": "pdf",
+    "size": 73055
   }
 }

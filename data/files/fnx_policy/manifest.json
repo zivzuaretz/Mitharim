@@ -5,7 +5,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:12:02.332Z",
-    "lastSeenAt": "2026-07-27T11:58:00.831Z",
+    "lastSeenAt": "2026-07-27T12:16:05.542Z",
     "updatedAt": "2026-05-25T19:12:02.332Z",
     "ext": "pdf",
     "size": 3767
@@ -16,19 +16,8 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:12:04.336Z",
-    "lastSeenAt": "2026-07-27T11:58:02.069Z",
+    "lastSeenAt": "2026-07-27T12:16:07.565Z",
     "updatedAt": "2026-06-05T22:10:40.375Z",
-    "ext": "xls",
-    "size": 3767
-  },
-  "https://www.fnx.co.il/Documents/premiot_nesiot_yomiot.xls": {
-    "filename": "premiot_nesiot_yomiot.xls",
-    "hash": "696762b81b0641d87e70049ba9eb710c6ab0204a244d91563110db96372d75f5",
-    "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
-    "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
-    "firstSeenAt": "2026-05-25T19:12:07.830Z",
-    "lastSeenAt": "2026-06-08T04:29:12.510Z",
-    "updatedAt": "2026-06-05T23:40:48.619Z",
     "ext": "xls",
     "size": 3767
   },
@@ -38,7 +27,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-31T17:25:05.871Z",
-    "lastSeenAt": "2026-07-27T11:58:00.445Z",
+    "lastSeenAt": "2026-07-27T12:16:05.107Z",
     "updatedAt": "2026-05-31T17:25:05.871Z",
     "ext": "pdf",
     "size": 3767
