@@ -22,6 +22,7 @@ const SNAPSHOTS_DIR = path.join(ROOT, 'data', 'snapshots');
 const LATEST_DIR = path.join(SNAPSHOTS_DIR, 'latest');
 const HISTORY_DIR = path.join(SNAPSHOTS_DIR, 'history');
 const FILES_DIR = path.join(ROOT, 'data', 'files');
+const SCREENSHOTS_DIR = path.join(ROOT, 'data', 'screenshots');
 
 // File-type extensions we treat as monitorable documents when they appear as
 // links inside an HTML page. Match against URL path or final query token.
@@ -170,6 +171,40 @@ const PERCENT_OR_SHEKEL_RE = /[%₪]/;
 const ANY_DIGIT_RE = /\d/;
 const URL_RE = /\bhttps?:\/\/\S+/i;
 const PDF_RE = /\bPDF\b|\.pdf\b/i;
+
+// Alert-level safety filter. This is intentionally applied to the actual
+// changed fragment/document metadata and text, never to the manufacturer or
+// host name (an insurer may publish perfectly relevant pension material).
+const HEALTH_DENY_PATTERNS = [
+  /מחלה|מחלות/i, /בריאות/i, /ביטוח(?:ים)?/i, /סיעוד(?:י|ית)?/i,
+  /רפוא(?:י|ית|יים|יות)?/i, /רפואה/i, /ניתוח(?:ים)?/i, /סרטן/i,
+  /\bhealth(?:care)?\b/i, /\binsurance\b/i, /\bmedical\b/i,
+  /\bdisease(?:s)?\b/i, /\bcancer\b/i, /\bsurger(?:y|ies)\b/i,
+  /\bnursing\b/i,
+];
+
+function containsHealthDeniedContent(...values) {
+  const text = values.flat(Infinity).filter(Boolean).join(' ');
+  return HEALTH_DENY_PATTERNS.some((re) => re.test(text));
+}
+
+function bucketsContainHealthDeniedContent(buckets) {
+  return containsHealthDeniedContent(
+    buckets?.added,
+    buckets?.removed,
+    (buckets?.updated || []).flatMap(({ from, to }) => [from, to]),
+  );
+}
+
+function filterHealthDeniedBuckets(buckets) {
+  return {
+    added: (buckets?.added || []).filter((text) => !containsHealthDeniedContent(text)),
+    removed: (buckets?.removed || []).filter((text) => !containsHealthDeniedContent(text)),
+    updated: (buckets?.updated || []).filter(
+      ({ from, to }) => !containsHealthDeniedContent(from, to),
+    ),
+  };
+}
 
 function countHebrewChars(text) {
   if (!text) return 0;
@@ -964,7 +999,11 @@ function extractDocumentLinks(html, pageUrl) {
       // Drop the fragment but keep the query — a query can identify a file.
       u.hash = '';
       const filename = path.basename(decodeURIComponent(u.pathname)) || 'document';
-      if (!found.has(u.href)) found.set(u.href, filename);
+      const title = [$(el).text(), $(el).attr('title'), $(el).attr('aria-label')]
+        .filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+      // Filter the document itself, not the insurer's site/domain.
+      if (containsHealthDeniedContent(filename, title)) return;
+      if (!found.has(u.href)) found.set(u.href, { filename, title });
     } catch {
       // Skip malformed URLs silently.
     }
@@ -972,7 +1011,7 @@ function extractDocumentLinks(html, pageUrl) {
 
   return Array.from(found.entries())
     .slice(0, MAX_FILES_PER_ITEM)
-    .map(([url, filename]) => ({ url, filename }));
+    .map(([url, details]) => ({ url, ...details }));
 }
 
 function fileExtension(filename) {
@@ -1083,7 +1122,7 @@ async function processItemFiles(item, links) {
   const seenHashes = new Set();
   const changes = [];
 
-  for (const { url, filename } of links) {
+  for (const { url, filename, title } of links) {
     seenUrls.add(url);
     const prev = manifest[url];
 
@@ -1218,6 +1257,8 @@ async function processItemFiles(item, links) {
         oldText, // kept on the change record so the alert dispatcher can run
         newText, // numeric extraction against the full file text
         hash,    // current file content hash — feeds the dedup key
+        filePath: targetPath,
+        title,
         prevHash: prev?.hash || null,
         ext: fileExtension(filename),
         size: buffer.length,
@@ -1611,6 +1652,73 @@ async function sendTelegramPhoto(filePath, caption) {
   }
 }
 
+function summarizePdfChangeHebrew(change, numericChanges = []) {
+  if (numericChanges.length) {
+    const lines = numericChanges.slice(0, 3).map((c) => {
+      const subject = [c.product, c.field].filter(Boolean).join(' — ') || 'נתון';
+      return `${subject}: ${c.oldValue} ← ${c.newValue}`;
+    });
+    return `עיקר השינוי: ${lines.join('; ')}`;
+  }
+  const source = change.type === 'updated'
+    ? [change.comparison?.buckets?.added, (change.comparison?.buckets?.updated || []).map((u) => u.to)].flat()
+    : [change.newText];
+  const text = source.filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+  if (text) return `עיקר המסמך: ${text.slice(0, 240)}${text.length > 240 ? '…' : ''}`;
+  const type = fileExtension(change.filename).toUpperCase() || 'PDF';
+  return `עיקר המסמך: קובץ ${type} בשם ${change.filename}; לא ניתן היה לחלץ ממנו טקסט.`;
+}
+
+async function capturePageScreenshot(url, itemId) {
+  const browser = await getPlaywrightBrowser();
+  const context = await browser.newContext({
+    userAgent: USER_AGENT, locale: 'he-IL', viewport: { width: 1280, height: 900 },
+  });
+  const page = await context.newPage();
+  const filePath = path.join(SCREENSHOTS_DIR, `${itemId}-${Date.now()}.png`);
+  try {
+    await page.goto(encodeURI(decodeURI(url)), { waitUntil: 'networkidle', timeout: REQUEST_TIMEOUT_MS });
+    await fse.ensureDir(SCREENSHOTS_DIR);
+    // A viewport image is small enough for Telegram and focuses on the page's
+    // current visible state. Full-page PNGs can exceed Telegram's photo limit.
+    await page.screenshot({ path: filePath, fullPage: false });
+    return filePath;
+  } finally {
+    await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+}
+
+async function attachPageScreenshot(item) {
+  let filePath;
+  try {
+    filePath = await capturePageScreenshot(item.url, item.id);
+    return await sendTelegramPhoto(filePath, 'צילום העמוד המעודכן');
+  } catch (err) {
+    log.warn(`Page screenshot failed for ${item.id}: ${err.message}`);
+    return { sent: false, reason: err.message };
+  } finally {
+    if (filePath) await fse.remove(filePath).catch(() => {});
+  }
+}
+
+async function attachPdfBuffer(buffer, item) {
+  const filename = `${item.id}.pdf`;
+  const validation = validateDocument(buffer, filename, 'application/pdf');
+  if (!validation.valid) return { sent: false, reason: validation.reason };
+  const tempPath = path.join(FILES_DIR, '.tmp', `${item.id}-${Date.now()}.pdf`);
+  try {
+    await fse.ensureDir(path.dirname(tempPath));
+    await fse.writeFile(tempPath, buffer);
+    return await sendTelegramDocument(tempPath, 'המסמך המעודכן');
+  } catch (err) {
+    log.warn(`PDF attachment failed for ${item.id}: ${err.message}`);
+    return { sent: false, reason: err.message };
+  } finally {
+    await fse.remove(tempPath).catch(() => {});
+  }
+}
+
 const IMPORTANCE_ICONS = {
   'גבוהה': '🔴',
   'בינונית': '🟡',
@@ -1795,13 +1903,19 @@ async function dispatchFileChangeAlerts(item, changes) {
       continue;
     }
     handled.add(logicalKey);
+    const deniedDocumentChange = containsHealthDeniedContent(change.filename, change.title) ||
+      (change.type === 'added' && containsHealthDeniedContent((change.newText || '').slice(0, 1200)));
+    if (deniedDocumentChange) {
+      log.noise(`Health/medical document suppressed: ${item.id} / ${change.filename}`);
+      continue;
+    }
     let numericChanges = [];
     // Filter PDF text diffs through the noise pipeline.
     if (change.type === 'updated' && change.comparison) {
-      const filtered = filterBuckets(change.comparison.buckets, {
+      const filtered = filterHealthDeniedBuckets(filterBuckets(change.comparison.buckets, {
         strict,
         phoenix: phx,
-      });
+      }));
       const survivors =
         filtered.added.length + filtered.updated.length + filtered.removed.length;
       const gateOk = !phx || passesPhoenixGate(item.id, filtered);
@@ -1840,13 +1954,29 @@ async function dispatchFileChangeAlerts(item, changes) {
       continue;
     }
 
+    const pdfSummary = /\.pdf$/i.test(change.filename)
+      ? summarizePdfChangeHebrew(change, numericChanges)
+      : null;
     const alertText = formatFileChangeAlert(item, change, new Date().toISOString(), {
       numericChanges,
       severity,
       alertLabel,
-    });
+    }) + (pdfSummary ? `\n\n${pdfSummary}` : '');
     const result = await sendTelegramMessage(alertText);
     if (result.sent) {
+      if (/\.pdf$/i.test(change.filename) && change.filePath) {
+        try {
+          const pdfBuffer = await fse.readFile(change.filePath);
+          const validation = validateDocument(pdfBuffer, change.filename, 'application/pdf');
+          if (validation.valid) {
+            await sendTelegramDocument(change.filePath, 'המסמך המעודכן');
+          } else {
+            log.warn(`PDF attachment skipped for ${item.id}: ${validation.reason}`);
+          }
+        } catch (err) {
+          log.warn(`PDF attachment failed for ${item.id}: ${err.message}`);
+        }
+      }
       await recordAlert(item.id, dedupHash, {
         type: `file_${change.type}`,
         label: alertLabel,
@@ -2014,7 +2144,9 @@ async function monitorItem(item) {
   // the Telegram alert.
   const strict = isStrictCategory(item.category);
   const phoenix = PHOENIX_ITEM_IDS.has(item.id);
-  const filteredBuckets = filterBuckets(comparison.buckets, { strict, phoenix });
+  const filteredBuckets = filterHealthDeniedBuckets(
+    filterBuckets(comparison.buckets, { strict, phoenix }),
+  );
   const survivors =
     filteredBuckets.added.length +
     filteredBuckets.updated.length +
@@ -2074,6 +2206,7 @@ async function monitorItem(item) {
     );
     const articleResult = await sendTelegramMessage(articleAlertText);
     if (articleResult.sent) {
+      if (kind === 'html') await attachPageScreenshot(item);
       await recordArticle(item.id, topic, summary);
       // Also record into the generic alert audit log so all sent alerts
       // share a single source of truth.
@@ -2135,13 +2268,21 @@ async function monitorItem(item) {
     };
   }
 
-  const alertText = formatHebrewAlert(item, filteredComparison, snapshot.capturedAt, {
+  let alertText = formatHebrewAlert(item, filteredComparison, snapshot.capturedAt, {
     numericChanges,
     severity,
     alertLabel,
   });
+  if (kind === 'pdf') {
+    alertText += `\n\n${summarizePdfChangeHebrew({
+      type: 'updated', filename: `${item.id}.pdf`, newText: cleanedText,
+      comparison: filteredComparison,
+    }, numericChanges)}`;
+  }
   const telegramResult = await sendTelegramMessage(alertText);
   if (telegramResult.sent) {
+    if (kind === 'html') await attachPageScreenshot(item);
+    if (kind === 'pdf') await attachPdfBuffer(buffer, item);
     await recordAlert(item.id, dedupHash, {
       type: 'page',
       label: alertLabel,
@@ -2256,6 +2397,9 @@ module.exports = {
   DOCUMENT_EXT_RE,
   validateDocument,
   validatePageContent,
+  containsHealthDeniedContent,
+  bucketsContainHealthDeniedContent,
+  summarizePdfChangeHebrew,
   // Business intelligence
   extractNumericChanges,
   detectBusinessField,
