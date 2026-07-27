@@ -5,7 +5,7 @@
     "etag": "W/\"126778-ckmn1E2Cqc9Da05tGZsiNuqnAtw\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:27.124Z",
-    "lastSeenAt": "2026-06-08T04:26:05.271Z",
+    "lastSeenAt": "2026-07-27T11:43:48.367Z",
     "updatedAt": "2026-05-25T19:07:27.124Z",
     "ext": "pdf",
     "size": 1206136
@@ -16,7 +16,7 @@
     "etag": "W/\"129fb0-+NEKBSKWzv1cFmmbAQIBh06LX9w\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:36.136Z",
-    "lastSeenAt": "2026-06-08T04:26:15.388Z",
+    "lastSeenAt": "2026-07-27T11:43:56.325Z",
     "updatedAt": "2026-05-25T19:07:36.136Z",
     "ext": "pdf",
     "size": 1220528
@@ -27,7 +27,7 @@
     "etag": "W/\"e1ae-iyycg/SM4VDrrN55r0z91E+cDes\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:36.867Z",
-    "lastSeenAt": "2026-06-08T04:26:15.929Z",
+    "lastSeenAt": "2026-07-27T11:43:56.772Z",
     "updatedAt": "2026-05-25T19:07:36.867Z",
     "ext": "pdf",
     "size": 57774
@@ -38,7 +38,7 @@
     "etag": "W/\"2522c-CvIqlmZ3X4Kp78Fwsmf0sYJkHk4\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:37.482Z",
-    "lastSeenAt": "2026-06-08T04:26:16.512Z",
+    "lastSeenAt": "2026-07-27T11:43:57.445Z",
     "updatedAt": "2026-05-25T19:07:37.482Z",
     "ext": "pdf",
     "size": 152108
@@ -49,7 +49,7 @@
     "etag": "W/\"223ef-rDT1IsIquIvvYeNk8T9fSklubDQ\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:38.138Z",
-    "lastSeenAt": "2026-06-08T04:26:17.131Z",
+    "lastSeenAt": "2026-07-27T11:43:57.974Z",
     "updatedAt": "2026-05-25T19:07:38.138Z",
     "ext": "pdf",
     "size": 140271
@@ -60,7 +60,7 @@
     "etag": "W/\"fa5a-ZZEX7NLIdQvVsDWAql3M/BwBw7g\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:38.646Z",
-    "lastSeenAt": "2026-06-08T04:26:17.669Z",
+    "lastSeenAt": "2026-07-27T11:43:58.586Z",
     "updatedAt": "2026-05-25T19:07:38.646Z",
     "ext": "pdf",
     "size": 64090
@@ -71,7 +71,7 @@
     "etag": "W/\"19219-P7yfr2tFC93qrG3Sos6gmlfoldc\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:39.449Z",
-    "lastSeenAt": "2026-06-08T04:26:18.423Z",
+    "lastSeenAt": "2026-07-27T11:43:59.152Z",
     "updatedAt": "2026-05-25T19:07:39.449Z",
     "ext": "pdf",
     "size": 102937
@@ -82,7 +82,7 @@
     "etag": "W/\"10ad2e-eOGNtFee/pPcTLVXedANnAp9qOU\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:40.865Z",
-    "lastSeenAt": "2026-06-08T04:26:20.361Z",
+    "lastSeenAt": "2026-07-27T11:44:00.552Z",
     "updatedAt": "2026-05-25T19:07:40.865Z",
     "ext": "pdf",
     "size": 1092910
@@ -93,21 +93,10 @@
     "etag": "W/\"529f3-ZLh/GrLmk+QNdqwcy4vHHIUeZg8\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:41.768Z",
-    "lastSeenAt": "2026-06-08T04:26:21.298Z",
+    "lastSeenAt": "2026-07-27T11:44:01.785Z",
     "updatedAt": "2026-06-06T21:51:30.206Z",
     "ext": "pdf",
     "size": 338419
-  },
-  "https://www.meitav.co.il/media/dxflwm2f/419773_alon_madad_gamish.pdf": {
-    "filename": "419773_alon_madad_gamish.pdf",
-    "hash": "ba920f6c879a8b2d6911f6106d3654a0a6cf9e37828bbdafe8d0570e6cae1f5c",
-    "etag": "W/\"22b57-Qg5F1Ga058gFZH7YRp21fYTe0Z0\"",
-    "lastModified": null,
-    "firstSeenAt": "2026-05-25T19:07:42.370Z",
-    "lastSeenAt": "2026-06-08T04:26:21.911Z",
-    "updatedAt": "2026-05-25T19:07:42.370Z",
-    "ext": "pdf",
-    "size": 142167
   },
   "https://www.meitav.co.il/media/rprp4nbd/417571_maslul25-menyot.pdf": {
     "filename": "417571_maslul25-menyot.pdf",
@@ -115,7 +104,7 @@
     "etag": "W/\"5deda-HG79NgmYli2gnIfl/hKX1mKLiJc\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:43.205Z",
-    "lastSeenAt": "2026-06-08T04:26:22.695Z",
+    "lastSeenAt": "2026-07-27T11:44:04.017Z",
     "updatedAt": "2026-06-05T14:16:55.443Z",
     "ext": "pdf",
     "size": 384730
@@ -126,7 +115,7 @@
     "etag": "W/\"a2e9d-RYL5dGwxIvTMzdFdF9MllTROEKQ\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:44.201Z",
-    "lastSeenAt": "2026-06-08T04:26:23.658Z",
+    "lastSeenAt": "2026-07-27T11:44:04.994Z",
     "updatedAt": "2026-05-25T19:07:44.201Z",
     "ext": "pdf",
     "size": 667293
@@ -137,7 +126,7 @@
     "etag": "W/\"9701f-qKpngPH/e1TWRz+png/cYjw3VnA\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:45.151Z",
-    "lastSeenAt": "2026-06-08T04:26:24.639Z",
+    "lastSeenAt": "2026-07-27T11:44:05.973Z",
     "updatedAt": "2026-05-25T19:07:45.151Z",
     "ext": "pdf",
     "size": 618527
@@ -148,7 +137,7 @@
     "etag": "W/\"6c739-9BVsCY0uoLhFPM9ctCu6YdxkKEU\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:45.983Z",
-    "lastSeenAt": "2026-06-08T04:26:25.461Z",
+    "lastSeenAt": "2026-07-27T11:44:06.819Z",
     "updatedAt": "2026-05-25T19:07:45.983Z",
     "ext": "pdf",
     "size": 444217
@@ -159,7 +148,7 @@
     "etag": "W/\"f4153-jasHrM/BOZ1plE3qZyMzTC+aOXM\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:47.318Z",
-    "lastSeenAt": "2026-06-08T04:26:26.697Z",
+    "lastSeenAt": "2026-07-27T11:44:08.101Z",
     "updatedAt": "2026-05-25T19:07:47.318Z",
     "ext": "pdf",
     "size": 999763
@@ -170,7 +159,7 @@
     "etag": "W/\"711128-SXoHXmHs7vHYx19vDFYVZURx54w\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:52.876Z",
-    "lastSeenAt": "2026-06-08T04:26:32.299Z",
+    "lastSeenAt": "2026-07-27T11:44:13.655Z",
     "updatedAt": "2026-05-25T19:07:52.876Z",
     "ext": "pdf",
     "size": 7409960
@@ -181,32 +170,10 @@
     "etag": "W/\"442fe7-eJoeKY7+cH17NMKWKXTPeaxaGZw\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:07:56.413Z",
-    "lastSeenAt": "2026-06-08T04:26:35.996Z",
+    "lastSeenAt": "2026-07-27T11:44:17.252Z",
     "updatedAt": "2026-05-25T19:07:56.413Z",
     "ext": "pdf",
     "size": 4468711
-  },
-  "https://www.meitav.co.il/media/fgtdyiq5/413913_hoveret_maslolim_gemel-pensia_c.pdf": {
-    "filename": "413913_hoveret_maslolim_gemel-pensia_c.pdf",
-    "hash": "a7cdcf6c43b701f075a9c655d48af2a530fafac09adf26487ad513c325f9224d",
-    "etag": "W/\"171b4e-rqhX1+gW1M3XAAyHjm2IOwTzAWw\"",
-    "lastModified": null,
-    "firstSeenAt": "2026-05-25T19:07:57.975Z",
-    "lastSeenAt": "2026-06-08T04:26:37.485Z",
-    "updatedAt": "2026-05-25T19:07:57.975Z",
-    "ext": "pdf",
-    "size": 1514318
-  },
-  "https://www.meitav.co.il/media/rjsgmjlv/420376_alon_pension_7.pdf": {
-    "filename": "420376_alon_pension_7.pdf",
-    "hash": "a049e6d7db113f7a687f5fb765fc96a2ae003985d9f73b635c973502f8780185",
-    "etag": "W/\"2ed478-tj0Ify7DZD0+OzM9W0K8xqKI6cE\"",
-    "lastModified": null,
-    "firstSeenAt": "2026-05-25T19:08:00.999Z",
-    "lastSeenAt": "2026-06-08T04:26:40.216Z",
-    "updatedAt": "2026-05-25T19:08:00.999Z",
-    "ext": "pdf",
-    "size": 3069048
   },
   "https://www.meitav.co.il/media/syalkegi/%D7%A2%D7%9C%D7%95%D7%9F-%D7%9E%D7%A1%D7%9C%D7%95%D7%9C-%D7%9E%D7%A0%D7%99%D7%95%D7%AA-%D7%9C%D7%9E%D7%A7%D7%91%D7%9C%D7%99-%D7%A7%D7%A6%D7%91%D7%94.pdf": {
     "filename": "עלון-מסלול-מניות-למקבלי-קצבה.pdf",
@@ -214,7 +181,7 @@
     "etag": "W/\"670de-hpokgXGdyZcLwFiKf2PlaOk2tNs\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:08:01.888Z",
-    "lastSeenAt": "2026-06-08T04:26:41.043Z",
+    "lastSeenAt": "2026-07-27T11:44:19.295Z",
     "updatedAt": "2026-05-25T19:08:01.888Z",
     "ext": "pdf",
     "size": 422110
@@ -225,21 +192,10 @@
     "etag": "W/\"8e98d-7tIIxf0harDMGeCCMrPq2INVQ5A\"",
     "lastModified": null,
     "firstSeenAt": "2026-05-25T19:08:03.326Z",
-    "lastSeenAt": "2026-06-08T04:26:42.002Z",
+    "lastSeenAt": "2026-07-27T11:44:20.197Z",
     "updatedAt": "2026-05-25T19:08:03.326Z",
     "ext": "pdf",
     "size": 584077
-  },
-  "https://www.meitav.co.il/media/13ocu2kx/%D7%A2%D7%9C%D7%95%D7%9F-%D7%A4%D7%A8%D7%99%D7%A9%D7%94-%D7%91%D7%9E%D7%99%D7%98%D7%91.pdf": {
-    "filename": "עלון-פרישה-במיטב.pdf",
-    "hash": "0c6f1038241790ac466df15b8ac3a9bffef55ffeedf2c7aa5f9f8405f208eebd",
-    "etag": "W/\"3d665-5qdoeMijeQBr4OV1wb7bJWgaCFc\"",
-    "lastModified": null,
-    "firstSeenAt": "2026-05-25T19:08:03.948Z",
-    "lastSeenAt": "2026-06-08T04:26:42.595Z",
-    "updatedAt": "2026-05-25T19:08:03.948Z",
-    "ext": "pdf",
-    "size": 251493
   },
   "https://www.meitav.co.il/media/juznzvpd/421082_forbes_a4_plyer-4tavla-1-1.pdf": {
     "filename": "421082_forbes_a4_plyer-4tavla-1-1.pdf",
@@ -247,75 +203,130 @@
     "etag": "W/\"15b40a-XYMFd8RZwwrtXE1hgZWB6CAFcsk\"",
     "lastModified": null,
     "firstSeenAt": "2026-06-07T10:55:54.554Z",
-    "lastSeenAt": "2026-06-08T04:26:03.813Z",
+    "lastSeenAt": "2026-07-27T11:43:47.038Z",
     "updatedAt": "2026-06-07T10:55:54.554Z",
     "ext": "pdf",
     "size": 1422346
   },
-  "https://www.meitav.co.il/media/kbwlak1c/421081_maslulim_sohen_may_2026.pdf": {
-    "filename": "421081_maslulim_sohen_may_2026.pdf",
-    "hash": "91b8b28ed0923da1e35a21531285bd48381dce777dbdb595a73b256fde594f92",
-    "etag": "W/\"2ede1b-2Gu8B3uG13TmDaEh784NyxHyTLA\"",
+  "https://www.meitav.co.il/media/jnxfnl0j/421742_product_page_okevmadadim-gamish.pdf": {
+    "filename": "421742_product_page_okevmadadim-gamish.pdf",
+    "hash": "fdb6ee6558ac7f06809a6dd64dab7fb377ba70d76b8c50a045cebac26a59f94a",
+    "etag": "W/\"8c2cd-XhtdHgxwg6KWGEFRud9y1RdOKCY\"",
     "lastModified": null,
-    "firstSeenAt": "2026-06-07T10:56:01.141Z",
-    "lastSeenAt": "2026-06-08T04:26:07.871Z",
-    "updatedAt": "2026-06-07T10:56:01.141Z",
+    "firstSeenAt": "2026-07-27T11:43:49.330Z",
+    "lastSeenAt": "2026-07-27T11:43:49.330Z",
+    "updatedAt": "2026-07-27T11:43:49.330Z",
     "ext": "pdf",
-    "size": 3071515
+    "size": 574157
   },
-  "https://www.meitav.co.il/media/wgwlttoz/421085_alon-meshulav_sahir_israel_may.pdf": {
-    "filename": "421085_alon-meshulav_sahir_israel_may.pdf",
-    "hash": "4cd49bf25ad3b4b996776b27ee9073dc9cad8ce8a6ef862ca0dae25a4d6ed0b7",
-    "etag": "W/\"8b1b9-wc9V4XD+7CmllciK77uZDH3CTKk\"",
+  "https://www.meitav.co.il/media/gwhporik/421679_maslulim_sohen_july_2026.pdf": {
+    "filename": "421679_maslulim_sohen_july_2026.pdf",
+    "hash": "cc09a68bb84fae4a4f8d8e519372812df6f02eb63771372b0c4eff8fbb4cd017",
+    "etag": "W/\"52041-d8u0Sokq4YmPnTQsN4YUL+bX7d0\"",
     "lastModified": null,
-    "firstSeenAt": "2026-06-07T10:56:02.757Z",
-    "lastSeenAt": "2026-06-08T04:26:08.830Z",
-    "updatedAt": "2026-06-07T10:56:02.757Z",
+    "firstSeenAt": "2026-07-27T11:43:50.371Z",
+    "lastSeenAt": "2026-07-27T11:43:50.371Z",
+    "updatedAt": "2026-07-27T11:43:50.371Z",
     "ext": "pdf",
-    "size": 569785
+    "size": 335937
   },
-  "https://www.meitav.co.il/media/keqe05u3/421084_madad-technology_may_2026.pdf": {
-    "filename": "421084_madad-technology_may_2026.pdf",
-    "hash": "1e0f9ecc738fc5af6e1c1b99bf2570fe2ba05809517d914e97fdb39ee26b55e5",
-    "etag": "W/\"73a18-nA/XIWYKaVMUCG4msP1tjLPeY4c\"",
+  "https://www.meitav.co.il/media/co1jwwse/421681_alon-meshulav_sahir_israel_july.pdf": {
+    "filename": "421681_alon-meshulav_sahir_israel_july.pdf",
+    "hash": "90109bce7b86ec2235ce062573bffa515052a467c8c4ebc34441d02d6b0ab794",
+    "etag": "W/\"26cf7-OJ6UsFPx/fA96bW7k/j+Bs/oM3M\"",
     "lastModified": null,
-    "firstSeenAt": "2026-06-07T10:56:04.099Z",
-    "lastSeenAt": "2026-06-08T04:26:09.597Z",
-    "updatedAt": "2026-06-07T10:56:04.099Z",
+    "firstSeenAt": "2026-07-27T11:43:51.109Z",
+    "lastSeenAt": "2026-07-27T11:43:51.109Z",
+    "updatedAt": "2026-07-27T11:43:51.109Z",
     "ext": "pdf",
-    "size": 473624
+    "size": 158967
   },
-  "https://www.meitav.co.il/media/r40irbp2/421083_alon_masluley_kayamot_april.pdf": {
-    "filename": "421083_alon_masluley_kayamot_april.pdf",
-    "hash": "cc5b7716c963588c13586da327db636f50aaf8c4a9b8ca877b5151821d141dec",
-    "etag": "W/\"f722f-ADccghKp7DzbOc4z16aucbv7+u8\"",
+  "https://www.meitav.co.il/media/c3wjk4in/421680_madad-technology_july_2026.pdf": {
+    "filename": "421680_madad-technology_july_2026.pdf",
+    "hash": "f7f12475ec8f9314f1313c150e3208c967670b2fd3567829597e780fa8955d24",
+    "etag": "W/\"92527-vKUo2zfXHkRETBaIwaDoX678kpc\"",
     "lastModified": null,
-    "firstSeenAt": "2026-06-07T10:56:06.282Z",
-    "lastSeenAt": "2026-06-08T04:26:11.355Z",
-    "updatedAt": "2026-06-07T10:56:06.282Z",
+    "firstSeenAt": "2026-07-27T11:43:52.263Z",
+    "lastSeenAt": "2026-07-27T11:43:52.263Z",
+    "updatedAt": "2026-07-27T11:43:52.263Z",
     "ext": "pdf",
-    "size": 1012271
+    "size": 599335
   },
-  "https://www.meitav.co.il/media/mfpbvajj/421086_meshulav_sahir_alon_may_26.pdf": {
-    "filename": "421086_meshulav_sahir_alon_may_26.pdf",
-    "hash": "48e11f74e9c73f433b491f43c4b870d4dfb504a51727e3dc40b5c48f93042589",
-    "etag": "W/\"15401f-Zo/a+UmWZ5ocxittewU4HIs9P+Y\"",
+  "https://www.meitav.co.il/media/xn3hpzkm/421678_alon_masluley_kayamot_july.pdf": {
+    "filename": "421678_alon_masluley_kayamot_july.pdf",
+    "hash": "592dd8e09dea1553e7bcde05af038c6017f03fc3ad28f2e464d72bc7904356ab",
+    "etag": "W/\"9193f-bxl9LjqsfgEno1MoRDN/T3/FJ/w\"",
     "lastModified": null,
-    "firstSeenAt": "2026-06-07T10:56:08.695Z",
-    "lastSeenAt": "2026-06-08T04:26:12.807Z",
-    "updatedAt": "2026-06-07T10:56:08.695Z",
+    "firstSeenAt": "2026-07-27T11:43:53.219Z",
+    "lastSeenAt": "2026-07-27T11:43:53.219Z",
+    "updatedAt": "2026-07-27T11:43:53.219Z",
     "ext": "pdf",
-    "size": 1392671
+    "size": 596287
   },
-  "https://www.meitav.co.il/media/yidlo3u3/421102_maslul-100-tsuot.pdf": {
-    "filename": "421102_maslul-100-tsuot.pdf",
-    "hash": "7cc400b07a0f4816c71e98fe0e6734380d3c9998ee44e90841027e6cd4255e62",
-    "etag": "W/\"d7537-T1PtRylrlssfAEH6XAdnRSY5BHk\"",
+  "https://www.meitav.co.il/media/5m4kkduw/421811_sahir_menayot_july26.pdf": {
+    "filename": "421811_sahir_menayot_july26.pdf",
+    "hash": "68cf3c2c7fd6d6944b88ea1487d1da6c6f271fc0e3bf6d5f861273ebd136714d",
+    "etag": "W/\"22e6e-JXB+kJGFli67p77mKqNfyDGAh4Q\"",
     "lastModified": null,
-    "firstSeenAt": "2026-06-07T10:56:10.674Z",
-    "lastSeenAt": "2026-06-08T04:26:13.923Z",
-    "updatedAt": "2026-06-07T10:56:10.674Z",
+    "firstSeenAt": "2026-07-27T11:43:53.873Z",
+    "lastSeenAt": "2026-07-27T11:43:53.873Z",
+    "updatedAt": "2026-07-27T11:43:53.873Z",
     "ext": "pdf",
-    "size": 881975
+    "size": 142958
+  },
+  "https://www.meitav.co.il/media/wcggzrn2/419856_daf_okef_madad_hbpluseng.pdf": {
+    "filename": "419856_daf_okef_madad_hbpluseng.pdf",
+    "hash": "92fe72c51749e25200f33c79b68c53f3ff42a6269a0b85e7a2d19836a9c5dc46",
+    "etag": "W/\"92710-aEPfyFD09U0jgjGJBMqTVZZYays\"",
+    "lastModified": null,
+    "firstSeenAt": "2026-07-27T11:43:54.848Z",
+    "lastSeenAt": "2026-07-27T11:43:54.848Z",
+    "updatedAt": "2026-07-27T11:43:54.848Z",
+    "ext": "pdf",
+    "size": 599824
+  },
+  "https://www.meitav.co.il/media/2dhhzh4m/%D7%94%D7%9C%D7%95%D7%95%D7%90%D7%95%D7%AA-%D7%9C%D7%A2%D7%9E%D7%99%D7%AA%D7%99%D7%9D-%D7%99%D7%A0%D7%95%D7%90%D7%A8-2026.pdf": {
+    "filename": "הלוואות-לעמיתים-ינואר-2026.pdf",
+    "hash": "b0b9ecbeadea77ebd9891aa84c194d08666be7b5831b78dfb88c3391340bfa16",
+    "etag": "W/\"5f55-zFuGeBmHOURg9m6TUuO+4WYFdlE\"",
+    "lastModified": null,
+    "firstSeenAt": "2026-07-27T11:44:01.008Z",
+    "lastSeenAt": "2026-07-27T11:44:01.008Z",
+    "updatedAt": "2026-07-27T11:44:01.008Z",
+    "ext": "pdf",
+    "size": 24405
+  },
+  "https://www.meitav.co.il/media/5vqmg5uw/421393_product_page_okevmadadim_b.pdf": {
+    "filename": "421393_product_page_okevmadadim_b.pdf",
+    "hash": "7d3a8e0b35a36c5ae6f15d04c6cae4be817ae41b1491a8dd074d419afaf6ca2a",
+    "etag": "W/\"effcf-sU72QvqqPsEIJZht2gqKTe3PKpM\"",
+    "lastModified": null,
+    "firstSeenAt": "2026-07-27T11:44:03.006Z",
+    "lastSeenAt": "2026-07-27T11:44:03.006Z",
+    "updatedAt": "2026-07-27T11:44:03.006Z",
+    "ext": "pdf",
+    "size": 982991
+  },
+  "https://www.meitav.co.il/media/lpvn0qvs/420376_alon_pension_g.pdf": {
+    "filename": "420376_alon_pension_g.pdf",
+    "hash": "57036ec3efcf11fc941fb6802e0482180eef84fdc74a8aef4892d9e452c4c160",
+    "etag": "W/\"c89aa-etGTyM9pESxDoYlD7rOcXqhwYhE\"",
+    "lastModified": null,
+    "firstSeenAt": "2026-07-27T11:44:18.440Z",
+    "lastSeenAt": "2026-07-27T11:44:18.440Z",
+    "updatedAt": "2026-07-27T11:44:18.440Z",
+    "ext": "pdf",
+    "size": 821674
+  },
+  "https://www.meitav.co.il/media/ss4mshho/421362_alon_prish2026.pdf": {
+    "filename": "421362_alon_prish2026.pdf",
+    "hash": "7e6a4b9730329bc9809ed5762e5105e76af7784138b440478f8ee86b0b67534f",
+    "etag": "W/\"15a4d2-xKG0uk3Mlt2zRWxi6qs+5A4ZhHw\"",
+    "lastModified": null,
+    "firstSeenAt": "2026-07-27T11:44:21.762Z",
+    "lastSeenAt": "2026-07-27T11:44:21.762Z",
+    "updatedAt": "2026-07-27T11:44:21.762Z",
+    "ext": "pdf",
+    "size": 1418450
   }
 }
