@@ -77,7 +77,14 @@ jobs:
           # Snapshots + downloaded files (manifest + binaries) ship back to
           # the repo. Anything else touched by the run (node_modules, caches,
           # etc.) is ignored.
-          git add data/snapshots data/files data/alerts data/articles data/pending
+          # Some state directories are created only when an alert/pending
+          # change exists. Stage each path only when it is present so a quiet
+          # baseline run does not fail on a missing optional directory.
+          for path in data/snapshots data/files data/alerts data/articles data/pending; do
+            if [ -e "$path" ]; then
+              git add -A -- "$path"
+            fi
+          done
 
           if git diff --staged --quiet; then
             echo "::notice::No snapshot changes — nothing to commit"
