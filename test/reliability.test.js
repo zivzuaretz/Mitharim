@@ -9,6 +9,7 @@ const {
   buildFileAlertKey,
   validateDocument,
   storedBaselineNeedsRepair,
+  isHistoricalFirstSeenDocument,
   validatePageContent,
   confirmPendingChange,
   clearPendingChange,
@@ -45,6 +46,14 @@ test('invalid or missing stored documents are repaired as baselines, not updates
   assert.equal(storedBaselineNeedsRepair(previous, null, 'old.pdf'), true);
   assert.equal(storedBaselineNeedsRepair(previous, fixture('valid-minimal.pdf'), 'old.pdf'), false);
   assert.equal(storedBaselineNeedsRepair(null, fixture('pdf-stub.html'), 'old.pdf'), false);
+});
+
+test('first-seen documents with an old Last-Modified date are silent baselines', () => {
+  const now = Date.parse('2026-07-27T20:00:00Z');
+  assert.equal(isHistoricalFirstSeenDocument('Sun, 26 Dec 2021 12:47:28 GMT', now), true);
+  assert.equal(isHistoricalFirstSeenDocument('Sun, 20 Jul 2026 12:47:28 GMT', now), false);
+  assert.equal(isHistoricalFirstSeenDocument(null, now), false);
+  assert.equal(isHistoricalFirstSeenDocument('not-a-date', now), false);
 });
 
 test('error/challenge and very short pages are never valid page content', () => {

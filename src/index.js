@@ -40,6 +40,7 @@ const FILE_HEAD_TIMEOUT_MS = 15_000;
 const FILE_GET_TIMEOUT_MS = 60_000;
 const MIN_DOCUMENT_BYTES = 256;
 const MIN_PDF_BYTES = 512;
+const HISTORICAL_DOCUMENT_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
 
 const REQUEST_TIMEOUT_MS = 30_000;
 const MAX_REDIRECTS = 5;
@@ -1108,6 +1109,13 @@ function storedBaselineNeedsRepair(previousEntry, storedBuffer, filename) {
   return !validateDocument(storedBuffer, previousEntry.filename || filename).valid;
 }
 
+function isHistoricalFirstSeenDocument(lastModified, nowMs = Date.now()) {
+  if (!lastModified) return false;
+  const modifiedMs = Date.parse(lastModified);
+  if (!Number.isFinite(modifiedMs) || modifiedMs > nowMs) return false;
+  return nowMs - modifiedMs > HISTORICAL_DOCUMENT_MAX_AGE_MS;
+}
+
 function safeArchiveStem(iso) {
   return iso.replace(/[:.]/g, '-');
 }
@@ -1288,7 +1296,12 @@ async function processItemFiles(item, links) {
       size: buffer.length,
     };
 
-    if (!isFirstRun) {
+    const historicalFirstSeen = isNew && isHistoricalFirstSeenDocument(lastModified);
+    if (historicalFirstSeen) {
+      log.noise(`Historical first-seen document baselined silently: ${item.id} / ${filename}`);
+    }
+
+    if (!isFirstRun && !historicalFirstSeen) {
       changes.push({
         type: isNew ? 'added' : 'updated',
         url,
@@ -2437,6 +2450,7 @@ module.exports = {
   DOCUMENT_EXT_RE,
   validateDocument,
   storedBaselineNeedsRepair,
+  isHistoricalFirstSeenDocument,
   validatePageContent,
   containsHealthDeniedContent,
   bucketsContainHealthDeniedContent,
