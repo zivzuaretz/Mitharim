@@ -42,6 +42,7 @@ const MIN_PDF_BYTES = 512;
 
 const REQUEST_TIMEOUT_MS = 30_000;
 const MAX_REDIRECTS = 5;
+const BASELINE_ONLY = /^(?:1|true|yes)$/i.test(process.env.MITHARIM_BASELINE_ONLY || '');
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 ' +
   '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
@@ -1947,7 +1948,11 @@ async function monitorItem(item) {
           log.ok(`  No file changes`);
         } else {
           log.info(`  ${fileResult.changes.length} file change(s) detected`);
-          await dispatchFileChangeAlerts(item, fileResult.changes);
+          if (BASELINE_ONLY) {
+            log.info(`  Baseline-only mode: file changes recorded without alerts`);
+          } else {
+            await dispatchFileChangeAlerts(item, fileResult.changes);
+          }
         }
       }
     } catch (err) {
@@ -1975,6 +1980,15 @@ async function monitorItem(item) {
     await saveSnapshot(item.id, snapshot);
     log.ok(`First snapshot stored for ${item.id} — no alert`);
     return { id: item.id, status: 'first' };
+  }
+
+  // Used once when re-enabling a long-paused monitor: advance every valid
+  // baseline and file manifest without sending historical catch-up alerts.
+  if (BASELINE_ONLY) {
+    await clearPendingChange(item.id);
+    if (previous.hash !== hash) await saveSnapshot(item.id, snapshot);
+    log.ok(`Baseline-only refresh completed: ${item.id}`);
+    return { id: item.id, status: 'baselined' };
   }
 
   if (previous.hash === hash) {

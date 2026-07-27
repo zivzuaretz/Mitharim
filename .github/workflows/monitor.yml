@@ -5,7 +5,13 @@ on:
     # Every 10 minutes. GitHub may delay scheduled workflows during high
     # platform load — actual cadence can drift to 15–20 min at peak times.
     - cron: '*/10 * * * *'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      baseline_only:
+        description: 'Refresh valid baselines without sending catch-up alerts'
+        required: false
+        type: boolean
+        default: false
 
 # Snapshots are committed back to the repo, so two runs editing data/ at the
 # same time would race. Queue runs instead of letting them overlap; the most
@@ -28,6 +34,7 @@ jobs:
       ANTHROPIC_API_KEY:   ${{ secrets.ANTHROPIC_API_KEY }}
       TELEGRAM_BOT_TOKEN:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+      MITHARIM_BASELINE_ONLY: ${{ github.event.inputs.baseline_only || 'false' }}
 
     steps:
       - name: Checkout repository
