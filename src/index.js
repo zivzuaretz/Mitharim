@@ -37,6 +37,8 @@ const MAX_FILES_PER_ITEM = 50;
 const MAX_FILE_BYTES = 30 * 1024 * 1024; // 30 MB
 const FILE_HEAD_TIMEOUT_MS = 15_000;
 const FILE_GET_TIMEOUT_MS = 60_000;
+const MIN_DOCUMENT_BYTES = 256;
+const MIN_PDF_BYTES = 512;
 
 const REQUEST_TIMEOUT_MS = 30_000;
 const MAX_REDIRECTS = 5;
@@ -48,6 +50,8 @@ const USER_AGENT =
 // Keeps minor rewordings, single-typo fixes, and rotating widget text quiet.
 const MIN_DIFF_CHARS = 30;
 const MIN_DIFF_RATIO = 0.003; // 0.3% of cleaned content
+const MIN_PAGE_TEXT_CHARS = 80;
+const CHALLENGE_RE = /(?:captcha|cloudflare|checking your browser|verify you are human|access denied|challenge-platform|cf-chl-|שגיאה זמנית)/i;
 
 // Selectors stripped from HTML before text extraction — site chrome that
 // changes constantly but never carries the signal we care about.
@@ -786,6 +790,7 @@ async function recordArticle(itemId, topic, summary) {
 
 const ALERT_STATE_DIR = path.join(ROOT, 'data', 'alerts');
 const ALERT_STATE_LIMIT = 100;
+const PENDING_STATE_DIR = path.join(ROOT, 'data', 'pending');
 
 function alertStateFile(itemId) {
   return path.join(ALERT_STATE_DIR, `${itemId}.json`);
@@ -826,10 +831,11 @@ function buildPageAlertKey(item, { numericChanges, buckets }) {
 }
 
 function buildFileAlertKey(item, change) {
-  const parts = [item.id, 'file', change.type, change.filename || ''];
+  const parts = [item.id, 'file', change.type];
   // Content hash uniquely identifies "updated to this version" and discriminates
   // between successive updates of the same file.
   if (change.hash) parts.push(change.hash);
+  else parts.push(change.filename || '');
   if (change.type === 'updated' && change.prevHash) parts.push(change.prevHash);
   const key = parts.join('||');
   return crypto.createHash('sha256').update(key).digest('hex');
@@ -865,6 +871,23 @@ async function recordAlert(itemId, hash, meta) {
     state.recent.length = ALERT_STATE_LIMIT;
   }
   await saveAlertState(itemId, state);
+}
+
+async function confirmPendingChange(itemId, hash) {
+  const file = path.join(PENDING_STATE_DIR, `${itemId}.json`);
+  let pending = null;
+  try { pending = await fse.readJson(file); } catch { /* absent/corrupt = no pending */ }
+  if (pending?.hash === hash) {
+    await fse.remove(file);
+    return true;
+  }
+  await fse.ensureDir(PENDING_STATE_DIR);
+  await fse.writeJson(file, { hash, firstSeenAt: new Date().toISOString() }, { spaces: 2 });
+  return false;
+}
+
+async function clearPendingChange(itemId) {
+  await fse.remove(path.join(PENDING_STATE_DIR, `${itemId}.json`));
 }
 
 // Human-facing alert type label for the "🏷️ סוג" line.
@@ -1005,9 +1028,38 @@ async function downloadBinaryFile(url) {
   });
   return {
     buffer: Buffer.from(r.data),
+    contentType: (r.headers['content-type'] || '').toLowerCase(),
     etag: r.headers.etag || null,
     lastModified: r.headers['last-modified'] || null,
   };
+}
+
+function validateDocument(buffer, filename, contentType = '') {
+  const ext = fileExtension(filename);
+  const prefix = buffer.slice(0, 16).toString('latin1');
+  const sample = buffer.slice(0, Math.min(buffer.length, 4096)).toString('utf8');
+  if (buffer.length < MIN_DOCUMENT_BYTES) return { valid: false, reason: 'too small' };
+  if (/^\s*(?:<!doctype\s+html|<html|<body)/i.test(sample) || CHALLENGE_RE.test(sample)) {
+    return { valid: false, reason: 'HTML/challenge response' };
+  }
+  if (ext === 'pdf') {
+    if (buffer.length < MIN_PDF_BYTES) return { valid: false, reason: 'PDF too small' };
+    if (!prefix.startsWith('%PDF-')) return { valid: false, reason: 'missing PDF magic' };
+    if (!buffer.slice(-2048).toString('latin1').includes('%%EOF')) {
+      return { valid: false, reason: 'incomplete PDF' };
+    }
+    if (contentType.includes('text/html')) return { valid: false, reason: 'PDF served as HTML' };
+  } else if (['xlsx', 'docx', 'pptx'].includes(ext) && !prefix.startsWith('PK\x03\x04')) {
+    return { valid: false, reason: 'missing ZIP document magic' };
+  } else if (['xls', 'doc'].includes(ext) && !buffer.slice(0, 8).equals(Buffer.from('d0cf11e0a1b11ae1', 'hex'))) {
+    return { valid: false, reason: 'missing OLE document magic' };
+  } else if (ext === 'csv') {
+    const controls = (sample.match(/[\u0000-\u0008\u000E-\u001F\uFFFD]/g) || []).length;
+    if (controls / Math.max(sample.length, 1) > 0.02) {
+      return { valid: false, reason: 'garbled CSV content' };
+    }
+  }
+  return { valid: true };
 }
 
 function safeArchiveStem(iso) {
@@ -1027,6 +1079,7 @@ async function processItemFiles(item, links) {
   const manifest = previousManifest || {};
 
   const seenUrls = new Set();
+  const seenHashes = new Set();
   const changes = [];
 
   for (const { url, filename } of links) {
@@ -1059,8 +1112,37 @@ async function processItemFiles(item, links) {
       continue;
     }
 
-    const { buffer, etag, lastModified } = downloaded;
+    const { buffer, etag, lastModified, contentType } = downloaded;
+    const validation = validateDocument(buffer, filename, contentType);
+    if (!validation.valid) {
+      log.warn(`Invalid document ignored for ${item.id}: ${url} — ${validation.reason}`);
+      continue;
+    }
     const hash = computeHash(buffer);
+
+    // Temporary vendor URLs (notably Yelin numeric.timestamp.pdf links) are
+    // identities of a request, not of a document. Reconcile them to existing
+    // content before deciding that a file was added/removed.
+    const matchingPair = Object.entries(manifest).find(([, entry]) => entry.hash === hash);
+    const matchingUrl = matchingPair?.[0];
+    const matchingEntry = matchingPair?.[1];
+    if (!prev && matchingEntry) {
+      if (matchingUrl !== url) delete manifest[matchingUrl];
+      manifest[url] = {
+        ...matchingEntry,
+        etag,
+        lastModified,
+        lastSeenAt: new Date().toISOString(),
+        sourceFilename: filename,
+      };
+      seenHashes.add(hash);
+      continue;
+    }
+    if (seenHashes.has(hash) && !prev) {
+      // Same bytes linked more than once in this page/run: keep one identity.
+      continue;
+    }
+    seenHashes.add(hash);
 
     if (prev && prev.hash === hash) {
       // Content unchanged even though HEAD didn't match — record fresh
@@ -1323,6 +1405,20 @@ function cleanHtml(html) {
   }
 
   return text.replace(/\s+/g, ' ').trim();
+}
+
+function validatePageContent({ buffer, isPdf, cleanedText, contentType = '' }) {
+  if (!buffer || buffer.length < MIN_DOCUMENT_BYTES) return { valid: false, reason: 'empty/very short response' };
+  const rawSample = buffer.slice(0, Math.min(buffer.length, 8192)).toString('utf8');
+  if (CHALLENGE_RE.test(rawSample)) return { valid: false, reason: 'captcha/challenge/error page' };
+  if (isPdf) {
+    const pdf = validateDocument(buffer, 'page.pdf', contentType);
+    if (!pdf.valid) return pdf;
+  }
+  if (!cleanedText || cleanedText.length < MIN_PAGE_TEXT_CHARS) return { valid: false, reason: 'empty/very short parsed content' };
+  const badChars = (cleanedText.match(/[\u0000-\u0008\uFFFD]/g) || []).length;
+  if (badChars / cleanedText.length > 0.02) return { valid: false, reason: 'garbled content' };
+  return { valid: true };
 }
 
 // ---------------------------------------------------------------------------
@@ -1689,8 +1785,15 @@ function formatFileChangeAlert(item, change, capturedAtIso, opts = {}) {
 async function dispatchFileChangeAlerts(item, changes) {
   const phx = PHOENIX_ITEM_IDS.has(item.id);
   const strict = isStrictCategory(item.category);
+  const handled = new Set();
 
   for (const change of changes) {
+    const logicalKey = [change.type, change.hash || '', change.prevHash || ''].join('|');
+    if (handled.has(logicalKey)) {
+      log.noise(`Duplicate file change suppressed in run: ${item.id} / ${change.filename}`);
+      continue;
+    }
+    handled.add(logicalKey);
     let numericChanges = [];
     // Filter PDF text diffs through the noise pipeline.
     if (change.type === 'updated' && change.comparison) {
@@ -1790,7 +1893,7 @@ async function monitorItem(item) {
     return { id: item.id, status: 'error', error: err.message };
   }
 
-  const { buffer, isPdf, status } = fetched;
+  const { buffer, isPdf, status, contentType } = fetched;
   let cleanedText;
   let kind;
   try {
@@ -1816,6 +1919,12 @@ async function monitorItem(item) {
     if (cleanedText.length !== beforeLen) {
       log.info(`  Phoenix privacy strip: ${beforeLen} → ${cleanedText.length} chars`);
     }
+  }
+
+  const pageValidation = validatePageContent({ buffer, isPdf, cleanedText, contentType });
+  if (!pageValidation.valid) {
+    log.warn(`Invalid page response ignored for ${item.id}: ${pageValidation.reason}`);
+    return { id: item.id, status: 'error', error: pageValidation.reason };
   }
 
   // ── Document monitoring (HTML pages only) ──────────────────────────────
@@ -1869,14 +1978,15 @@ async function monitorItem(item) {
   }
 
   if (previous.hash === hash) {
+    await clearPendingChange(item.id);
     log.ok(`No changes: ${item.id}`);
     return { id: item.id, status: 'unchanged' };
   }
 
   const comparison = compareSnapshots(previous.text || '', cleanedText);
-  await saveSnapshot(item.id, snapshot);
-
   if (!comparison.meaningful) {
+    await clearPendingChange(item.id);
+    await saveSnapshot(item.id, snapshot);
     log.info(
       `Minor change ignored: ${item.id} (Δ ${comparison.addedChars + comparison.removedChars} chars, ratio ${comparison.ratio.toFixed(4)})`
     );
@@ -1899,6 +2009,8 @@ async function monitorItem(item) {
   const gateOk = !phoenix || passesPhoenixGate(item.id, filteredBuckets);
 
   if (survivors === 0 || !gateOk) {
+    await clearPendingChange(item.id);
+    await saveSnapshot(item.id, snapshot);
     if (phoenix) {
       log.noise(`Phoenix privacy/modal noise ignored for ${item.id}`);
     } else {
@@ -1910,6 +2022,15 @@ async function monitorItem(item) {
   }
 
   const filteredComparison = { ...comparison, buckets: filteredBuckets };
+
+  // A transient but otherwise valid response must not alert or replace the
+  // baseline. Require the exact cleaned-content candidate on two consecutive
+  // successful runs; pending state is committed by CI.
+  if (!(await confirmPendingChange(item.id, hash))) {
+    log.info(`Change pending confirmation: ${item.id}`);
+    return { id: item.id, status: 'pending', comparison: filteredComparison };
+  }
+  await saveSnapshot(item.id, snapshot);
 
   // Strip site-chrome that survived the generic noise filter (year/quarter
   // selectors, "טווח / איפוס / סינון", report-table headers). Used to decide
@@ -2119,6 +2240,8 @@ module.exports = {
   dispatchFileChangeAlerts,
   DOCUMENT_EXTENSIONS,
   DOCUMENT_EXT_RE,
+  validateDocument,
+  validatePageContent,
   // Business intelligence
   extractNumericChanges,
   detectBusinessField,
@@ -2148,4 +2271,6 @@ module.exports = {
   buildFileAlertKey,
   buildArticleAlertKey,
   classifyAlertLabel,
+  confirmPendingChange,
+  clearPendingChange,
 };

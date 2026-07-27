@@ -70,7 +70,7 @@ jobs:
           # Snapshots + downloaded files (manifest + binaries) ship back to
           # the repo. Anything else touched by the run (node_modules, caches,
           # etc.) is ignored.
-          git add data/snapshots data/files
+          git add data/snapshots data/files data/alerts data/articles data/pending
 
           if git diff --staged --quiet; then
             echo "::notice::No snapshot changes — nothing to commit"
