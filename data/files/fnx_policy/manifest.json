@@ -5,21 +5,21 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:12:02.332Z",
-    "lastSeenAt": "2026-07-27T12:16:05.542Z",
+    "lastSeenAt": "2026-07-27T16:12:28.830Z",
     "updatedAt": "2026-05-25T19:12:02.332Z",
     "ext": "pdf",
     "size": 3767
   },
   "https://www.fnx.co.il/sites/docs/genery/DocLib9/annuity-factor.xls": {
     "filename": "annuity-factor.xls",
-    "hash": "696762b81b0641d87e70049ba9eb710c6ab0204a244d91563110db96372d75f5",
-    "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
-    "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
+    "hash": "aa623fad501d4f2c6b27e20b46e8a9c5875b9571f42b898fd20ecab7d1fed85a",
+    "etag": "\"{D8618A07-F440-4A27-A823-A9E6BD525626},5\"",
+    "lastModified": "Mon, 16 Oct 2023 10:27:01 GMT",
     "firstSeenAt": "2026-05-25T19:12:04.336Z",
-    "lastSeenAt": "2026-07-27T12:16:07.565Z",
-    "updatedAt": "2026-06-05T22:10:40.375Z",
+    "lastSeenAt": "2026-07-27T16:12:32.088Z",
+    "updatedAt": "2026-07-27T16:12:32.088Z",
     "ext": "xls",
-    "size": 3767
+    "size": 410112
   },
   "https://digital-content.fnx.co.il/Documents/fnx-equal-pay-law-public2025.pdf": {
     "filename": "fnx-equal-pay-law-public2025.pdf",
@@ -27,7 +27,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-31T17:25:05.871Z",
-    "lastSeenAt": "2026-07-27T12:16:05.107Z",
+    "lastSeenAt": "2026-07-27T16:12:28.171Z",
     "updatedAt": "2026-05-31T17:25:05.871Z",
     "ext": "pdf",
     "size": 3767
