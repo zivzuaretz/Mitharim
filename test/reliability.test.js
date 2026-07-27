@@ -8,6 +8,7 @@ const {
   computeHash,
   buildFileAlertKey,
   validateDocument,
+  storedBaselineNeedsRepair,
   validatePageContent,
   confirmPendingChange,
   clearPendingChange,
@@ -36,6 +37,14 @@ test('document validation rejects HTML PDF stubs and implausibly tiny PDFs', () 
   assert.equal(validateDocument(fixture('pdf-stub.html'), 'temporary.pdf', 'text/html').valid, false);
   assert.equal(validateDocument(Buffer.from('%PDF-1.4\n%%EOF'), 'tiny.pdf', 'application/pdf').valid, false);
   assert.equal(validateDocument(fixture('valid-minimal.pdf'), 'ok.pdf', 'application/pdf').valid, true);
+});
+
+test('invalid or missing stored documents are repaired as baselines, not updates', () => {
+  const previous = { filename: 'old.pdf', hash: 'old-stub-hash' };
+  assert.equal(storedBaselineNeedsRepair(previous, fixture('pdf-stub.html'), 'old.pdf'), true);
+  assert.equal(storedBaselineNeedsRepair(previous, null, 'old.pdf'), true);
+  assert.equal(storedBaselineNeedsRepair(previous, fixture('valid-minimal.pdf'), 'old.pdf'), false);
+  assert.equal(storedBaselineNeedsRepair(null, fixture('pdf-stub.html'), 'old.pdf'), false);
 });
 
 test('error/challenge and very short pages are never valid page content', () => {

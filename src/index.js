@@ -1102,6 +1102,12 @@ function validateDocument(buffer, filename, contentType = '') {
   return { valid: true };
 }
 
+function storedBaselineNeedsRepair(previousEntry, storedBuffer, filename) {
+  if (!previousEntry) return false;
+  if (!Buffer.isBuffer(storedBuffer)) return true;
+  return !validateDocument(storedBuffer, previousEntry.filename || filename).valid;
+}
+
 function safeArchiveStem(iso) {
   return iso.replace(/[:.]/g, '-');
 }
@@ -1196,8 +1202,42 @@ async function processItemFiles(item, links) {
       continue;
     }
 
-    // 3. New file or hash changed → archive old, save new.
+    // Older monitor versions sometimes saved an HTML/challenge stub under a
+    // .pdf filename. When the vendor later serves the real document, that is
+    // a baseline repair — not a newly updated file. Repair it silently so an
+    // old document cannot generate a false Telegram alert.
     const targetPath = path.join(itemFilesDir, filename);
+    if (prev && prev.hash !== hash) {
+      const previousPath = path.join(itemFilesDir, prev.filename || filename);
+      let storedBuffer = null;
+      try {
+        if (await fse.pathExists(previousPath)) storedBuffer = await fse.readFile(previousPath);
+      } catch (err) {
+        log.warn(`Stored baseline read failed for ${item.id}/${prev.filename || filename}: ${err.message}`);
+      }
+
+      if (storedBaselineNeedsRepair(prev, storedBuffer, filename)) {
+        const now = new Date().toISOString();
+        await fse.ensureDir(itemFilesDir);
+        if (previousPath !== targetPath) await fse.remove(previousPath);
+        await fse.writeFile(targetPath, buffer);
+        manifest[url] = {
+          ...prev,
+          filename,
+          hash,
+          etag,
+          lastModified,
+          lastSeenAt: now,
+          baselineRepairedAt: now,
+          ext: fileExtension(filename),
+          size: buffer.length,
+        };
+        log.noise(`Invalid stored baseline repaired silently: ${item.id} / ${filename}`);
+        continue;
+      }
+    }
+
+    // 3. New file or hash changed → archive old, save new.
     let oldText = null;
 
     if (prev && (await fse.pathExists(targetPath))) {
@@ -2396,6 +2436,7 @@ module.exports = {
   DOCUMENT_EXTENSIONS,
   DOCUMENT_EXT_RE,
   validateDocument,
+  storedBaselineNeedsRepair,
   validatePageContent,
   containsHealthDeniedContent,
   bucketsContainHealthDeniedContent,
