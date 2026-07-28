@@ -5,7 +5,7 @@
     "etag": "\"{8F2F2591-1A4F-4EAF-9ED0-40646ED66F26},6\"",
     "lastModified": "Thu, 04 Jul 2024 11:56:43 GMT",
     "firstSeenAt": "2026-05-25T19:08:31.495Z",
-    "lastSeenAt": "2026-07-28T04:29:14.785Z",
+    "lastSeenAt": "2026-07-28T07:19:57.295Z",
     "updatedAt": "2026-06-03T22:02:19.522Z",
     "ext": "pdf",
     "size": 137050
@@ -16,7 +16,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:08:32.765Z",
-    "lastSeenAt": "2026-07-28T04:29:15.509Z",
+    "lastSeenAt": "2026-07-28T07:19:58.063Z",
     "updatedAt": "2026-06-02T02:05:35.890Z",
     "ext": "pdf",
     "size": 3767
@@ -27,7 +27,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:08:36.323Z",
-    "lastSeenAt": "2026-07-28T04:29:16.608Z",
+    "lastSeenAt": "2026-07-28T07:19:58.632Z",
     "updatedAt": "2026-06-02T02:05:39.737Z",
     "ext": "pdf",
     "size": 3767
@@ -38,7 +38,7 @@
     "etag": "\"{4A2B5EAF-C90B-4742-94DB-40BDB722DC3F},3\"",
     "lastModified": "Tue, 04 Nov 2025 09:00:10 GMT",
     "firstSeenAt": "2026-05-25T19:08:37.697Z",
-    "lastSeenAt": "2026-07-28T04:29:18.898Z",
+    "lastSeenAt": "2026-07-28T07:20:00.857Z",
     "updatedAt": "2026-07-27T16:09:33.329Z",
     "ext": "pdf",
     "size": 181196
@@ -71,7 +71,7 @@
     "etag": "\"{D73F7678-37EB-48B8-B3FB-75B8C7F9EF4C},6\"",
     "lastModified": "Thu, 18 Jun 2026 10:57:48 GMT",
     "firstSeenAt": "2026-05-25T19:08:47.199Z",
-    "lastSeenAt": "2026-07-28T04:29:34.253Z",
+    "lastSeenAt": "2026-07-28T07:21:03.181Z",
     "updatedAt": "2026-07-27T11:45:03.550Z",
     "ext": "pdf",
     "size": 830390
@@ -82,7 +82,7 @@
     "etag": "\"{22AA7CB2-EC01-4645-86F9-7DBB1DD2DFA5},9\"",
     "lastModified": "Thu, 23 Jul 2026 12:29:28 GMT",
     "firstSeenAt": "2026-05-25T19:08:48.455Z",
-    "lastSeenAt": "2026-07-28T04:29:36.088Z",
+    "lastSeenAt": "2026-07-28T07:21:05.291Z",
     "updatedAt": "2026-07-27T11:45:05.161Z",
     "ext": "pdf",
     "size": 119333
@@ -93,7 +93,7 @@
     "etag": "\"{A5C45DCF-184B-4720-94DF-636A1E75AE6C},3\"",
     "lastModified": "Sun, 29 Jun 2025 11:22:15 GMT",
     "firstSeenAt": "2026-05-25T19:08:49.407Z",
-    "lastSeenAt": "2026-07-28T04:29:37.701Z",
+    "lastSeenAt": "2026-07-28T07:21:06.975Z",
     "updatedAt": "2026-06-02T02:05:50.605Z",
     "ext": "pdf",
     "size": 59534,
@@ -105,7 +105,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:09:05.215Z",
-    "lastSeenAt": "2026-07-28T04:29:38.416Z",
+    "lastSeenAt": "2026-07-28T07:21:07.735Z",
     "updatedAt": "2026-06-02T02:05:51.653Z",
     "ext": "pdf",
     "size": 3767
@@ -116,7 +116,7 @@
     "etag": "\"{4B4E51FA-E9C1-43FC-83C3-39D47534462E},21\"",
     "lastModified": "Tue, 30 Jul 2024 06:20:40 GMT",
     "firstSeenAt": "2026-05-25T19:09:07.894Z",
-    "lastSeenAt": "2026-07-28T04:29:43.373Z",
+    "lastSeenAt": "2026-07-28T07:21:12.117Z",
     "updatedAt": "2026-06-03T19:00:02.725Z",
     "ext": "pdf",
     "size": 683788
@@ -127,7 +127,7 @@
     "etag": "\"{456EF652-034A-4C0D-8927-2114F5B7C907},18\"",
     "lastModified": "Wed, 01 Jul 2026 08:38:29 GMT",
     "firstSeenAt": "2026-05-25T19:09:09.600Z",
-    "lastSeenAt": "2026-07-28T04:29:46.190Z",
+    "lastSeenAt": "2026-07-28T07:21:28.688Z",
     "updatedAt": "2026-06-02T02:05:56.951Z",
     "ext": "pdf",
     "size": 45809,
@@ -139,7 +139,7 @@
     "etag": "\"{8BD1243F-62CE-48D7-9DB9-A79F737AB5F8},12\"",
     "lastModified": "Tue, 08 Jul 2025 06:07:12 GMT",
     "firstSeenAt": "2026-05-25T19:09:12.037Z",
-    "lastSeenAt": "2026-07-28T04:31:27.379Z",
+    "lastSeenAt": "2026-07-28T07:22:12.744Z",
     "updatedAt": "2026-06-02T02:05:58.821Z",
     "ext": "pdf",
     "size": 139880,
@@ -151,7 +151,7 @@
     "etag": "\"{7C968FAC-8C3E-4276-8965-090A82B15644},6\"",
     "lastModified": "Thu, 07 May 2026 11:02:49 GMT",
     "firstSeenAt": "2026-05-25T19:09:14.004Z",
-    "lastSeenAt": "2026-07-28T04:29:49.209Z",
+    "lastSeenAt": "2026-07-28T07:21:31.719Z",
     "updatedAt": "2026-07-27T19:41:42.531Z",
     "ext": "pdf",
     "size": 46704
@@ -162,7 +162,7 @@
     "etag": "\"{87A9AD06-B16C-4816-8A75-CA898AC196B0},6\"",
     "lastModified": "Tue, 14 Nov 2023 08:07:02 GMT",
     "firstSeenAt": "2026-05-25T19:09:15.815Z",
-    "lastSeenAt": "2026-07-28T04:29:52.302Z",
+    "lastSeenAt": "2026-07-28T07:21:40.098Z",
     "updatedAt": "2026-06-02T02:06:03.434Z",
     "ext": "pdf",
     "size": 133742,
@@ -185,7 +185,7 @@
     "etag": "\"{B8F47C44-6E78-4CA7-9B7F-FDA63FC8CBD4},9\"",
     "lastModified": "Sun, 19 Jul 2026 14:53:04 GMT",
     "firstSeenAt": "2026-05-25T19:09:26.612Z",
-    "lastSeenAt": "2026-07-28T04:30:31.601Z",
+    "lastSeenAt": "2026-07-28T07:21:45.648Z",
     "updatedAt": "2026-07-27T11:45:21.139Z",
     "ext": "pdf",
     "size": 43533
@@ -196,7 +196,7 @@
     "etag": "\"{85466A5D-CC4C-45FE-B607-6B96B145C8A0},3\"",
     "lastModified": "Wed, 29 Jun 2022 07:36:00 GMT",
     "firstSeenAt": "2026-05-25T19:09:36.143Z",
-    "lastSeenAt": "2026-07-28T04:30:37.177Z",
+    "lastSeenAt": "2026-07-28T07:21:50.759Z",
     "updatedAt": "2026-07-27T17:57:56.523Z",
     "ext": "pdf",
     "size": 288902
@@ -207,7 +207,7 @@
     "etag": "\"{5748BB14-8ABD-4BEF-B1F2-6A59C922F3B6},3\"",
     "lastModified": "Wed, 26 Jun 2024 13:03:44 GMT",
     "firstSeenAt": "2026-05-25T19:09:38.331Z",
-    "lastSeenAt": "2026-07-28T04:30:40.129Z",
+    "lastSeenAt": "2026-07-28T07:21:54.101Z",
     "updatedAt": "2026-06-04T04:42:59.431Z",
     "ext": "pdf",
     "size": 249760
@@ -218,7 +218,7 @@
     "etag": "\"{1C7FF10B-DCCD-4452-9392-E7EDBF8B2001},3\"",
     "lastModified": "Wed, 06 Nov 2024 09:10:18 GMT",
     "firstSeenAt": "2026-05-25T19:09:40.122Z",
-    "lastSeenAt": "2026-07-28T04:30:43.183Z",
+    "lastSeenAt": "2026-07-28T07:21:57.364Z",
     "updatedAt": "2026-07-27T11:56:50.096Z",
     "ext": "pdf",
     "size": 211122
@@ -229,7 +229,7 @@
     "etag": "\"{8EBBFCFB-2507-4FF9-A58F-13CF642BC40D},3\"",
     "lastModified": "Thu, 05 Dec 2024 07:08:40 GMT",
     "firstSeenAt": "2026-05-25T19:09:42.033Z",
-    "lastSeenAt": "2026-07-28T04:30:46.161Z",
+    "lastSeenAt": "2026-07-28T07:22:00.749Z",
     "updatedAt": "2026-06-03T19:00:34.836Z",
     "ext": "pdf",
     "size": 222512
@@ -240,7 +240,7 @@
     "etag": "\"{4FE3D933-FAB4-430F-A171-0F43B0F7FC71},3\"",
     "lastModified": "Thu, 26 Mar 2026 13:54:31 GMT",
     "firstSeenAt": "2026-05-25T19:09:49.662Z",
-    "lastSeenAt": "2026-07-28T04:30:52.156Z",
+    "lastSeenAt": "2026-07-28T07:22:07.630Z",
     "updatedAt": "2026-06-07T17:26:19.987Z",
     "ext": "pdf",
     "size": 289932
@@ -251,21 +251,22 @@
     "etag": "\"{80C65C6E-A605-4D9E-A00E-AFD47C5BDE42},3\"",
     "lastModified": "Thu, 26 Mar 2026 13:54:01 GMT",
     "firstSeenAt": "2026-05-25T19:09:50.871Z",
-    "lastSeenAt": "2026-07-28T04:30:54.194Z",
+    "lastSeenAt": "2026-07-28T07:22:09.605Z",
     "updatedAt": "2026-06-03T22:03:27.153Z",
     "ext": "pdf",
     "size": 184339
   },
   "https://digital-content.fnx.co.il/Documents/%D7%A8%D7%99%D7%A1%D7%A7-%D7%91%D7%9E%D7%97%D7%99%D7%A8-%D7%A7%D7%91%D7%95%D7%A2-%D7%94%D7%A4%D7%A0%D7%99%D7%A7%D7%A1.pdf": {
     "filename": "ריסק-במחיר-קבוע-הפניקס.pdf",
-    "hash": "696762b81b0641d87e70049ba9eb710c6ab0204a244d91563110db96372d75f5",
-    "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
-    "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
+    "hash": "0bac94f89de21f938693a19711637595ae1243f5b4dd4160137abe6c418624bc",
+    "etag": "\"{EB181C34-EB18-4435-80AC-9A942BFB5C12},3\"",
+    "lastModified": "Mon, 04 Aug 2025 05:53:57 GMT",
     "firstSeenAt": "2026-05-25T19:10:01.528Z",
-    "lastSeenAt": "2026-07-28T04:31:34.414Z",
+    "lastSeenAt": "2026-07-28T07:22:37.624Z",
     "updatedAt": "2026-05-29T23:50:10.041Z",
     "ext": "pdf",
-    "size": 3767
+    "size": 14257,
+    "baselineRepairedAt": "2026-07-28T07:22:37.624Z"
   },
   "https://digital-content.fnx.co.il/Documents/fnx-sof-shana-briut-shipurim1124.pdf": {
     "filename": "fnx-sof-shana-briut-shipurim1124.pdf",
@@ -273,7 +274,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:11:23.646Z",
-    "lastSeenAt": "2026-07-28T04:31:34.964Z",
+    "lastSeenAt": "2026-07-28T07:22:38.402Z",
     "updatedAt": "2026-05-25T19:11:23.646Z",
     "ext": "pdf",
     "size": 3767
@@ -284,7 +285,7 @@
     "etag": "\"{3C205478-6A80-46BD-90F5-69F6C2D2B14C},15\"",
     "lastModified": "Mon, 10 Mar 2025 13:06:58 GMT",
     "firstSeenAt": "2026-05-25T19:11:28.528Z",
-    "lastSeenAt": "2026-07-27T23:35:20.026Z",
+    "lastSeenAt": "2026-07-28T07:22:41.988Z",
     "updatedAt": "2026-05-25T19:11:28.528Z",
     "ext": "pdf",
     "size": 172369,
@@ -296,7 +297,7 @@
     "etag": "\"{E07FCFC2-C28C-4CA3-AFAA-062342001E6B},3\"",
     "lastModified": "Wed, 06 Dec 2023 11:54:29 GMT",
     "firstSeenAt": "2026-05-25T19:11:40.737Z",
-    "lastSeenAt": "2026-07-27T23:35:22.134Z",
+    "lastSeenAt": "2026-07-28T07:22:44.273Z",
     "updatedAt": "2026-07-27T16:11:17.416Z",
     "ext": "pdf",
     "size": 88471
@@ -307,7 +308,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:11:41.853Z",
-    "lastSeenAt": "2026-07-28T04:31:39.829Z",
+    "lastSeenAt": "2026-07-28T07:22:45.028Z",
     "updatedAt": "2026-06-03T23:59:47.576Z",
     "ext": "pdf",
     "size": 3767
@@ -318,7 +319,7 @@
     "etag": "\"{89D0FAC0-7DD6-47DA-B3AE-75103632BAAD},15\"",
     "lastModified": "Sun, 06 Jul 2025 09:26:48 GMT",
     "firstSeenAt": "2026-05-25T20:46:53.999Z",
-    "lastSeenAt": "2026-07-28T04:29:56.486Z",
+    "lastSeenAt": "2026-07-28T07:21:42.496Z",
     "updatedAt": "2026-06-03T23:59:07.024Z",
     "ext": "pdf",
     "size": 78188
@@ -329,7 +330,7 @@
     "etag": "\"{D6B999C2-93AB-4D6E-B2D5-434C7DD40F92},3\"",
     "lastModified": "Wed, 29 Jun 2022 07:24:15 GMT",
     "firstSeenAt": "2026-05-25T20:46:59.697Z",
-    "lastSeenAt": "2026-07-28T04:30:34.031Z",
+    "lastSeenAt": "2026-07-28T07:21:47.653Z",
     "updatedAt": "2026-07-27T11:56:20.062Z",
     "ext": "pdf",
     "size": 34275
@@ -340,7 +341,7 @@
     "etag": "\"{94087925-AE88-4502-8732-B2540F1864D8},3\"",
     "lastModified": "Thu, 05 Dec 2024 07:09:03 GMT",
     "firstSeenAt": "2026-05-25T20:47:12.520Z",
-    "lastSeenAt": "2026-07-28T04:30:49.951Z",
+    "lastSeenAt": "2026-07-28T07:22:05.350Z",
     "updatedAt": "2026-06-03T19:00:43.225Z",
     "ext": "pdf",
     "size": 1615603
@@ -362,7 +363,7 @@
     "etag": "\"{2767C001-93F2-4B16-B713-1EE9A9807B56},6\"",
     "lastModified": "Mon, 29 Jun 2026 11:30:29 GMT",
     "firstSeenAt": "2026-07-27T11:45:55.581Z",
-    "lastSeenAt": "2026-07-28T04:31:29.023Z",
+    "lastSeenAt": "2026-07-28T07:22:14.412Z",
     "updatedAt": "2026-07-27T11:45:55.581Z",
     "ext": "pdf",
     "size": 56026
@@ -373,7 +374,7 @@
     "etag": "\"{E1E43AB1-720C-495A-A002-C8F6154FED62},6\"",
     "lastModified": "Tue, 24 Sep 2024 10:09:06 GMT",
     "firstSeenAt": "2026-07-27T12:14:42.425Z",
-    "lastSeenAt": "2026-07-28T01:09:13.626Z",
+    "lastSeenAt": "2026-07-28T07:22:52.840Z",
     "updatedAt": "2026-07-27T12:14:42.425Z",
     "ext": "pdf",
     "size": 989148
@@ -472,7 +473,7 @@
     "etag": "\"{3B6283A6-B291-4764-9487-349475055200},3\"",
     "lastModified": "Sun, 04 Feb 2024 06:46:14 GMT",
     "firstSeenAt": "2026-07-27T16:11:22.183Z",
-    "lastSeenAt": "2026-07-28T04:31:43.511Z",
+    "lastSeenAt": "2026-07-28T07:22:48.906Z",
     "updatedAt": "2026-07-27T16:11:22.183Z",
     "ext": "pdf",
     "size": 347312
