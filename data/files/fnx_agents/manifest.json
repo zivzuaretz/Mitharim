@@ -5,7 +5,7 @@
     "etag": "\"{8F2F2591-1A4F-4EAF-9ED0-40646ED66F26},6\"",
     "lastModified": "Thu, 04 Jul 2024 11:56:43 GMT",
     "firstSeenAt": "2026-05-25T19:08:31.495Z",
-    "lastSeenAt": "2026-07-28T10:03:13.700Z",
+    "lastSeenAt": "2026-07-28T12:09:29.239Z",
     "updatedAt": "2026-06-03T22:02:19.522Z",
     "ext": "pdf",
     "size": 137050
@@ -16,21 +16,22 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:08:32.765Z",
-    "lastSeenAt": "2026-07-28T10:03:13.858Z",
+    "lastSeenAt": "2026-07-28T12:09:29.926Z",
     "updatedAt": "2026-06-02T02:05:35.890Z",
     "ext": "pdf",
     "size": 3767
   },
   "https://digital-content.fnx.co.il/Documents/%D7%94%D7%95%D7%A8%D7%90%D7%AA-%D7%A7%D7%91%D7%A2-%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C%D7%99%D7%AA-%D7%9E%D7%99%D7%93%D7%A2%D7%95%D7%9F%20%D7%9C%D7%A1%D7%95%D7%9B%D7%A0%D7%99%D7%9D.pdf": {
     "filename": "הוראת-קבע-דיגיטלית-מידעון לסוכנים.pdf",
-    "hash": "696762b81b0641d87e70049ba9eb710c6ab0204a244d91563110db96372d75f5",
-    "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
-    "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
+    "hash": "6df3521848e6634f6126b2b29f28e70c53f697fa0bb31de29fdef8d9a5be91e0",
+    "etag": "\"{2D8306B8-E70D-4D9A-B810-9FAD7A45AF2F},3\"",
+    "lastModified": "Wed, 25 Mar 2026 12:08:03 GMT",
     "firstSeenAt": "2026-05-25T19:08:36.323Z",
-    "lastSeenAt": "2026-07-28T10:03:14.555Z",
+    "lastSeenAt": "2026-07-28T12:09:46.228Z",
     "updatedAt": "2026-06-02T02:05:39.737Z",
     "ext": "pdf",
-    "size": 3767
+    "size": 181124,
+    "baselineRepairedAt": "2026-07-28T12:09:46.228Z"
   },
   "https://digital-content.fnx.co.il/Documents/fnx-deposit-revolution.pdf": {
     "filename": "fnx-deposit-revolution.pdf",
@@ -38,7 +39,7 @@
     "etag": "\"{4A2B5EAF-C90B-4742-94DB-40BDB722DC3F},3\"",
     "lastModified": "Tue, 04 Nov 2025 09:00:10 GMT",
     "firstSeenAt": "2026-05-25T19:08:37.697Z",
-    "lastSeenAt": "2026-07-28T10:03:15.821Z",
+    "lastSeenAt": "2026-07-28T12:09:48.219Z",
     "updatedAt": "2026-07-27T16:09:33.329Z",
     "ext": "pdf",
     "size": 181196
@@ -49,7 +50,7 @@
     "etag": "\"{22E2D135-F93E-465F-A99C-CD5FAE6DFF9C},142\"",
     "lastModified": "Sun, 28 Jun 2026 09:30:11 GMT",
     "firstSeenAt": "2026-05-25T19:08:40.368Z",
-    "lastSeenAt": "2026-07-28T10:03:22.583Z",
+    "lastSeenAt": "2026-07-28T12:09:52.111Z",
     "updatedAt": "2026-07-27T16:09:43.347Z",
     "ext": "pdf",
     "size": 704337
@@ -60,7 +61,7 @@
     "etag": "\"{54EB8C2F-E4A5-42DB-B328-766096067912},3\"",
     "lastModified": "Sun, 30 Jan 2022 08:54:33 GMT",
     "firstSeenAt": "2026-05-25T19:08:43.979Z",
-    "lastSeenAt": "2026-07-28T10:03:41.214Z",
+    "lastSeenAt": "2026-07-28T12:09:57.004Z",
     "updatedAt": "2026-06-03T18:59:50.429Z",
     "ext": "pdf",
     "size": 6243779
@@ -71,7 +72,7 @@
     "etag": "\"{D73F7678-37EB-48B8-B3FB-75B8C7F9EF4C},6\"",
     "lastModified": "Thu, 18 Jun 2026 10:57:48 GMT",
     "firstSeenAt": "2026-05-25T19:08:47.199Z",
-    "lastSeenAt": "2026-07-28T10:03:58.100Z",
+    "lastSeenAt": "2026-07-28T12:10:00.825Z",
     "updatedAt": "2026-07-27T11:45:03.550Z",
     "ext": "pdf",
     "size": 830390
@@ -82,7 +83,7 @@
     "etag": "\"{22AA7CB2-EC01-4645-86F9-7DBB1DD2DFA5},9\"",
     "lastModified": "Thu, 23 Jul 2026 12:29:28 GMT",
     "firstSeenAt": "2026-05-25T19:08:48.455Z",
-    "lastSeenAt": "2026-07-28T10:03:59.454Z",
+    "lastSeenAt": "2026-07-28T12:10:02.666Z",
     "updatedAt": "2026-07-27T11:45:05.161Z",
     "ext": "pdf",
     "size": 119333
@@ -93,7 +94,7 @@
     "etag": "\"{A5C45DCF-184B-4720-94DF-636A1E75AE6C},3\"",
     "lastModified": "Sun, 29 Jun 2025 11:22:15 GMT",
     "firstSeenAt": "2026-05-25T19:08:49.407Z",
-    "lastSeenAt": "2026-07-28T10:04:00.604Z",
+    "lastSeenAt": "2026-07-28T12:10:04.303Z",
     "updatedAt": "2026-06-02T02:05:50.605Z",
     "ext": "pdf",
     "size": 59534,
@@ -105,7 +106,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:09:05.215Z",
-    "lastSeenAt": "2026-07-28T10:04:00.754Z",
+    "lastSeenAt": "2026-07-28T12:10:05.017Z",
     "updatedAt": "2026-06-02T02:05:51.653Z",
     "ext": "pdf",
     "size": 3767
@@ -127,7 +128,7 @@
     "etag": "\"{456EF652-034A-4C0D-8927-2114F5B7C907},18\"",
     "lastModified": "Wed, 01 Jul 2026 08:38:29 GMT",
     "firstSeenAt": "2026-05-25T19:09:09.600Z",
-    "lastSeenAt": "2026-07-28T07:21:28.688Z",
+    "lastSeenAt": "2026-07-28T12:10:16.923Z",
     "updatedAt": "2026-06-02T02:05:56.951Z",
     "ext": "pdf",
     "size": 45809,
@@ -139,7 +140,7 @@
     "etag": "\"{8BD1243F-62CE-48D7-9DB9-A79F737AB5F8},12\"",
     "lastModified": "Tue, 08 Jul 2025 06:07:12 GMT",
     "firstSeenAt": "2026-05-25T19:09:12.037Z",
-    "lastSeenAt": "2026-07-28T07:22:12.744Z",
+    "lastSeenAt": "2026-07-28T12:11:30.621Z",
     "updatedAt": "2026-06-02T02:05:58.821Z",
     "ext": "pdf",
     "size": 139880,
@@ -174,7 +175,7 @@
     "etag": "\"{FD88F04E-34FC-4B6D-A641-F5D522C9A96A},3\"",
     "lastModified": "Sun, 02 Jul 2023 11:50:41 GMT",
     "firstSeenAt": "2026-05-25T19:09:24.829Z",
-    "lastSeenAt": "2026-07-28T04:30:09.596Z",
+    "lastSeenAt": "2026-07-28T12:10:43.946Z",
     "updatedAt": "2026-07-27T19:42:07.778Z",
     "ext": "pdf",
     "size": 37715
@@ -185,7 +186,7 @@
     "etag": "\"{B8F47C44-6E78-4CA7-9B7F-FDA63FC8CBD4},9\"",
     "lastModified": "Sun, 19 Jul 2026 14:53:04 GMT",
     "firstSeenAt": "2026-05-25T19:09:26.612Z",
-    "lastSeenAt": "2026-07-28T07:21:45.648Z",
+    "lastSeenAt": "2026-07-28T12:10:46.823Z",
     "updatedAt": "2026-07-27T11:45:21.139Z",
     "ext": "pdf",
     "size": 43533
@@ -207,7 +208,7 @@
     "etag": "\"{5748BB14-8ABD-4BEF-B1F2-6A59C922F3B6},3\"",
     "lastModified": "Wed, 26 Jun 2024 13:03:44 GMT",
     "firstSeenAt": "2026-05-25T19:09:38.331Z",
-    "lastSeenAt": "2026-07-28T07:21:54.101Z",
+    "lastSeenAt": "2026-07-28T12:10:59.921Z",
     "updatedAt": "2026-06-04T04:42:59.431Z",
     "ext": "pdf",
     "size": 249760
@@ -218,7 +219,7 @@
     "etag": "\"{1C7FF10B-DCCD-4452-9392-E7EDBF8B2001},3\"",
     "lastModified": "Wed, 06 Nov 2024 09:10:18 GMT",
     "firstSeenAt": "2026-05-25T19:09:40.122Z",
-    "lastSeenAt": "2026-07-28T07:21:57.364Z",
+    "lastSeenAt": "2026-07-28T12:11:03.196Z",
     "updatedAt": "2026-07-27T11:56:50.096Z",
     "ext": "pdf",
     "size": 211122
@@ -229,7 +230,7 @@
     "etag": "\"{8EBBFCFB-2507-4FF9-A58F-13CF642BC40D},3\"",
     "lastModified": "Thu, 05 Dec 2024 07:08:40 GMT",
     "firstSeenAt": "2026-05-25T19:09:42.033Z",
-    "lastSeenAt": "2026-07-28T07:22:00.749Z",
+    "lastSeenAt": "2026-07-28T12:11:06.452Z",
     "updatedAt": "2026-06-03T19:00:34.836Z",
     "ext": "pdf",
     "size": 222512
@@ -240,7 +241,7 @@
     "etag": "\"{4FE3D933-FAB4-430F-A171-0F43B0F7FC71},3\"",
     "lastModified": "Thu, 26 Mar 2026 13:54:31 GMT",
     "firstSeenAt": "2026-05-25T19:09:49.662Z",
-    "lastSeenAt": "2026-07-28T10:04:14.899Z",
+    "lastSeenAt": "2026-07-28T12:11:18.544Z",
     "updatedAt": "2026-06-07T17:26:19.987Z",
     "ext": "pdf",
     "size": 289932
@@ -251,7 +252,7 @@
     "etag": "\"{80C65C6E-A605-4D9E-A00E-AFD47C5BDE42},3\"",
     "lastModified": "Thu, 26 Mar 2026 13:54:01 GMT",
     "firstSeenAt": "2026-05-25T19:09:50.871Z",
-    "lastSeenAt": "2026-07-28T10:04:16.283Z",
+    "lastSeenAt": "2026-07-28T12:11:20.565Z",
     "updatedAt": "2026-06-03T22:03:27.153Z",
     "ext": "pdf",
     "size": 184339
@@ -262,7 +263,7 @@
     "etag": "\"{EB181C34-EB18-4435-80AC-9A942BFB5C12},3\"",
     "lastModified": "Mon, 04 Aug 2025 05:53:57 GMT",
     "firstSeenAt": "2026-05-25T19:10:01.528Z",
-    "lastSeenAt": "2026-07-28T10:04:19.621Z",
+    "lastSeenAt": "2026-07-28T12:11:41.964Z",
     "updatedAt": "2026-05-29T23:50:10.041Z",
     "ext": "pdf",
     "size": 14257,
@@ -274,7 +275,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:11:23.646Z",
-    "lastSeenAt": "2026-07-28T10:04:19.765Z",
+    "lastSeenAt": "2026-07-28T12:11:42.657Z",
     "updatedAt": "2026-05-25T19:11:23.646Z",
     "ext": "pdf",
     "size": 3767
@@ -285,7 +286,7 @@
     "etag": "\"{3C205478-6A80-46BD-90F5-69F6C2D2B14C},15\"",
     "lastModified": "Mon, 10 Mar 2025 13:06:58 GMT",
     "firstSeenAt": "2026-05-25T19:11:28.528Z",
-    "lastSeenAt": "2026-07-28T07:22:41.988Z",
+    "lastSeenAt": "2026-07-28T12:11:48.442Z",
     "updatedAt": "2026-05-25T19:11:28.528Z",
     "ext": "pdf",
     "size": 172369,
@@ -308,7 +309,7 @@
     "etag": "W/\"80215ecd8d7d08f17dc73c38698aa128\"",
     "lastModified": "Tue, 01 Oct 2024 15:58:52 GMT",
     "firstSeenAt": "2026-05-25T19:11:41.853Z",
-    "lastSeenAt": "2026-07-28T10:04:21.325Z",
+    "lastSeenAt": "2026-07-28T12:12:17.475Z",
     "updatedAt": "2026-06-03T23:59:47.576Z",
     "ext": "pdf",
     "size": 3767
@@ -319,7 +320,7 @@
     "etag": "\"{89D0FAC0-7DD6-47DA-B3AE-75103632BAAD},15\"",
     "lastModified": "Sun, 06 Jul 2025 09:26:48 GMT",
     "firstSeenAt": "2026-05-25T20:46:53.999Z",
-    "lastSeenAt": "2026-07-28T07:21:42.496Z",
+    "lastSeenAt": "2026-07-28T12:10:40.617Z",
     "updatedAt": "2026-06-03T23:59:07.024Z",
     "ext": "pdf",
     "size": 78188
@@ -330,7 +331,7 @@
     "etag": "\"{D6B999C2-93AB-4D6E-B2D5-434C7DD40F92},3\"",
     "lastModified": "Wed, 29 Jun 2022 07:24:15 GMT",
     "firstSeenAt": "2026-05-25T20:46:59.697Z",
-    "lastSeenAt": "2026-07-28T07:21:47.653Z",
+    "lastSeenAt": "2026-07-28T12:10:49.103Z",
     "updatedAt": "2026-07-27T11:56:20.062Z",
     "ext": "pdf",
     "size": 34275
@@ -341,7 +342,7 @@
     "etag": "\"{94087925-AE88-4502-8732-B2540F1864D8},3\"",
     "lastModified": "Thu, 05 Dec 2024 07:09:03 GMT",
     "firstSeenAt": "2026-05-25T20:47:12.520Z",
-    "lastSeenAt": "2026-07-28T07:22:05.350Z",
+    "lastSeenAt": "2026-07-28T12:11:16.465Z",
     "updatedAt": "2026-06-03T19:00:43.225Z",
     "ext": "pdf",
     "size": 1615603
@@ -363,7 +364,7 @@
     "etag": "\"{2767C001-93F2-4B16-B713-1EE9A9807B56},6\"",
     "lastModified": "Mon, 29 Jun 2026 11:30:29 GMT",
     "firstSeenAt": "2026-07-27T11:45:55.581Z",
-    "lastSeenAt": "2026-07-28T10:04:18.057Z",
+    "lastSeenAt": "2026-07-28T12:11:32.543Z",
     "updatedAt": "2026-07-27T11:45:55.581Z",
     "ext": "pdf",
     "size": 56026
@@ -451,7 +452,7 @@
     "etag": "\"{3E45C93A-A96A-4EED-AB38-97065B3EDC29},3\"",
     "lastModified": "Wed, 27 Aug 2025 06:03:40 GMT",
     "firstSeenAt": "2026-07-27T13:51:33.368Z",
-    "lastSeenAt": "2026-07-28T10:04:24.464Z",
+    "lastSeenAt": "2026-07-28T12:12:22.785Z",
     "updatedAt": "2026-07-27T13:51:33.368Z",
     "ext": "pdf",
     "size": 65728
@@ -532,5 +533,16 @@
     "updatedAt": "2026-07-27T21:18:54.944Z",
     "ext": "pdf",
     "size": 121454
+  },
+  "https://www.fnx.co.il/Documents/tavlat-perut-heshbonot%20bank_141223.pdf": {
+    "filename": "tavlat-perut-heshbonot bank_141223.pdf",
+    "hash": "6533fa7dc0eb4e903fa2595fa300b674e72ad7d880897ed2891220a0d13cb1e6",
+    "etag": "\"{6AB45938-CA5D-4C19-81CB-F08F8AC236E0},21\"",
+    "lastModified": "Sun, 01 Feb 2026 07:10:26 GMT",
+    "firstSeenAt": "2026-07-28T12:12:28.306Z",
+    "lastSeenAt": "2026-07-28T12:12:28.306Z",
+    "updatedAt": "2026-07-28T12:12:28.306Z",
+    "ext": "pdf",
+    "size": 97268
   }
 }
