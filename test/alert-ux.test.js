@@ -6,9 +6,27 @@ const assert = require('node:assert/strict');
 const {
   containsHealthDeniedContent,
   bucketsContainHealthDeniedContent,
+  compareSnapshots,
   extractDocumentLinks,
   summarizePdfChangeHebrew,
 } = require('../src/index');
+
+test('list-directory additions stay whole instead of splitting Hebrew words', () => {
+  const oldText = [
+    'מחירונים > בקשת הטבה בדמי ניהול > עלוני מידע ומוצרים',
+    'מדיניות השקעות מוצהרת 2026 > אישורי ניהול חשבון בנק',
+    'יובהר כי המענה הינו לבחירת הלקוח > קפסולת הפנסיה שלך',
+  ].join(' > ');
+  const newText = oldText.replace(
+    'אישורי ניהול חשבון בנק >',
+    'אישורי ניהול חשבון בנק > מודל גילאים בפנסיה מקיפה ומשלימה >',
+  );
+
+  const comparison = compareSnapshots(oldText, newText);
+  assert.deepEqual(comparison.buckets.added, ['מודל גילאים בפנסיה מקיפה ומשלימה']);
+  assert.deepEqual(comparison.buckets.removed, []);
+  assert.deepEqual(comparison.buckets.updated, []);
+});
 
 test('health deny filter covers Hebrew and English medical/insurance terms', () => {
   for (const text of [

@@ -1580,6 +1580,63 @@ async function loadPreviousSnapshot(id) {
 const MAX_BUCKET_ITEMS = 5;
 const MAX_BULLET_CHARS = 140;
 
+function clipBullet(text) {
+  const value = (text || '').replace(/\s+/g, ' ').trim();
+  if (value.length <= MAX_BULLET_CHARS) return value;
+
+  const window = value.slice(0, MAX_BULLET_CHARS + 1);
+  const lastSpace = window.lastIndexOf(' ');
+  const cutAt = lastSpace >= Math.floor(MAX_BULLET_CHARS * 0.6)
+    ? lastSpace
+    : MAX_BULLET_CHARS;
+  return value.slice(0, cutAt).trimEnd() + '…';
+}
+
+function multisetDifference(values, baseline) {
+  const remaining = new Map();
+  for (const value of baseline) {
+    remaining.set(value, (remaining.get(value) || 0) + 1);
+  }
+
+  const extras = [];
+  for (const value of values) {
+    const count = remaining.get(value) || 0;
+    if (count > 0) remaining.set(value, count - 1);
+    else extras.push(value);
+  }
+  return extras;
+}
+
+// Vendor landing pages often render link directories as one text stream with
+// `>` between entries. A word-level diff can shear a newly inserted Hebrew
+// label into fragments when letters/words also appear in neighbouring text
+// (for example "מודל ג" + "לאים בפנסיה מקיפה"). Compare complete directory
+// entries instead so Telegram receives the human-readable item.
+function compareDelimitedListItems(oldText, newText) {
+  const oldDelimiterCount = (oldText.match(/>/g) || []).length;
+  const newDelimiterCount = (newText.match(/>/g) || []).length;
+  if (oldDelimiterCount < 4 || newDelimiterCount < 4) return null;
+
+  const split = (text) => text
+    .split('>')
+    .map((value) => value.replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+
+  const oldItems = split(oldText);
+  const newItems = split(newText);
+  if (oldItems.length < 5 || newItems.length < 5) return null;
+
+  const added = multisetDifference(newItems, oldItems);
+  const removed = multisetDifference(oldItems, newItems);
+  if (added.length === 0 && removed.length === 0) return null;
+
+  return {
+    added: added.slice(0, MAX_BUCKET_ITEMS).map(clipBullet),
+    updated: [],
+    removed: removed.slice(0, MAX_BUCKET_ITEMS).map(clipBullet),
+  };
+}
+
 function compareSnapshots(oldText, newText) {
   const emptyBuckets = { added: [], updated: [], removed: [] };
   if (oldText === newText) {
@@ -1606,19 +1663,19 @@ function compareSnapshots(oldText, newText) {
       // Adjacent removed → added is the diff-library's shape for a rewording.
       removedChars += part.value.length;
       addedChars += next.value.length;
-      const from = part.value.trim().slice(0, MAX_BULLET_CHARS);
-      const to = next.value.trim().slice(0, MAX_BULLET_CHARS);
+      const from = clipBullet(part.value);
+      const to = clipBullet(next.value);
       if (from && to && buckets.updated.length < MAX_BUCKET_ITEMS) {
         buckets.updated.push({ from, to });
       }
       i++; // consume the paired added part
     } else if (part.added) {
       addedChars += part.value.length;
-      const t = part.value.trim().slice(0, MAX_BULLET_CHARS);
+      const t = clipBullet(part.value);
       if (t && buckets.added.length < MAX_BUCKET_ITEMS) buckets.added.push(t);
     } else if (part.removed) {
       removedChars += part.value.length;
-      const t = part.value.trim().slice(0, MAX_BULLET_CHARS);
+      const t = clipBullet(part.value);
       if (t && buckets.removed.length < MAX_BUCKET_ITEMS) buckets.removed.push(t);
     }
   }
@@ -1627,6 +1684,13 @@ function compareSnapshots(oldText, newText) {
   const diffChars = addedChars + removedChars;
   const ratio = diffChars / totalChars;
   const meaningful = diffChars >= MIN_DIFF_CHARS && ratio >= MIN_DIFF_RATIO;
+
+  const delimitedBuckets = compareDelimitedListItems(oldText || '', newText || '');
+  if (delimitedBuckets) {
+    buckets.added = delimitedBuckets.added;
+    buckets.updated = delimitedBuckets.updated;
+    buckets.removed = delimitedBuckets.removed;
+  }
 
   return { changed: true, meaningful, addedChars, removedChars, ratio, buckets };
 }
