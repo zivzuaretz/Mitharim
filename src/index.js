@@ -1401,7 +1401,11 @@ async function getPlaywrightBrowser() {
   if (_playwrightBrowser && _playwrightBrowser.isConnected()) {
     return _playwrightBrowser;
   }
-  _playwrightBrowser = await playwright.chromium.launch({ headless: true });
+  const launchOptions = { headless: true };
+  if (process.env.PLAYWRIGHT_EXECUTABLE_PATH) {
+    launchOptions.executablePath = process.env.PLAYWRIGHT_EXECUTABLE_PATH;
+  }
+  _playwrightBrowser = await playwright.chromium.launch(launchOptions);
   return _playwrightBrowser;
 }
 
@@ -1786,7 +1790,106 @@ function summarizePdfChangeHebrew(change, numericChanges = []) {
   return `עיקר המסמך: קובץ ${type} בשם ${change.filename}; לא ניתן היה לחלץ ממנו טקסט.`;
 }
 
-async function capturePageScreenshot(url, itemId) {
+function buildScreenshotHighlightCandidates(comparison) {
+  const buckets = comparison?.buckets || comparison || {};
+  const values = [
+    ...(buckets.added || []),
+    ...(buckets.updated || []).map(({ to }) => to),
+  ];
+
+  const seen = new Set();
+  return values
+    .map((value) => (value || '').replace(/\s+/g, ' ').trim())
+    .filter((value) => value.length >= 4)
+    .filter((value) => {
+      if (seen.has(value)) return false;
+      seen.add(value);
+      return true;
+    })
+    .sort((a, b) => b.length - a.length)
+    .slice(0, 5);
+}
+
+async function highlightPageChange(page, candidates) {
+  if (!candidates?.length) return null;
+
+  await page.addStyleTag({ content: `
+    [data-mitharim-highlight="true"] {
+      position: relative !important;
+      z-index: 2147483645 !important;
+      outline: 4px solid #e2a900 !important;
+      outline-offset: 6px !important;
+      border-radius: 8px !important;
+      background-color: rgba(255, 193, 7, 0.16) !important;
+      box-shadow: 0 0 0 11px rgba(226, 169, 0, 0.13) !important;
+    }
+    #mitharim-change-badge {
+      position: fixed !important;
+      z-index: 2147483647 !important;
+      padding: 7px 12px !important;
+      border: 2px solid #e2a900 !important;
+      border-radius: 999px !important;
+      background: #fff8df !important;
+      color: #4a3810 !important;
+      font: 700 16px/1.2 Arial, sans-serif !important;
+      direction: rtl !important;
+      box-shadow: 0 5px 16px rgba(74, 56, 16, 0.18) !important;
+      pointer-events: none !important;
+    }
+  ` });
+
+  for (const candidate of candidates) {
+    const matches = page.getByText(candidate, { exact: false });
+    let count = 0;
+    try { count = Math.min(await matches.count(), 12); } catch { count = 0; }
+    if (!count) continue;
+
+    const visibleMatches = [];
+    for (let i = 0; i < count; i++) {
+      const locator = matches.nth(i);
+      try {
+        if (!(await locator.isVisible())) continue;
+        const box = await locator.boundingBox();
+        if (!box || box.width < 2 || box.height < 2) continue;
+        const tag = await locator.evaluate((el) => el.tagName.toLowerCase());
+        if (tag === 'html' || tag === 'body') continue;
+        visibleMatches.push({ locator, box, area: box.width * box.height });
+      } catch {
+        // A dynamic page can detach a candidate between count() and lookup.
+      }
+    }
+    if (!visibleMatches.length) continue;
+
+    visibleMatches.sort((a, b) => a.area - b.area);
+    const target = visibleMatches[0].locator;
+    try {
+      await target.evaluate((el) => el.scrollIntoView({ block: 'center', inline: 'center' }));
+      await page.waitForTimeout(250);
+      await target.evaluate((el) => el.setAttribute('data-mitharim-highlight', 'true'));
+      const box = await target.boundingBox();
+      if (!box) continue;
+
+      await page.evaluate(({ x, y, width }) => {
+        document.getElementById('mitharim-change-badge')?.remove();
+        const badge = document.createElement('div');
+        badge.id = 'mitharim-change-badge';
+        badge.textContent = 'השינוי כאן';
+        const top = Math.max(10, y - 44);
+        const left = Math.max(10, Math.min(window.innerWidth - 140, x + width / 2 - 58));
+        badge.style.top = `${top}px`;
+        badge.style.left = `${left}px`;
+        document.body.appendChild(badge);
+      }, box);
+      return candidate;
+    } catch {
+      // Try the next candidate when a dynamic page replaces the element.
+    }
+  }
+
+  return null;
+}
+
+async function capturePageScreenshot(url, itemId, candidates = []) {
   const browser = await getPlaywrightBrowser();
   const context = await browser.newContext({
     userAgent: USER_AGENT, locale: 'he-IL', viewport: { width: 1280, height: 900 },
@@ -1796,21 +1899,28 @@ async function capturePageScreenshot(url, itemId) {
   try {
     await page.goto(encodeURI(decodeURI(url)), { waitUntil: 'networkidle', timeout: REQUEST_TIMEOUT_MS });
     await fse.ensureDir(SCREENSHOTS_DIR);
+    const highlightedText = await highlightPageChange(page, candidates);
     // A viewport image is small enough for Telegram and focuses on the page's
-    // current visible state. Full-page PNGs can exceed Telegram's photo limit.
+    // current visible state. When a matching change is found, the page is
+    // scrolled to it and the changed element is outlined in gold.
     await page.screenshot({ path: filePath, fullPage: false });
-    return filePath;
+    return { filePath, highlightedText };
   } finally {
     await page.close().catch(() => {});
     await context.close().catch(() => {});
   }
 }
 
-async function attachPageScreenshot(item) {
+async function attachPageScreenshot(item, comparison = null) {
   let filePath;
   try {
-    filePath = await capturePageScreenshot(item.url, item.id);
-    return await sendTelegramPhoto(filePath, 'צילום העמוד המעודכן');
+    const candidates = buildScreenshotHighlightCandidates(comparison);
+    const captured = await capturePageScreenshot(item.url, item.id, candidates);
+    filePath = captured.filePath;
+    const caption = captured.highlightedText
+      ? 'צילום העמוד המעודכן — השינוי מסומן בזהב'
+      : 'צילום העמוד המעודכן';
+    return await sendTelegramPhoto(filePath, caption);
   } catch (err) {
     log.warn(`Page screenshot failed for ${item.id}: ${err.message}`);
     return { sent: false, reason: err.message };
@@ -2323,7 +2433,9 @@ async function monitorItem(item) {
     );
     const articleResult = await sendTelegramMessage(articleAlertText);
     if (articleResult.sent) {
-      if (kind === 'html') await attachPageScreenshot(item);
+      if (kind === 'html') {
+        await attachPageScreenshot(item, { buckets: navStrippedBuckets });
+      }
       await recordArticle(item.id, topic, summary);
       // Also record into the generic alert audit log so all sent alerts
       // share a single source of truth.
@@ -2398,7 +2510,7 @@ async function monitorItem(item) {
   }
   const telegramResult = await sendTelegramMessage(alertText);
   if (telegramResult.sent) {
-    if (kind === 'html') await attachPageScreenshot(item);
+    if (kind === 'html') await attachPageScreenshot(item, filteredComparison);
     if (kind === 'pdf') await attachPdfBuffer(buffer, item);
     await recordAlert(item.id, dedupHash, {
       type: 'page',
@@ -2488,6 +2600,8 @@ module.exports = {
   sendTelegramMessage,
   sendTelegramDocument,
   sendTelegramPhoto,
+  capturePageScreenshot,
+  buildScreenshotHighlightCandidates,
   formatHebrewAlert,
   // noise filter — exposed so tests / external scripts can reuse them
   containsNoisePhrase,

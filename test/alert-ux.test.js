@@ -6,6 +6,7 @@ const assert = require('node:assert/strict');
 const {
   containsHealthDeniedContent,
   bucketsContainHealthDeniedContent,
+  buildScreenshotHighlightCandidates,
   compareSnapshots,
   extractDocumentLinks,
   summarizePdfChangeHebrew,
@@ -26,6 +27,21 @@ test('list-directory additions stay whole instead of splitting Hebrew words', ()
   assert.deepEqual(comparison.buckets.added, ['מודל גילאים בפנסיה מקיפה ומשלימה']);
   assert.deepEqual(comparison.buckets.removed, []);
   assert.deepEqual(comparison.buckets.updated, []);
+});
+
+test('screenshot highlight candidates prefer complete added and updated text', () => {
+  const candidates = buildScreenshotHighlightCandidates({
+    buckets: {
+      added: ['מודל גילאים בפנסיה מקיפה ומשלימה', ''],
+      updated: [{ from: 'מידע ישן', to: 'מידע חדש ומלא' }],
+      removed: ['טקסט שכבר אינו קיים בעמוד'],
+    },
+  });
+
+  assert.deepEqual(candidates, [
+    'מודל גילאים בפנסיה מקיפה ומשלימה',
+    'מידע חדש ומלא',
+  ]);
 });
 
 test('health deny filter covers Hebrew and English medical/insurance terms', () => {
